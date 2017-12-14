@@ -1,6 +1,10 @@
 package com.joanna.onlineclinic.domain.doctor;
 
+import com.joanna.onlineclinic.domain.appointment.AppointmentAvailable;
+
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 public class Doctor {
@@ -15,6 +19,8 @@ public class Doctor {
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private Specialty specialty;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "doctor")
+    private Set<AppointmentAvailable> appointmentsAvailable;
 
     Doctor() {
     }
@@ -23,6 +29,7 @@ public class Doctor {
         this.firstName = firstName;
         this.lastName = lastName;
         this.specialty = specialty;
+        this.appointmentsAvailable = new HashSet<>();
     }
 
     public long getId() {
@@ -39,5 +46,9 @@ public class Doctor {
 
     public Specialty getSpecialty() {
         return specialty;
+    }
+
+    public Set<AppointmentAvailable> getAppointmentsAvailable() {
+        return appointmentsAvailable;
     }
 }

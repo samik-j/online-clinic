@@ -1,35 +1,59 @@
 package com.joanna.onlineclinic.domain.appointment;
 
+import com.joanna.onlineclinic.domain.doctor.Doctor;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(uniqueConstraints=@UniqueConstraint(columnNames={"doctorId", "dateTime"}))
+@Table(uniqueConstraints=@UniqueConstraint(columnNames={"doctor", "appointmentDateTime"}))
 public class AppointmentAvailable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    private long doctorId;
-    private LocalDateTime dateTime;
+    @ManyToOne
+    @JoinColumn(name = "doctor_id")
+    private Doctor doctor;
+    private LocalDateTime appointmentDateTime;
 
     AppointmentAvailable() {
     }
 
-    public AppointmentAvailable(long doctorId, LocalDateTime dateTime) {
-        this.doctorId = doctorId;
-        this.dateTime = dateTime;
+    public AppointmentAvailable(Doctor doctor, LocalDateTime appointmentDateTime) {
+        this.doctor = doctor;
+        this.appointmentDateTime = appointmentDateTime;
     }
 
     public long getId() {
         return id;
     }
 
-    public long getDoctorId() {
-        return doctorId;
+    public Doctor getDoctor() {
+        return doctor;
     }
 
-    public LocalDateTime getDateTime() {
-        return dateTime;
+    public LocalDateTime getAppointmentDateTime() {
+        return appointmentDateTime;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        AppointmentAvailable that = (AppointmentAvailable) o;
+
+        return id == that.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return (int) (id ^ (id >>> 32));
+    }
+
 }
