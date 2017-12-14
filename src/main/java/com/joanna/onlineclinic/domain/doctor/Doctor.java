@@ -1,6 +1,7 @@
 package com.joanna.onlineclinic.domain.doctor;
 
-import com.joanna.onlineclinic.domain.appointment.AppointmentAvailable;
+import com.joanna.onlineclinic.domain.appointment.available.AppointmentAvailable;
+import com.joanna.onlineclinic.domain.appointment.booked.AppointmentBooked;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -21,6 +22,8 @@ public class Doctor {
     private Specialty specialty;
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "doctor")
     private Set<AppointmentAvailable> appointmentsAvailable;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "doctor")
+    private Set<AppointmentBooked> appointmentsBooked;
 
     Doctor() {
     }
@@ -30,6 +33,7 @@ public class Doctor {
         this.lastName = lastName;
         this.specialty = specialty;
         this.appointmentsAvailable = new HashSet<>();
+        this.appointmentsBooked = new HashSet<>();
     }
 
     public long getId() {
@@ -50,5 +54,9 @@ public class Doctor {
 
     public Set<AppointmentAvailable> getAppointmentsAvailable() {
         return appointmentsAvailable;
+    }
+
+    public Set<AppointmentBooked> getAppointmentsBooked() {
+        return appointmentsBooked;
     }
 }

@@ -1,6 +1,10 @@
 package com.joanna.onlineclinic.domain.patient;
 
+import com.joanna.onlineclinic.domain.appointment.booked.AppointmentBooked;
+
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 public class Patient {
@@ -13,21 +17,24 @@ public class Patient {
     @Column(nullable = false)
     private String lastName;
     @Column(unique = true)
-    private String NHSnumber;
+    private String NHSNumber;
     @Column(nullable = false)
     private String phoneNumber;
     @Column(nullable = false)
     private String email;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "patient")
+    private Set<AppointmentBooked> appointments;
 
     Patient() {
     }
 
-    public Patient(String firstName, String lastName, String NHSnumber, String phoneNumber, String email) {
+    public Patient(String firstName, String lastName, String NHSNumber, String phoneNumber, String email) {
         this.firstName = firstName;
         this.lastName = lastName;
-        this.NHSnumber = NHSnumber;
+        this.NHSNumber = NHSNumber;
         this.phoneNumber = phoneNumber;
         this.email = email;
+        this.appointments = new HashSet<>();
     }
 
     public long getId() {
@@ -42,8 +49,8 @@ public class Patient {
         return lastName;
     }
 
-    public String getNHSnumber() {
-        return NHSnumber;
+    public String getNHSNumber() {
+        return NHSNumber;
     }
 
     public String getPhoneNumber() {
@@ -52,5 +59,9 @@ public class Patient {
 
     public String getEmail() {
         return email;
+    }
+
+    public Set<AppointmentBooked> getAppointments() {
+        return appointments;
     }
 }

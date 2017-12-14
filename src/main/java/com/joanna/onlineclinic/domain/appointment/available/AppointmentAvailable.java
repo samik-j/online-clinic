@@ -1,4 +1,4 @@
-package com.joanna.onlineclinic.domain.appointment;
+package com.joanna.onlineclinic.domain.appointment.available;
 
 import com.joanna.onlineclinic.domain.doctor.Doctor;
 
