@@ -12,7 +12,7 @@ public class DoctorTest {
         Doctor doctor = new Doctor("First", "Last", Specialty.PEDIATRICIAN);
 
         // then
-        assertEquals("Frist", doctor.getFirstName());
+        assertEquals("First", doctor.getFirstName());
         assertEquals("Last", doctor.getLastName());
         assertEquals(Specialty.PEDIATRICIAN, doctor.getSpecialty());
         assertTrue(doctor.getAppointmentsAvailable().isEmpty());
