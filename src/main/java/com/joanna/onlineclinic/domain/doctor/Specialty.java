@@ -1,6 +1,6 @@
 package com.joanna.onlineclinic.domain.doctor;
 
-enum Specialty {
+public enum Specialty {
     DERMATOLOGIST,
     GYNAECOLOGIST,
     PEDIATRICIAN,
