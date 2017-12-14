@@ -15,10 +15,13 @@ public class AppointmentBooked {
     private long id;
     @ManyToOne
     @JoinColumn(name = "doctor_id")
+    @Column(nullable = false)
     private Doctor doctor;
+    @Column(nullable = false)
     private LocalDateTime appointmentDateTime;
     @ManyToOne
     @JoinColumn(name = "patient_id")
+    @Column(nullable = false)
     private Patient patient;
     private String reason;
     private boolean confirmed;

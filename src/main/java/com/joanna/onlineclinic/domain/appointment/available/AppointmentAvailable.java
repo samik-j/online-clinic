@@ -14,7 +14,9 @@ public class AppointmentAvailable {
     private long id;
     @ManyToOne
     @JoinColumn(name = "doctor_id")
+    @Column(nullable = false)
     private Doctor doctor;
+    @Column(nullable = false)
     private LocalDateTime appointmentDateTime;
 
     AppointmentAvailable() {
