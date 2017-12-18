@@ -6,7 +6,7 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(uniqueConstraints=@UniqueConstraint(columnNames={"doctor", "appointmentDateTime"}))
+@Table(uniqueConstraints=@UniqueConstraint(columnNames={"doctor_id", "appointmentDateTime"}))
 public class AppointmentAvailable {
 
     @Id
@@ -14,7 +14,6 @@ public class AppointmentAvailable {
     private long id;
     @ManyToOne
     @JoinColumn(name = "doctor_id")
-    @Column(nullable = false)
     private Doctor doctor;
     @Column(nullable = false)
     private LocalDateTime appointmentDateTime;
