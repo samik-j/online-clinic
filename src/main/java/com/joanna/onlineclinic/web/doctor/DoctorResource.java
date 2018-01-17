@@ -1,5 +1,7 @@
 package com.joanna.onlineclinic.web.doctor;
 
+import com.joanna.onlineclinic.domain.doctor.Doctor;
+
 public class DoctorResource {
 
     private long id;
@@ -8,6 +10,13 @@ public class DoctorResource {
     private String specialty;
 
     public DoctorResource() {
+    }
+
+    DoctorResource(Doctor doctor) {
+        this.id = doctor.getId();
+        this.firstName = doctor.getFirstName();
+        this.lastName = doctor.getLastName();
+        this.specialty = doctor.getSpecialty().toString();
     }
 
     public long getId() {
