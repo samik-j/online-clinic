@@ -1,13 +1,14 @@
 package com.joanna.onlineclinic.web.doctor;
 
 import com.joanna.onlineclinic.domain.doctor.Doctor;
+import com.joanna.onlineclinic.domain.doctor.Specialty;
 
 public class DoctorResource {
 
     private long id;
     private String firstName;
     private String lastName;
-    private String specialty;
+    private Specialty specialty;
 
     public DoctorResource() {
     }
@@ -16,7 +17,7 @@ public class DoctorResource {
         this.id = doctor.getId();
         this.firstName = doctor.getFirstName();
         this.lastName = doctor.getLastName();
-        this.specialty = doctor.getSpecialty().toString();
+        this.specialty = doctor.getSpecialty();
     }
 
     public long getId() {
@@ -43,11 +44,11 @@ public class DoctorResource {
         this.lastName = lastName;
     }
 
-    public String getSpecialty() {
+    public Specialty getSpecialty() {
         return specialty;
     }
 
-    public void setSpecialty(String specialty) {
+    public void setSpecialty(Specialty specialty) {
         this.specialty = specialty;
     }
 }

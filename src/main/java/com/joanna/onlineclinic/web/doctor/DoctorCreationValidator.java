@@ -27,22 +27,11 @@ public class DoctorCreationValidator {
         if (resource.getLastName() == null || resource.getLastName().isEmpty()) {
             validationErrors.add("Last name not specified");
         }
-        if (resource.getSpecialty() == null || resource.getSpecialty().isEmpty()) {
+        if (resource.getSpecialty() == null) {
             validationErrors.add("Specialty not specified");
-        } else if (!isValidSpecialty(resource.getSpecialty())) {
-            validationErrors.add("Specialty not valid");
         }
 
         return new ErrorsResource(validationErrors);
-    }
-
-    private boolean isValidSpecialty(String specialty) {
-        for(Specialty s : Specialty.values()) {
-            if(specialty.equalsIgnoreCase(s.toString())) {
-                return true;
-            }
-        }
-        return false;
     }
 
 }

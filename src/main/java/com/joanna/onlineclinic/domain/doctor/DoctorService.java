@@ -14,7 +14,7 @@ public class DoctorService {
 
     public Doctor registerDoctor(DoctorResource resource) {
         Doctor doctor = new Doctor
-                (resource.getFirstName(), resource.getLastName(), Specialty.valueOf(resource.getSpecialty()));
+                (resource.getFirstName(), resource.getLastName(), resource.getSpecialty());
 
         return repository.save(doctor);
     }

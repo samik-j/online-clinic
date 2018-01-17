@@ -1,6 +1,7 @@
 package com.joanna.onlineclinic.web.doctor;
 
 import com.joanna.onlineclinic.domain.doctor.DoctorService;
+import com.joanna.onlineclinic.domain.doctor.Specialty;
 import com.joanna.onlineclinic.web.ErrorsResource;
 import org.junit.Test;
 
@@ -13,7 +14,7 @@ public class DoctorCreationValidatorTest {
     private DoctorService service = mock(DoctorService.class);
     private DoctorCreationValidator validator = new DoctorCreationValidator(service);
 
-    private DoctorResource createDoctorResource(String firstName, String lastName, String specialty) {
+    private DoctorResource createDoctorResource(String firstName, String lastName, Specialty specialty) {
         DoctorResource resource = new DoctorResource();
 
         resource.setFirstName(firstName);
@@ -26,7 +27,7 @@ public class DoctorCreationValidatorTest {
     @Test
     public void shouldNotHaveErrors() {
         // given
-        DoctorResource resource = createDoctorResource("Frist", "Last", "gynaecologist");
+        DoctorResource resource = createDoctorResource("Frist", "Last", Specialty.GENERAL_PHYSICIAN);
 
         // when
         ErrorsResource errorsResource = validator.validate(resource);
@@ -38,7 +39,7 @@ public class DoctorCreationValidatorTest {
     @Test
     public void shouldHaveErrorIfFirstNameIsNull() {
         // given
-        DoctorResource resource = createDoctorResource(null, "Last", "gynaecologist");
+        DoctorResource resource = createDoctorResource(null, "Last", Specialty.GENERAL_PHYSICIAN);
 
         // when
         ErrorsResource errorsResource = validator.validate(resource);
@@ -51,7 +52,7 @@ public class DoctorCreationValidatorTest {
     @Test
     public void shouldHaveErrorIfLastNameIsNull() {
         // given
-        DoctorResource resource = createDoctorResource("First", null, "gynaecologist");
+        DoctorResource resource = createDoctorResource("First", null, Specialty.GENERAL_PHYSICIAN);
 
         // when
         ErrorsResource errorsResource = validator.validate(resource);
@@ -75,22 +76,9 @@ public class DoctorCreationValidatorTest {
     }
 
     @Test
-    public void shouldHaveErrorIfSpecialtyIsInvalid() {
-        // given
-        DoctorResource resource = createDoctorResource("First", "Last", "something");
-
-        // when
-        ErrorsResource errorsResource = validator.validate(resource);
-
-        // then
-        assertEquals(1, errorsResource.getValidationErrors().size());
-        assertTrue(errorsResource.getValidationErrors().contains("Specialty not valid"));
-    }
-
-    @Test
     public void shouldHaveMultipleErrors() {
         // given
-        DoctorResource resource = createDoctorResource("", "", "");
+        DoctorResource resource = createDoctorResource("", "", null);
 
         // when
         ErrorsResource errorsResource = validator.validate(resource);
