@@ -7,10 +7,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequestMapping("/doctors")
@@ -41,7 +41,22 @@ public class DoctorController {
         }
     }
 
+    @GetMapping
+    public List<DoctorResource> getDoctors() {
+        return getDoctorResourceList(doctorService.findDoctors());
+    }
+
     private DoctorResource getDoctorResource(Doctor doctor) {
         return new DoctorResource(doctor);
+    }
+
+    private List<DoctorResource> getDoctorResourceList(List<Doctor> doctors) {
+        List<DoctorResource> doctorResources = new ArrayList<>();
+
+        for(Doctor doctor : doctors) {
+            doctorResources.add(getDoctorResource(doctor));
+        }
+
+        return doctorResources;
     }
 }

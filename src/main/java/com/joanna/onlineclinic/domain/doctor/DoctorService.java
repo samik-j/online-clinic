@@ -3,6 +3,8 @@ package com.joanna.onlineclinic.domain.doctor;
 import com.joanna.onlineclinic.web.doctor.DoctorResource;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class DoctorService {
 
@@ -17,5 +19,9 @@ public class DoctorService {
                 (resource.getFirstName(), resource.getLastName(), resource.getSpecialty());
 
         return repository.save(doctor);
+    }
+
+    public List<Doctor> findDoctors() {
+        return repository.findAll();
     }
 }
