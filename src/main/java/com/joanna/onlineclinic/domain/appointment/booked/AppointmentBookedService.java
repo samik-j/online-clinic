@@ -1,5 +1,8 @@
 package com.joanna.onlineclinic.domain.appointment.booked;
 
+import org.springframework.stereotype.Service;
+
+@Service
 public class AppointmentBookedService {
 
     private AppointmentBookedRepository repository;

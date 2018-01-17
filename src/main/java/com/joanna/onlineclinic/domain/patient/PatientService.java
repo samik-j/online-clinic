@@ -1,5 +1,8 @@
 package com.joanna.onlineclinic.domain.patient;
 
+import org.springframework.stereotype.Service;
+
+@Service
 public class PatientService {
 
     private PatientRepository repository;
