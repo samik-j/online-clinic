@@ -30,15 +30,17 @@ public class DoctorCreationValidator {
         if (resource.getSpecialty() == null || resource.getSpecialty().isEmpty()) {
             validationErrors.add("Specialty not specified");
         } else if (!isValidSpecialty(resource.getSpecialty())) {
-            validationErrors.add("Specialty not supported");
+            validationErrors.add("Specialty not valid");
         }
 
         return new ErrorsResource(validationErrors);
     }
 
     private boolean isValidSpecialty(String specialty) {
-        if (Arrays.asList(Specialty.values()).contains(specialty.toUpperCase())) {
-            return true;
+        for(Specialty s : Specialty.values()) {
+            if(specialty.equalsIgnoreCase(s.toString())) {
+                return true;
+            }
         }
         return false;
     }
