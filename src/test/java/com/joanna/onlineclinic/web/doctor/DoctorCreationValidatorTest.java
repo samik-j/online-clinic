@@ -11,8 +11,7 @@ import static org.mockito.Mockito.mock;
 
 public class DoctorCreationValidatorTest {
 
-    private DoctorService service = mock(DoctorService.class);
-    private DoctorCreationValidator validator = new DoctorCreationValidator(service);
+    private DoctorCreationValidator validator = new DoctorCreationValidator();
 
     private DoctorResource createDoctorResource(String firstName, String lastName, Specialty specialty) {
         DoctorResource resource = new DoctorResource();
