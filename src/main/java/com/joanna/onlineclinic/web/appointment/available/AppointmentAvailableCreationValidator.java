@@ -17,13 +17,22 @@ public class AppointmentAvailableCreationValidator {
 
     ErrorsResource validate(AppointmentAvailableResource resource) {
         List<String> validationErrors = new ArrayList<>();
-        
+
         if (resource.getAppointmentDateTime() == null) {
             validationErrors.add("Appointment date not specified");
-        } else if (resource.getAppointmentDateTime().isBefore(LocalDateTime.now())) {
-            validationErrors.add("Incorrect appointment date");
+        } else {
+            if (resource.getAppointmentDateTime().isBefore(LocalDateTime.now())) {
+                validationErrors.add("Incorrect appointment date");
+            }
+            if (!isAppointmentUnique(resource)) {
+                validationErrors.add("Appointment already exists");
+            }
         }
 
         return new ErrorsResource(validationErrors);
+    }
+
+    private boolean isAppointmentUnique(AppointmentAvailableResource resource) {
+        return !appointmentService.appointmentExists(resource);
     }
 }
