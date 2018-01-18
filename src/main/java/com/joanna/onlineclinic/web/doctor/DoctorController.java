@@ -4,6 +4,7 @@ import com.joanna.onlineclinic.domain.doctor.Doctor;
 import com.joanna.onlineclinic.domain.doctor.DoctorService;
 import com.joanna.onlineclinic.domain.doctor.Specialty;
 import com.joanna.onlineclinic.web.ErrorsResource;
+import com.joanna.onlineclinic.web.ResourceNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -50,6 +51,17 @@ public class DoctorController {
     @GetMapping(params = {"specialty"})
     public List<DoctorResource> getDoctors(@RequestParam Specialty specialty) {
         return getDoctorResourceList(doctorService.findDoctors(specialty));
+    }
+
+    @GetMapping("/{doctorId}")
+    public DoctorResource getDoctor(@PathVariable long doctorId) {
+        Doctor doctor = doctorService.findDoctorById(doctorId);
+
+        if (doctor != null) {
+            return getDoctorResource(doctor);
+        } else {
+            throw new ResourceNotFoundException();
+        }
     }
 
     private DoctorResource getDoctorResource(Doctor doctor) {

@@ -28,4 +28,8 @@ public class DoctorService {
     public List<Doctor> findDoctors(Specialty specialty) {
         return repository.findBySpecialty(specialty);
     }
+
+    public Doctor findDoctorById(long id) {
+        return repository.findOne(id);
+    }
 }
