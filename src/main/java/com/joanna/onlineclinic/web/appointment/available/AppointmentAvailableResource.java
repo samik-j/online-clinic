@@ -1,14 +1,24 @@
 package com.joanna.onlineclinic.web.appointment.available;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.joanna.onlineclinic.domain.appointment.available.AppointmentAvailable;
+
 import java.time.LocalDateTime;
 
 public class AppointmentAvailableResource {
 
     private long id;
     private long doctorId;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
     private LocalDateTime appointmentDateTime;
 
     public AppointmentAvailableResource() {
+    }
+
+    AppointmentAvailableResource(AppointmentAvailable appointment) {
+        this.id = appointment.getId();
+        this.doctorId = appointment.getDoctor().getId();
+        this.appointmentDateTime = appointment.getAppointmentDateTime();
     }
 
     public long getId() {

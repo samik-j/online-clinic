@@ -32,4 +32,8 @@ public class DoctorService {
     public Doctor findDoctorById(long id) {
         return repository.findOne(id);
     }
+
+    public boolean doctorExists(long doctorId) {
+        return repository.exists(doctorId);
+    }
 }

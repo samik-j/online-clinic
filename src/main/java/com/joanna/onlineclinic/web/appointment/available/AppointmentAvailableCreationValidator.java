@@ -2,11 +2,13 @@ package com.joanna.onlineclinic.web.appointment.available;
 
 import com.joanna.onlineclinic.domain.appointment.available.AppointmentAvailableService;
 import com.joanna.onlineclinic.web.ErrorsResource;
+import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+@Component
 public class AppointmentAvailableCreationValidator {
 
     private AppointmentAvailableService appointmentService;

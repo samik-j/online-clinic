@@ -59,4 +59,8 @@ public class Doctor {
     public Set<AppointmentBooked> getAppointmentsBooked() {
         return appointmentsBooked;
     }
+
+    public void addAppointmentAvailable(AppointmentAvailable appointment) {
+        appointmentsAvailable.add(appointment);
+    }
 }
