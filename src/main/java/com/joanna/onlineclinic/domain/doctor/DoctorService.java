@@ -24,4 +24,8 @@ public class DoctorService {
     public List<Doctor> findDoctors() {
         return repository.findAll();
     }
+
+    public List<Doctor> findDoctors(Specialty specialty) {
+        return repository.findBySpecialty(specialty);
+    }
 }

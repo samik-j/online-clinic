@@ -2,6 +2,7 @@ package com.joanna.onlineclinic.web.doctor;
 
 import com.joanna.onlineclinic.domain.doctor.Doctor;
 import com.joanna.onlineclinic.domain.doctor.DoctorService;
+import com.joanna.onlineclinic.domain.doctor.Specialty;
 import com.joanna.onlineclinic.web.ErrorsResource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,6 +47,11 @@ public class DoctorController {
         return getDoctorResourceList(doctorService.findDoctors());
     }
 
+    @GetMapping(params = {"specialty"})
+    public List<DoctorResource> getDoctors(@RequestParam Specialty specialty) {
+        return getDoctorResourceList(doctorService.findDoctors(specialty));
+    }
+
     private DoctorResource getDoctorResource(Doctor doctor) {
         return new DoctorResource(doctor);
     }
@@ -53,7 +59,7 @@ public class DoctorController {
     private List<DoctorResource> getDoctorResourceList(List<Doctor> doctors) {
         List<DoctorResource> doctorResources = new ArrayList<>();
 
-        for(Doctor doctor : doctors) {
+        for (Doctor doctor : doctors) {
             doctorResources.add(getDoctorResource(doctor));
         }
 
