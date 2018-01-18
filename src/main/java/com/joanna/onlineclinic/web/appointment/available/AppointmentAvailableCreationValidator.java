@@ -23,8 +23,7 @@ public class AppointmentAvailableCreationValidator {
         } else {
             if (resource.getAppointmentDateTime().isBefore(LocalDateTime.now())) {
                 validationErrors.add("Incorrect appointment date");
-            }
-            if (!isAppointmentUnique(resource)) {
+            } else if (!isAppointmentUnique(resource)) {
                 validationErrors.add("Appointment already exists");
             }
         }
