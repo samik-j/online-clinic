@@ -35,9 +35,9 @@ public class AppointmentAvailableController {
                 doctorId, resource.getAppointmentDateTime());
 
         validateDoctorExistence(doctorId);
-        resource.setDoctorId(doctorId); // albo tak albo musze przekazac doctorId w validate. bo doctorId jest z url i w resource bedzie zawsze 0 a doctorId i czas sprawiaja ze appointment jest unique
+        resource.setDoctorId(doctorId);
 
-        ErrorsResource errorsResource = validator.validate(resource);
+        ErrorsResource errorsResource = validator.validate(resource); // tu przekazac doctor id
 
         if (errorsResource.getValidationErrors().isEmpty()) {
             AppointmentAvailable appointment = appointmentService.addAppointment(doctorId, resource);
