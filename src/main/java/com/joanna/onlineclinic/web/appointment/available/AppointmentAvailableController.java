@@ -15,7 +15,8 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/doctors/{doctorId}/appointmentsAvailable")
 public class AppointmentAvailableController {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(AppointmentAvailableController.class);
+    private static final Logger LOGGER =
+            LoggerFactory.getLogger(AppointmentAvailableController.class);
     private AppointmentAvailableService appointmentService;
     private DoctorService doctorService;
     private AppointmentAvailableCreationValidator validator;
@@ -35,9 +36,8 @@ public class AppointmentAvailableController {
                 doctorId, resource.getAppointmentDateTime());
 
         validateDoctorExistence(doctorId);
-        resource.setDoctorId(doctorId);
 
-        ErrorsResource errorsResource = validator.validate(resource); // tu przekazac doctor id
+        ErrorsResource errorsResource = validator.validate(doctorId, resource);
 
         if (errorsResource.getValidationErrors().isEmpty()) {
             AppointmentAvailable appointment = appointmentService.addAppointment(doctorId, resource);

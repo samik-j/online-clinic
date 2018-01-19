@@ -12,7 +12,8 @@ public class AppointmentAvailableService {
     private AppointmentAvailableRepository appointmentRepository;
     private DoctorRepository doctorRepository;
 
-    public AppointmentAvailableService(AppointmentAvailableRepository appointmentRepository, DoctorRepository doctorRepository) {
+    public AppointmentAvailableService(AppointmentAvailableRepository appointmentRepository,
+                                       DoctorRepository doctorRepository) {
         this.appointmentRepository = appointmentRepository;
         this.doctorRepository = doctorRepository;
     }
@@ -20,7 +21,8 @@ public class AppointmentAvailableService {
     @Transactional
     public AppointmentAvailable addAppointment(long doctorId, AppointmentAvailableResource resource) {
         Doctor doctor = doctorRepository.findOne(doctorId);
-        AppointmentAvailable appointment = new AppointmentAvailable(doctor, resource.getAppointmentDateTime());
+        AppointmentAvailable appointment =
+                new AppointmentAvailable(doctor, resource.getAppointmentDateTime());
 
         doctor.addAppointmentAvailable(appointment);
         AppointmentAvailable addedAppointment = appointmentRepository.save(appointment);
@@ -29,9 +31,8 @@ public class AppointmentAvailableService {
         return addedAppointment;
     }
 
-    public boolean appointmentExists(AppointmentAvailableResource resource) {
-        AppointmentAvailable appointment = appointmentRepository.findAppointment(resource.getDoctorId(), resource.getAppointmentDateTime());
-
-        return appointment != null;
+    public boolean appointmentExists(long doctorId, AppointmentAvailableResource resource) {
+        return appointmentRepository.existsByDoctorIdAndAndAppointmentDateTime(
+                        doctorId, resource.getAppointmentDateTime());
     }
 }

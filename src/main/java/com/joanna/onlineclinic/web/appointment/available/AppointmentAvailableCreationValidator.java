@@ -17,7 +17,7 @@ public class AppointmentAvailableCreationValidator {
         this.appointmentService = appointmentService;
     }
 
-    ErrorsResource validate(AppointmentAvailableResource resource) {
+    ErrorsResource validate(long doctorId, AppointmentAvailableResource resource) {
         List<String> validationErrors = new ArrayList<>();
 
         if (resource.getAppointmentDateTime() == null) {
@@ -25,7 +25,7 @@ public class AppointmentAvailableCreationValidator {
         } else {
             if (resource.getAppointmentDateTime().isBefore(LocalDateTime.now())) {
                 validationErrors.add("Incorrect appointment date");
-            } else if (!isAppointmentUnique(resource)) {
+            } else if (!isAppointmentUnique(doctorId, resource)) {
                 validationErrors.add("Appointment already exists");
             }
         }
@@ -33,7 +33,7 @@ public class AppointmentAvailableCreationValidator {
         return new ErrorsResource(validationErrors);
     }
 
-    private boolean isAppointmentUnique(AppointmentAvailableResource resource) {
-        return !appointmentService.appointmentExists(resource);
+    private boolean isAppointmentUnique(long doctorId, AppointmentAvailableResource resource) {
+        return !appointmentService.appointmentExists(doctorId, resource);
     }
 }
