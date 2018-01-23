@@ -1,5 +1,6 @@
 package com.joanna.onlineclinic.domain.patient;
 
+import com.joanna.onlineclinic.web.patient.PatientResource;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -13,5 +14,12 @@ public class PatientService {
 
     public boolean nhsNumberExists(String nhsNumber) {
         return repository.existsByNhsNumber(nhsNumber);
+    }
+
+    public Patient registerPatient(PatientResource resource) {
+        Patient patient = new Patient(resource.getFirstName(), resource.getLastName(),
+                resource.getNhsNumber(), resource.getPhoneNumber(), resource.getEmail());
+
+        return repository.save(patient);
     }
 }

@@ -1,5 +1,7 @@
 package com.joanna.onlineclinic.web.patient;
 
+import com.joanna.onlineclinic.domain.patient.Patient;
+
 public class PatientResource {
 
     private long id;
@@ -10,6 +12,15 @@ public class PatientResource {
     private String email;
 
     public PatientResource() {
+    }
+
+    PatientResource(Patient patient) {
+        this.id = patient.getId();
+        this.firstName = patient.getFirstName();
+        this.lastName = patient.getLastName();
+        this.nhsNumber = patient.getNhsNumber();
+        this.phoneNumber = patient.getPhoneNumber();
+        this.email = patient.getEmail();
     }
 
     public long getId() {
