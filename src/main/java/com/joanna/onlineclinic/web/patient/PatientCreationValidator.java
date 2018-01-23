@@ -26,7 +26,7 @@ public class PatientCreationValidator {
         if (resource.getLastName() == null || resource.getLastName().isEmpty()) {
             validationErrors.add("Last name not specified");
         }
-        if (resource.getNhsNumber() != null) {
+        if (resource.getNhsNumber() != null && !resource.getNhsNumber().isEmpty()) {
             if (resource.getNhsNumber().replaceAll("\\s", "").length() != 10) {
                 validationErrors.add("Incorrect NHS number");
             } else if (!isNhsNumberUnique(resource.getNhsNumber())) {
@@ -39,7 +39,7 @@ public class PatientCreationValidator {
         if (resource.getEmail() == null || resource.getEmail().isEmpty()) {
             validationErrors.add("Email address not specified");
         } else if (!isEmailValid(resource.getEmail())) {
-            validationErrors.add("Incorrect email address format");
+            validationErrors.add("Incorrect email address");
         }
 
         return new ErrorsResource(validationErrors);
