@@ -10,4 +10,8 @@ public class PatientService {
     public PatientService(PatientRepository repository) {
         this.repository = repository;
     }
+
+    public boolean nhsNumberExists(String nhsNumber) {
+        return repository.existsByNhsNumber(nhsNumber);
+    }
 }

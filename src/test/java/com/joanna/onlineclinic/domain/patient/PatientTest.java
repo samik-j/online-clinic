@@ -15,7 +15,7 @@ public class PatientTest {
         // then
         assertEquals("First", patient.getFirstName());
         assertEquals("Last", patient.getLastName());
-        assertEquals("1234567890", patient.getNHSNumber());
+        assertEquals("1234567890", patient.getNhsNumber());
         assertEquals("07522222222", patient.getPhoneNumber());
         assertEquals("fake@gmail.com", patient.getEmail());
         assertTrue(patient.getAppointments().isEmpty());

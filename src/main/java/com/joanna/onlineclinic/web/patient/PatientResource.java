@@ -5,7 +5,7 @@ public class PatientResource {
     private long id;
     private String firstName;
     private String lastName;
-    private String NHSNumber;
+    private String nhsNumber;
     private String phoneNumber;
     private String email;
 
@@ -36,12 +36,12 @@ public class PatientResource {
         this.lastName = lastName;
     }
 
-    public String getNHSNumber() {
-        return NHSNumber;
+    public String getNhsNumber() {
+        return nhsNumber;
     }
 
-    public void setNHSNumber(String NHSNumber) {
-        this.NHSNumber = NHSNumber;
+    public void setNhsNumber(String nhsNumber) {
+        this.nhsNumber = nhsNumber;
     }
 
     public String getPhoneNumber() {

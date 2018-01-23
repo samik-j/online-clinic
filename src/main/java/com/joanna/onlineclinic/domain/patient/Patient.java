@@ -17,7 +17,7 @@ public class Patient {
     @Column(nullable = false)
     private String lastName;
     @Column(unique = true)
-    private String NHSNumber;
+    private String nhsNumber;
     @Column(nullable = false)
     private String phoneNumber;
     @Column(nullable = false)
@@ -28,10 +28,10 @@ public class Patient {
     Patient() {
     }
 
-    public Patient(String firstName, String lastName, String NHSNumber, String phoneNumber, String email) {
+    public Patient(String firstName, String lastName, String nhsNumber, String phoneNumber, String email) {
         this.firstName = firstName;
         this.lastName = lastName;
-        this.NHSNumber = NHSNumber;
+        this.nhsNumber = nhsNumber;
         this.phoneNumber = phoneNumber;
         this.email = email;
         this.appointments = new HashSet<>();
@@ -49,8 +49,8 @@ public class Patient {
         return lastName;
     }
 
-    public String getNHSNumber() {
-        return NHSNumber;
+    public String getNhsNumber() {
+        return nhsNumber;
     }
 
     public String getPhoneNumber() {
