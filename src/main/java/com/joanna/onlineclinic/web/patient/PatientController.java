@@ -7,10 +7,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/patients")
@@ -42,7 +42,16 @@ public class PatientController {
         }
     }
 
+    @GetMapping
+    public List<PatientResource> getPatients() {
+        return getPatientResourceList(service.findAll());
+    }
+
     private PatientResource getPatientResource(Patient patient) {
         return new PatientResource(patient);
+    }
+
+    private List<PatientResource> getPatientResourceList(List<Patient> patients) {
+        return patients.stream().map(PatientResource::new).collect(Collectors.toList());
     }
 }

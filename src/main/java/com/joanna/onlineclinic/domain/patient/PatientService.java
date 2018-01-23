@@ -3,6 +3,8 @@ package com.joanna.onlineclinic.domain.patient;
 import com.joanna.onlineclinic.web.patient.PatientResource;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class PatientService {
 
@@ -21,5 +23,9 @@ public class PatientService {
                 resource.getNhsNumber(), resource.getPhoneNumber(), resource.getEmail());
 
         return repository.save(patient);
+    }
+
+    public List<Patient> findAll() {
+        return repository.findAll();
     }
 }
