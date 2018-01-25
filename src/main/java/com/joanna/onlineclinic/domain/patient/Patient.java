@@ -16,7 +16,6 @@ public class Patient {
     private String firstName;
     @Column(nullable = false)
     private String lastName;
-    @Column(unique = true)
     private String nhsNumber;
     @Column(nullable = false)
     private String phoneNumber;
