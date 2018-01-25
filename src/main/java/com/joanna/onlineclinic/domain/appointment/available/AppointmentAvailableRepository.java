@@ -20,4 +20,6 @@ public interface AppointmentAvailableRepository extends JpaRepository<Appointmen
     boolean existsByDoctorIdAndAndAppointmentDateTime(
             @Param("doctorId") long doctorId,
             @Param("appointmentDateTime") LocalDateTime appointmentDateTime);
+
+    List<AppointmentAvailable> findAllByDoctorId(@Param("doctorId") long doctorId);
 }

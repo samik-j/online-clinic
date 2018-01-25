@@ -6,6 +6,8 @@ import com.joanna.onlineclinic.web.appointment.available.AppointmentAvailableRes
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 public class AppointmentAvailableService {
 
@@ -34,5 +36,9 @@ public class AppointmentAvailableService {
     public boolean appointmentExists(long doctorId, AppointmentAvailableResource resource) {
         return appointmentRepository.existsByDoctorIdAndAndAppointmentDateTime(
                         doctorId, resource.getAppointmentDateTime());
+    }
+
+    public List<AppointmentAvailable> findAppointments(long doctorId) {
+        return appointmentRepository.findAllByDoctorId(doctorId);
     }
 }
