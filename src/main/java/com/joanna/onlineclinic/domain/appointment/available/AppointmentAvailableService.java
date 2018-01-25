@@ -38,6 +38,10 @@ public class AppointmentAvailableService {
                         doctorId, resource.getAppointmentDateTime());
     }
 
+    public boolean appointmentExists(long appointmentId) {
+        return appointmentRepository.exists(appointmentId);
+    }
+
     public List<AppointmentAvailable> findAppointments(long doctorId) {
         return appointmentRepository.findAllByDoctorId(doctorId);
     }

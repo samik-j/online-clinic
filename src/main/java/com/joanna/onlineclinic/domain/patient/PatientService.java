@@ -28,4 +28,8 @@ public class PatientService {
     public List<Patient> findAll() {
         return repository.findAll();
     }
+
+    public boolean patientExists(long patientId) {
+        return repository.exists(patientId);
+    }
 }

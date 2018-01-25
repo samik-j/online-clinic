@@ -2,14 +2,15 @@ package com.joanna.onlineclinic.web.appointment.booked;
 
 public class AppointmentBookedCreationResource {
 
-    private long appointmentAvailableId;
-    private long doctorId;
-    private long patientId;
+    private Long appointmentAvailableId;
+    private Long doctorId;
+    private Long patientId;
+    private String reason;
 
     public AppointmentBookedCreationResource() {
     }
 
-    public long getAppointmentAvailableId() {
+    public Long getAppointmentAvailableId() {
         return appointmentAvailableId;
     }
 
@@ -17,7 +18,7 @@ public class AppointmentBookedCreationResource {
         this.appointmentAvailableId = appointmentAvailableId;
     }
 
-    public long getDoctorId() {
+    public Long getDoctorId() {
         return doctorId;
     }
 
@@ -25,11 +26,19 @@ public class AppointmentBookedCreationResource {
         this.doctorId = doctorId;
     }
 
-    public long getPatientId() {
+    public Long getPatientId() {
         return patientId;
     }
 
     public void setPatientId(long patientId) {
         this.patientId = patientId;
+    }
+
+    public String getReason() {
+        return reason;
+    }
+
+    public void setReason(String reason) {
+        this.reason = reason;
     }
 }
