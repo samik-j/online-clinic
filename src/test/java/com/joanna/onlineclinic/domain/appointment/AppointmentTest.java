@@ -1,5 +1,6 @@
-package com.joanna.onlineclinic.domain.appointment.available;
+package com.joanna.onlineclinic.domain.appointment;
 
+import com.joanna.onlineclinic.domain.appointment.Appointment;
 import com.joanna.onlineclinic.domain.doctor.Doctor;
 import com.joanna.onlineclinic.domain.doctor.Specialty;
 import org.junit.Test;
@@ -8,7 +9,7 @@ import java.time.LocalDateTime;
 
 import static org.junit.Assert.assertEquals;
 
-public class AppointmentAvailableTest {
+public class AppointmentTest {
 
     @Test
     public void shouldCreateAppointment() {
@@ -17,7 +18,7 @@ public class AppointmentAvailableTest {
         LocalDateTime appointmentDateTime = LocalDateTime.of(2017, 9, 12, 18, 00);
 
         // when
-        AppointmentAvailable appointment = new AppointmentAvailable(doctor, appointmentDateTime);
+        Appointment appointment = new Appointment(doctor, appointmentDateTime);
 
         // then
         assertEquals(doctor, appointment.getDoctor());

@@ -1,6 +1,6 @@
-package com.joanna.onlineclinic.web.appointment.available;
+package com.joanna.onlineclinic.web.appointment;
 
-import com.joanna.onlineclinic.domain.appointment.available.AppointmentAvailableService;
+import com.joanna.onlineclinic.domain.appointment.AppointmentService;
 import com.joanna.onlineclinic.web.ErrorsResource;
 import org.junit.Test;
 
@@ -11,17 +11,17 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class AppointmentAvailableCreationValidatorTest {
+public class AppointmentCreationValidatorTest {
 
-    private AppointmentAvailableService service =
-            mock(AppointmentAvailableService.class);
-    private AppointmentAvailableCreationValidator validator =
-            new AppointmentAvailableCreationValidator(service);
+    private AppointmentService service =
+            mock(AppointmentService.class);
+    private AppointmentCreationValidator validator =
+            new AppointmentCreationValidator(service);
 
     private long doctorId = 1;
 
-    private AppointmentAvailableResource createAppointmentResource(LocalDateTime dateTime) {
-        AppointmentAvailableResource resource = new AppointmentAvailableResource();
+    private AppointmentResource createAppointmentResource(LocalDateTime dateTime) {
+        AppointmentResource resource = new AppointmentResource();
 
         resource.setAppointmentDateTime(dateTime);
 
@@ -31,7 +31,7 @@ public class AppointmentAvailableCreationValidatorTest {
     @Test
     public void shouldValidateWithNoErrors() {
         // given
-        AppointmentAvailableResource resource =
+        AppointmentResource resource =
                 createAppointmentResource(LocalDateTime.of(2018, 3, 12, 15, 30));
 
         // when
@@ -44,7 +44,7 @@ public class AppointmentAvailableCreationValidatorTest {
     @Test
     public void shouldValidateWithErrorIfDateIsIncorrect() {
         // given
-        AppointmentAvailableResource resource =
+        AppointmentResource resource =
                 createAppointmentResource(LocalDateTime.now().minusDays(10));
 
         // when
@@ -58,7 +58,7 @@ public class AppointmentAvailableCreationValidatorTest {
     @Test
     public void shouldValidateWithErrorIfDateIsNotSpecified() {
         // given
-        AppointmentAvailableResource resource =
+        AppointmentResource resource =
                 createAppointmentResource(null);
 
         // when
@@ -72,7 +72,7 @@ public class AppointmentAvailableCreationValidatorTest {
     @Test
     public void shouldValidateWithErrorIfAppointmentExists() {
         // given
-        AppointmentAvailableResource resource =
+        AppointmentResource resource =
                 createAppointmentResource(LocalDateTime.now().minusDays(10));
 
         when(service.appointmentExists(doctorId, resource)).thenReturn(true);

@@ -1,4 +1,4 @@
-package com.joanna.onlineclinic.domain.appointment.available;
+package com.joanna.onlineclinic.domain.appointment;
 
 import com.joanna.onlineclinic.domain.doctor.Doctor;
 
@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(uniqueConstraints=@UniqueConstraint(columnNames={"doctor_id", "appointmentDateTime"}))
-public class AppointmentAvailable {
+public class Appointment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,10 +18,10 @@ public class AppointmentAvailable {
     @Column(nullable = false)
     private LocalDateTime appointmentDateTime;
 
-    AppointmentAvailable() {
+    Appointment() {
     }
 
-    public AppointmentAvailable(Doctor doctor, LocalDateTime appointmentDateTime) {
+    public Appointment(Doctor doctor, LocalDateTime appointmentDateTime) {
         this.doctor = doctor;
         this.appointmentDateTime = appointmentDateTime;
     }
@@ -47,7 +47,7 @@ public class AppointmentAvailable {
             return false;
         }
 
-        AppointmentAvailable that = (AppointmentAvailable) o;
+        Appointment that = (Appointment) o;
 
         return id == that.id;
     }

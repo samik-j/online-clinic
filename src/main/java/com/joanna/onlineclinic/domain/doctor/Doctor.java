@@ -1,6 +1,6 @@
 package com.joanna.onlineclinic.domain.doctor;
 
-import com.joanna.onlineclinic.domain.appointment.available.AppointmentAvailable;
+import com.joanna.onlineclinic.domain.appointment.Appointment;
 import com.joanna.onlineclinic.domain.appointment.booked.AppointmentBooked;
 
 import javax.persistence.*;
@@ -21,7 +21,7 @@ public class Doctor {
     @Enumerated(EnumType.STRING)
     private Specialty specialty;
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "doctor")
-    private Set<AppointmentAvailable> appointmentsAvailable;
+    private Set<Appointment> appointments;
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "doctor")
     private Set<AppointmentBooked> appointmentsBooked;
 
@@ -32,7 +32,7 @@ public class Doctor {
         this.firstName = firstName;
         this.lastName = lastName;
         this.specialty = specialty;
-        this.appointmentsAvailable = new HashSet<>();
+        this.appointments = new HashSet<>();
         this.appointmentsBooked = new HashSet<>();
     }
 
@@ -52,15 +52,15 @@ public class Doctor {
         return specialty;
     }
 
-    public Set<AppointmentAvailable> getAppointmentsAvailable() {
-        return appointmentsAvailable;
+    public Set<Appointment> getAppointments() {
+        return appointments;
     }
 
     public Set<AppointmentBooked> getAppointmentsBooked() {
         return appointmentsBooked;
     }
 
-    public void addAppointmentAvailable(AppointmentAvailable appointment) {
-        appointmentsAvailable.add(appointment);
+    public void addAppointment(Appointment appointment) {
+        appointments.add(appointment);
     }
 }

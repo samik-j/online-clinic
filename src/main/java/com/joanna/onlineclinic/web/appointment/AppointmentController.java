@@ -1,7 +1,7 @@
-package com.joanna.onlineclinic.web.appointment.available;
+package com.joanna.onlineclinic.web.appointment;
 
-import com.joanna.onlineclinic.domain.appointment.available.AppointmentAvailable;
-import com.joanna.onlineclinic.domain.appointment.available.AppointmentAvailableService;
+import com.joanna.onlineclinic.domain.appointment.Appointment;
+import com.joanna.onlineclinic.domain.appointment.AppointmentService;
 import com.joanna.onlineclinic.domain.doctor.DoctorService;
 import com.joanna.onlineclinic.web.ErrorsResource;
 import com.joanna.onlineclinic.web.ResourceNotFoundException;
@@ -15,18 +15,18 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/doctors/{doctorId}/appointmentsAvailable")
-public class AppointmentAvailableController {
+@RequestMapping("/doctors/{doctorId}/appointments")
+public class AppointmentController {
 
     private static final Logger LOGGER =
-            LoggerFactory.getLogger(AppointmentAvailableController.class);
-    private AppointmentAvailableService appointmentService;
+            LoggerFactory.getLogger(AppointmentController.class);
+    private AppointmentService appointmentService;
     private DoctorService doctorService;
-    private AppointmentAvailableCreationValidator validator;
+    private AppointmentCreationValidator validator;
 
-    public AppointmentAvailableController(
-            AppointmentAvailableService appointmentService, DoctorService doctorService,
-            AppointmentAvailableCreationValidator validator) {
+    public AppointmentController(
+            AppointmentService appointmentService, DoctorService doctorService,
+            AppointmentCreationValidator validator) {
         this.appointmentService = appointmentService;
         this.doctorService = doctorService;
         this.validator = validator;
@@ -34,7 +34,7 @@ public class AppointmentAvailableController {
 
     @PostMapping
     public ResponseEntity<Object> addAppointment(
-            @PathVariable long doctorId, @RequestBody AppointmentAvailableResource resource) {
+            @PathVariable long doctorId, @RequestBody AppointmentResource resource) {
         LOGGER.info("Appointment available added, doctor id: {}, date and time: {}",
                 doctorId, resource.getAppointmentDateTime());
 
@@ -43,18 +43,18 @@ public class AppointmentAvailableController {
         ErrorsResource errorsResource = validator.validate(doctorId, resource);
 
         if (errorsResource.getValidationErrors().isEmpty()) {
-            AppointmentAvailable appointment =
+            Appointment appointment =
                     appointmentService.addAppointment(doctorId, resource);
 
             return new ResponseEntity<Object>(
-                    getAppointmentAvailableResource(appointment), HttpStatus.OK);
+                    getAppointmentResource(appointment), HttpStatus.OK);
         } else {
             return new ResponseEntity<Object>(errorsResource, HttpStatus.BAD_REQUEST);
         }
     }
 
     @GetMapping
-    public List<AppointmentAvailableResource> getAppointments(@PathVariable long doctorId) {
+    public List<AppointmentResource> getAppointments(@PathVariable long doctorId) {
         validateDoctorExistence(doctorId);
 
         return getAppointmentAvailableResources(appointmentService.findAppointments(doctorId));
@@ -66,15 +66,15 @@ public class AppointmentAvailableController {
         }
     }
 
-    private AppointmentAvailableResource
-    getAppointmentAvailableResource(AppointmentAvailable appointment) {
-        return new AppointmentAvailableResource(appointment);
+    private AppointmentResource
+    getAppointmentResource(Appointment appointment) {
+        return new AppointmentResource(appointment);
     }
 
-    private List<AppointmentAvailableResource>
-    getAppointmentAvailableResources(List<AppointmentAvailable> appointments) {
+    private List<AppointmentResource>
+    getAppointmentAvailableResources(List<Appointment> appointments) {
         return appointments.stream()
-                .map(AppointmentAvailableResource::new)
+                .map(AppointmentResource::new)
                 .collect(Collectors.toList());
     }
 }

@@ -1,21 +1,21 @@
-package com.joanna.onlineclinic.web.appointment.available;
+package com.joanna.onlineclinic.web.appointment;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.joanna.onlineclinic.domain.appointment.available.AppointmentAvailable;
+import com.joanna.onlineclinic.domain.appointment.Appointment;
 
 import java.time.LocalDateTime;
 
-public class AppointmentAvailableResource { // mogloby byc osobne do creation i miec tylko date i drugie to get ktore juz ma wszystko
+public class AppointmentResource { // mogloby byc osobne do creation i miec tylko date i drugie to get ktore juz ma wszystko
 
     private long id;
     private long doctorId;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
     private LocalDateTime appointmentDateTime;
 
-    public AppointmentAvailableResource() {
+    public AppointmentResource() {
     }
 
-    AppointmentAvailableResource(AppointmentAvailable appointment) {
+    AppointmentResource(Appointment appointment) {
         this.id = appointment.getId();
         this.doctorId = appointment.getDoctor().getId();
         this.appointmentDateTime = appointment.getAppointmentDateTime();

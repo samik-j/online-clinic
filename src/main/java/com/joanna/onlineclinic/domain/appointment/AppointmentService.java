@@ -1,8 +1,8 @@
-package com.joanna.onlineclinic.domain.appointment.available;
+package com.joanna.onlineclinic.domain.appointment;
 
 import com.joanna.onlineclinic.domain.doctor.Doctor;
 import com.joanna.onlineclinic.domain.doctor.DoctorRepository;
-import com.joanna.onlineclinic.web.appointment.available.AppointmentAvailableResource;
+import com.joanna.onlineclinic.web.appointment.AppointmentResource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -10,31 +10,31 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
-public class AppointmentAvailableService {
+public class AppointmentService {
 
-    private AppointmentAvailableRepository appointmentRepository;
+    private AppointmentRepository appointmentRepository;
     private DoctorRepository doctorRepository;
 
-    public AppointmentAvailableService(AppointmentAvailableRepository appointmentRepository,
-                                       DoctorRepository doctorRepository) {
+    public AppointmentService(AppointmentRepository appointmentRepository,
+                              DoctorRepository doctorRepository) {
         this.appointmentRepository = appointmentRepository;
         this.doctorRepository = doctorRepository;
     }
 
     @Transactional
-    public AppointmentAvailable addAppointment(long doctorId, AppointmentAvailableResource resource) {
+    public Appointment addAppointment(long doctorId, AppointmentResource resource) {
         Doctor doctor = doctorRepository.findOne(doctorId);
-        AppointmentAvailable appointment =
-                new AppointmentAvailable(doctor, resource.getAppointmentDateTime());
+        Appointment appointment =
+                new Appointment(doctor, resource.getAppointmentDateTime());
 
-        doctor.addAppointmentAvailable(appointment);
-        AppointmentAvailable addedAppointment = appointmentRepository.save(appointment);
+        doctor.addAppointment(appointment);
+        Appointment addedAppointment = appointmentRepository.save(appointment);
         doctorRepository.save(doctor);
 
         return addedAppointment;
     }
 
-    public boolean appointmentExists(long doctorId, AppointmentAvailableResource resource) {
+    public boolean appointmentExists(long doctorId, AppointmentResource resource) {
         return appointmentRepository.existsByDoctorIdAndAndAppointmentDateTime(
                 doctorId, resource.getAppointmentDateTime());
     }
@@ -43,7 +43,7 @@ public class AppointmentAvailableService {
         return appointmentRepository.exists(appointmentId);
     }
 
-    public List<AppointmentAvailable> findAppointments(long doctorId) {
+    public List<Appointment> findAppointments(long doctorId) {
         return appointmentRepository.findAll(doctorId, LocalDateTime.now());
     }
 }

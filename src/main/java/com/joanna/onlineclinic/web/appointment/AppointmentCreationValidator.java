@@ -1,6 +1,6 @@
-package com.joanna.onlineclinic.web.appointment.available;
+package com.joanna.onlineclinic.web.appointment;
 
-import com.joanna.onlineclinic.domain.appointment.available.AppointmentAvailableService;
+import com.joanna.onlineclinic.domain.appointment.AppointmentService;
 import com.joanna.onlineclinic.web.ErrorsResource;
 import org.springframework.stereotype.Component;
 
@@ -9,15 +9,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class AppointmentAvailableCreationValidator {
+public class AppointmentCreationValidator {
 
-    private AppointmentAvailableService appointmentService;
+    private AppointmentService appointmentService;
 
-    public AppointmentAvailableCreationValidator(AppointmentAvailableService appointmentService) {
+    public AppointmentCreationValidator(AppointmentService appointmentService) {
         this.appointmentService = appointmentService;
     }
 
-    ErrorsResource validate(long doctorId, AppointmentAvailableResource resource) {
+    ErrorsResource validate(long doctorId, AppointmentResource resource) {
         List<String> validationErrors = new ArrayList<>();
 
         if (resource.getAppointmentDateTime() == null) {
@@ -33,7 +33,7 @@ public class AppointmentAvailableCreationValidator {
         return new ErrorsResource(validationErrors);
     }
 
-    private boolean isAppointmentUnique(long doctorId, AppointmentAvailableResource resource) {
+    private boolean isAppointmentUnique(long doctorId, AppointmentResource resource) {
         return !appointmentService.appointmentExists(doctorId, resource);
     }
 }

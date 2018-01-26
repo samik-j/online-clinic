@@ -1,6 +1,6 @@
 package com.joanna.onlineclinic.web.appointment.booked;
 
-import com.joanna.onlineclinic.domain.appointment.available.AppointmentAvailableService;
+import com.joanna.onlineclinic.domain.appointment.AppointmentService;
 import com.joanna.onlineclinic.domain.appointment.booked.AppointmentBookedService;
 import com.joanna.onlineclinic.domain.doctor.DoctorService;
 import com.joanna.onlineclinic.domain.patient.PatientService;
@@ -13,16 +13,16 @@ import java.util.List;
 @Component
 public class AppointmentBookedCreationResourceValidator {
 
-    private AppointmentAvailableService appointmentAvailableService;
+    private AppointmentService appointmentService;
     private AppointmentBookedService appointmentBookedService;
     private DoctorService doctorService;
     private PatientService patientService;
 
     public AppointmentBookedCreationResourceValidator(
-            AppointmentAvailableService appointmentAvailableService,
+            AppointmentService appointmentService,
             AppointmentBookedService appointmentBookedService, DoctorService doctorService,
             PatientService patientService) {
-        this.appointmentAvailableService = appointmentAvailableService;
+        this.appointmentService = appointmentService;
         this.appointmentBookedService = appointmentBookedService;
         this.doctorService = doctorService;
         this.patientService = patientService;
@@ -31,9 +31,9 @@ public class AppointmentBookedCreationResourceValidator {
     ErrorsResource validate(AppointmentBookedCreationResource resource) {
         List<String> validationErrors = new ArrayList<>();
 
-        if (resource.getAppointmentAvailableId() == null) {
+        if (resource.getAppointmentId() == null) {
             validationErrors.add("Available appointment id not specified");
-        } else if (!appointmentAvailableExists(resource.getAppointmentAvailableId())) {
+        } else if (!appointmentExists(resource.getAppointmentId())) {
             validationErrors.add("Appointment not available");
         }
         if (resource.getDoctorId() == null) {
@@ -53,8 +53,8 @@ public class AppointmentBookedCreationResourceValidator {
         return new ErrorsResource(validationErrors);
     }
 
-    private boolean appointmentAvailableExists(long appointmentId) {
-        return appointmentAvailableService.appointmentExists(appointmentId);
+    private boolean appointmentExists(long appointmentId) {
+        return appointmentService.appointmentExists(appointmentId);
     }
 
     private boolean doctorExists(long doctorId) {

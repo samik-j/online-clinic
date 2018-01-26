@@ -1,19 +1,18 @@
-package com.joanna.onlineclinic.domain.appointment.available;
+package com.joanna.onlineclinic.domain.appointment;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
-public interface AppointmentAvailableRepository extends JpaRepository<AppointmentAvailable, Long> {
+public interface AppointmentRepository extends JpaRepository<Appointment, Long> {
 
-    @Query("SELECT appointment FROM AppointmentAvailable appointment WHERE " +
+    @Query("SELECT appointment FROM Appointment appointment WHERE " +
             "appointment.doctor.id = :doctorId AND " +
             "appointment.appointmentDateTime = :appointmentDateTime")
-    AppointmentAvailable findAppointment(
+    Appointment findAppointment(
             @Param("doctorId") long doctorId,
             @Param("appointmentDateTime") LocalDateTime appointmentDateTime);
     // mogloby byc z optional i sprawdzac w service isPresent
@@ -22,9 +21,9 @@ public interface AppointmentAvailableRepository extends JpaRepository<Appointmen
             @Param("doctorId") long doctorId,
             @Param("appointmentDateTime") LocalDateTime appointmentDateTime);
 
-    @Query("SELECT appointment FROM AppointmentAvailable appointment WHERE " +
+    @Query("SELECT appointment FROM Appointment appointment WHERE " +
             "appointment.doctor.id = :doctorId AND appointment.appointmentDateTime > :date")
-    List<AppointmentAvailable> findAll(
+    List<Appointment> findAll(
             @Param("doctorId") long doctorId,
             @Param("date") LocalDateTime date);
 }

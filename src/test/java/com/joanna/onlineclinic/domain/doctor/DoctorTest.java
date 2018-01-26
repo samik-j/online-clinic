@@ -15,7 +15,7 @@ public class DoctorTest {
         assertEquals("First", doctor.getFirstName());
         assertEquals("Last", doctor.getLastName());
         assertEquals(Specialty.PEDIATRICIAN, doctor.getSpecialty());
-        assertTrue(doctor.getAppointmentsAvailable().isEmpty());
+        assertTrue(doctor.getAppointments().isEmpty());
         assertTrue(doctor.getAppointmentsBooked().isEmpty());
     }
 
