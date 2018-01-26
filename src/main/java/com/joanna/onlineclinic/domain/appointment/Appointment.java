@@ -17,6 +17,7 @@ public class Appointment {
     private Doctor doctor;
     @Column(nullable = false)
     private LocalDateTime appointmentDateTime;
+    private boolean booked;
 
     Appointment() {
     }
@@ -24,6 +25,7 @@ public class Appointment {
     public Appointment(Doctor doctor, LocalDateTime appointmentDateTime) {
         this.doctor = doctor;
         this.appointmentDateTime = appointmentDateTime;
+        this.booked = false;
     }
 
     public long getId() {
@@ -36,6 +38,10 @@ public class Appointment {
 
     public LocalDateTime getAppointmentDateTime() {
         return appointmentDateTime;
+    }
+
+    public boolean isBooked() {
+        return booked;
     }
 
     @Override
