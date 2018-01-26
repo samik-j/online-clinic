@@ -33,8 +33,12 @@ public class AppointmentBookedCreationResourceValidator {
 
         if (resource.getAppointmentId() == null) {
             validationErrors.add("Available appointment id not specified");
-        } else if (!appointmentExists(resource.getAppointmentId())) {
-            validationErrors.add("Appointment not available");
+        } else {
+            if (!appointmentExists(resource.getAppointmentId())) {
+                validationErrors.add("Appointment not available");
+            } else if (!isAppointmentAvailable(resource.getAppointmentId())) {
+                validationErrors.add("Appointment not available");
+            }
         }
         if (resource.getDoctorId() == null) {
             validationErrors.add("Doctor id not specified");
@@ -55,6 +59,10 @@ public class AppointmentBookedCreationResourceValidator {
 
     private boolean appointmentExists(long appointmentId) {
         return appointmentService.appointmentExists(appointmentId);
+    }
+    
+    private boolean isAppointmentAvailable(long appointmentId) {
+        return appointmentService.isAvailable(appointmentId);
     }
 
     private boolean doctorExists(long doctorId) {

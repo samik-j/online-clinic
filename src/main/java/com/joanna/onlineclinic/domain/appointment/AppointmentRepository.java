@@ -27,7 +27,7 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
 
     @Query("SELECT appointment FROM Appointment appointment WHERE " +
             "appointment.doctor.id = :doctorId AND " +
-            "appointment.booked = false AND " +
+            "appointment.available = true AND " +
             "appointment.appointmentDateTime > :date")
     List<Appointment> findAvailable(
             @Param("doctorId") long doctorId,
