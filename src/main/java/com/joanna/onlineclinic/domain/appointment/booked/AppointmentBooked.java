@@ -22,7 +22,7 @@ public class AppointmentBooked {
     @JoinColumn(name = "patient_id")
     private Patient patient;
     private String reason;
-    private boolean confirmed;
+    private AppointmentBookedStatus status;
 
     AppointmentBooked() {
     }
@@ -32,7 +32,7 @@ public class AppointmentBooked {
         this.appointmentDateTime = appointmentDateTime;
         this.patient = patient;
         this.reason = reason;
-        this.confirmed = false;
+        this.status = AppointmentBookedStatus.NOT_CONFIRMED;
     }
 
     public long getId() {
@@ -55,8 +55,8 @@ public class AppointmentBooked {
         return reason;
     }
 
-    public boolean isConfirmed() {
-        return confirmed;
+    public AppointmentBookedStatus getStatus() {
+        return status;
     }
 
     @Override

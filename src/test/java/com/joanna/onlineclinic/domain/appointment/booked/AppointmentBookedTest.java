@@ -28,6 +28,6 @@ public class AppointmentBookedTest {
         assertEquals(appointmentDateTime, appointment.getAppointmentDateTime());
         assertEquals(patient, appointment.getPatient());
         assertEquals("Sick", appointment.getReason());
-        assertFalse(appointment.isConfirmed());
+        assertEquals(AppointmentBookedStatus.NOT_CONFIRMED, appointment.getStatus());
     }
 }
