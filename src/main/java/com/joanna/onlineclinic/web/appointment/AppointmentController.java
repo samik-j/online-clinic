@@ -57,7 +57,14 @@ public class AppointmentController {
     public List<AppointmentResource> getAppointments(@PathVariable long doctorId) {
         validateDoctorExistence(doctorId);
 
-        return getAppointmentAvailableResources(appointmentService.findAppointments(doctorId));
+        return getAppointmentResources(appointmentService.findAppointments(doctorId));
+    }
+
+    @GetMapping(params = {"available=true"})
+    public List<AppointmentResource> getAvailableAppointments(@PathVariable long doctorId) {
+        validateDoctorExistence(doctorId);
+
+        return getAppointmentResources(appointmentService.findAvailableAppointments(doctorId));
     }
 
     private void validateDoctorExistence(@PathVariable long doctorId) {
@@ -66,13 +73,11 @@ public class AppointmentController {
         }
     }
 
-    private AppointmentResource
-    getAppointmentResource(Appointment appointment) {
+    private AppointmentResource getAppointmentResource(Appointment appointment) {
         return new AppointmentResource(appointment);
     }
 
-    private List<AppointmentResource>
-    getAppointmentAvailableResources(List<Appointment> appointments) {
+    private List<AppointmentResource> getAppointmentResources(List<Appointment> appointments) {
         return appointments.stream()
                 .map(AppointmentResource::new)
                 .collect(Collectors.toList());

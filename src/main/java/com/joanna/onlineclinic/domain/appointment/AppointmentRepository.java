@@ -22,8 +22,14 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
             @Param("appointmentDateTime") LocalDateTime appointmentDateTime);
 
     @Query("SELECT appointment FROM Appointment appointment WHERE " +
-            "appointment.doctor.id = :doctorId AND appointment.appointmentDateTime > :date")
-    List<Appointment> findAll(
+            "appointment.doctor.id = :doctorId")
+    List<Appointment> findAll(@Param("doctorId") long doctorId);
+
+    @Query("SELECT appointment FROM Appointment appointment WHERE " +
+            "appointment.doctor.id = :doctorId AND " +
+            "appointment.booked = false AND " +
+            "appointment.appointmentDateTime > :date")
+    List<Appointment> findAvailable(
             @Param("doctorId") long doctorId,
             @Param("date") LocalDateTime date);
 }
