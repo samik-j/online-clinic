@@ -37,7 +37,7 @@ public class AppointmentBookedService {
     }
 
     @Transactional
-    public AppointmentBooked registerAppointment(AppointmentBookedCreationResource resource) {
+    public AppointmentBooked addAppointment(AppointmentBookedCreationResource resource) {
         Appointment appointment = appointmentRepository.findOne(resource.getAppointmentId());
         Patient patient = patientRepository.findOne(resource.getPatientId());
         Doctor doctor = appointment.getDoctor();

@@ -28,10 +28,10 @@ public class AppointmentService {
                 new Appointment(doctor, resource.getAppointmentDateTime());
 
         doctor.addAppointment(appointment);
-        Appointment addedAppointment = appointmentRepository.save(appointment);
+        Appointment savedAppointment = appointmentRepository.save(appointment);
         doctorRepository.save(doctor);
 
-        return addedAppointment;
+        return savedAppointment;
     }
 
     public boolean appointmentExists(long doctorId, AppointmentResource resource) {

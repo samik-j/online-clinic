@@ -27,7 +27,7 @@ public class AppointmentBookedController {
     }
 
     @PostMapping
-    public ResponseEntity<Object> addAppointmentBooked(
+    public ResponseEntity<Object> bookAppointment(
             @RequestBody AppointmentBookedCreationResource resource) {
         LOGGER.info("Appointment booked: appointment id: {}, patient id: {}, reason: {}",
                 resource.getAppointmentId(), resource.getPatientId(), resource.getReason());
@@ -36,7 +36,7 @@ public class AppointmentBookedController {
 
         if (errorsResource.getValidationErrors().isEmpty()) {
             return new ResponseEntity<Object>(
-                    getAppointmentBookedResource(service.registerAppointment(resource)), HttpStatus.OK);
+                    getAppointmentBookedResource(service.addAppointment(resource)), HttpStatus.OK);
         } else {
             return new ResponseEntity<Object>(
                     errorsResource.getValidationErrors(), HttpStatus.BAD_REQUEST);
