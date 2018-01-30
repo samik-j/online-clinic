@@ -44,6 +44,10 @@ public class Appointment {
         return available;
     }
 
+    public void book() {
+        available = false;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {

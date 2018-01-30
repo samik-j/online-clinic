@@ -64,4 +64,8 @@ public class Patient {
     public Set<AppointmentBooked> getAppointments() {
         return appointments;
     }
+
+    public void addAppointmentBooked(AppointmentBooked appointment) {
+        appointments.add(appointment);
+    }
 }

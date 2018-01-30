@@ -23,7 +23,8 @@ public class AppointmentBooked {
     @JoinColumn(name = "patient_id")
     private Patient patient;
     private String reason;
-    private AppointmentBookedStatus status;
+    @Enumerated(EnumType.STRING)
+    private AppointmentBookedStatus status = AppointmentBookedStatus.NOT_CONFIRMED;
 
     AppointmentBooked() {
     }

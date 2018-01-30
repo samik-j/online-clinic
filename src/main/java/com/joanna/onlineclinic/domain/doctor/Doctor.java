@@ -63,4 +63,8 @@ public class Doctor {
     public void addAppointment(Appointment appointment) {
         appointments.add(appointment);
     }
+
+    public void addAppointmentBooked(AppointmentBooked appointment) {
+        appointmentsBooked.add(appointment);
+    }
 }
