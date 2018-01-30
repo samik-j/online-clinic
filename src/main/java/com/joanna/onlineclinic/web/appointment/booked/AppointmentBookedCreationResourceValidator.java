@@ -2,7 +2,6 @@ package com.joanna.onlineclinic.web.appointment.booked;
 
 import com.joanna.onlineclinic.domain.appointment.AppointmentService;
 import com.joanna.onlineclinic.domain.appointment.booked.AppointmentBookedService;
-import com.joanna.onlineclinic.domain.doctor.DoctorService;
 import com.joanna.onlineclinic.domain.patient.PatientService;
 import com.joanna.onlineclinic.web.ErrorsResource;
 import org.springframework.stereotype.Component;
@@ -15,16 +14,13 @@ public class AppointmentBookedCreationResourceValidator {
 
     private AppointmentService appointmentService;
     private AppointmentBookedService appointmentBookedService;
-    private DoctorService doctorService;
     private PatientService patientService;
 
     public AppointmentBookedCreationResourceValidator(
             AppointmentService appointmentService,
-            AppointmentBookedService appointmentBookedService, DoctorService doctorService,
-            PatientService patientService) {
+            AppointmentBookedService appointmentBookedService, PatientService patientService) {
         this.appointmentService = appointmentService;
         this.appointmentBookedService = appointmentBookedService;
-        this.doctorService = doctorService;
         this.patientService = patientService;
     }
 
@@ -39,11 +35,6 @@ public class AppointmentBookedCreationResourceValidator {
             } else if (!isAppointmentAvailable(resource.getAppointmentId())) {
                 validationErrors.add("Appointment not available");
             }
-        }
-        if (resource.getDoctorId() == null) {
-            validationErrors.add("Doctor id not specified");
-        } else if (!doctorExists(resource.getDoctorId())) {
-            validationErrors.add("Incorrect doctor id");
         }
         if (resource.getPatientId() == null) {
             validationErrors.add("Patient id not specified");
@@ -66,10 +57,6 @@ public class AppointmentBookedCreationResourceValidator {
 
     private boolean isAppointmentAvailable(long appointmentId) {
         return appointmentService.isAvailable(appointmentId);
-    }
-
-    private boolean doctorExists(long doctorId) {
-        return doctorService.doctorExists(doctorId);
     }
 
     private boolean patientExists(long patientId) {

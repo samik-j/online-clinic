@@ -2,7 +2,6 @@ package com.joanna.onlineclinic.web.appointment.booked;
 
 import com.joanna.onlineclinic.domain.appointment.AppointmentService;
 import com.joanna.onlineclinic.domain.appointment.booked.AppointmentBookedService;
-import com.joanna.onlineclinic.domain.doctor.DoctorService;
 import com.joanna.onlineclinic.domain.patient.PatientService;
 import com.joanna.onlineclinic.web.ErrorsResource;
 import org.junit.Before;
@@ -21,8 +20,6 @@ public class AppointmentBookedCreationResourceValidatorTest {
     @Mock
     private AppointmentBookedService appointmentBookedService;
     @Mock
-    private DoctorService doctorService;
-    @Mock
     private PatientService patientService;
 
     private AppointmentBookedCreationResourceValidator validator;
@@ -31,16 +28,14 @@ public class AppointmentBookedCreationResourceValidatorTest {
     public void init() {
         MockitoAnnotations.initMocks(this);
         validator = new AppointmentBookedCreationResourceValidator(
-                appointmentService, appointmentBookedService,
-                doctorService, patientService);
+                appointmentService, appointmentBookedService, patientService);
     }
 
     private AppointmentBookedCreationResource createResource(
-            Long appointmentId, Long doctorId, Long patientId, String reason) {
+            Long appointmentId, Long patientId, String reason) {
         AppointmentBookedCreationResource resource = new AppointmentBookedCreationResource();
 
         resource.setAppointmentId(appointmentId);
-        resource.setDoctorId(doctorId);
         resource.setPatientId(patientId);
         resource.setReason(reason);
 
@@ -51,15 +46,13 @@ public class AppointmentBookedCreationResourceValidatorTest {
     public void shouldValidateWithNoErrors() {
         // given
         Long appointmentId = 1L;
-        Long doctorId = 2L;
         Long patientId = 3L;
 
         AppointmentBookedCreationResource resource = createResource(
-                appointmentId, doctorId, patientId, "I am sick");
+                appointmentId, patientId, "I am sick");
 
         when(appointmentService.appointmentExists(appointmentId)).thenReturn(true);
         when(appointmentService.isAvailable(appointmentId)).thenReturn(true);
-        when(doctorService.doctorExists(doctorId)).thenReturn(true);
         when(patientService.patientExists(patientId)).thenReturn(true);
         when(appointmentBookedService.appointmentExists(resource)).thenReturn(false);
 
@@ -74,14 +67,12 @@ public class AppointmentBookedCreationResourceValidatorTest {
     public void shouldValidateWithErrorIfAppointmentDoesNotExist() {
         // given
         Long appointmentId = 1L;
-        Long doctorId = 2L;
         Long patientId = 3L;
 
         AppointmentBookedCreationResource resource = createResource(
-                appointmentId, doctorId, patientId, "I am sick");
+                appointmentId, patientId, "I am sick");
 
         when(appointmentService.appointmentExists(appointmentId)).thenReturn(false);
-        when(doctorService.doctorExists(doctorId)).thenReturn(true);
         when(patientService.patientExists(patientId)).thenReturn(true);
         when(appointmentBookedService.appointmentExists(resource)).thenReturn(false);
 
@@ -97,15 +88,13 @@ public class AppointmentBookedCreationResourceValidatorTest {
     public void shouldValidateWithErrorIfAppointmentIsNotAvailable() {
         // given
         Long appointmentId = 1L;
-        Long doctorId = 2L;
         Long patientId = 3L;
 
         AppointmentBookedCreationResource resource = createResource(
-                appointmentId, doctorId, patientId, "I am sick");
+                appointmentId, patientId, "I am sick");
 
         when(appointmentService.appointmentExists(appointmentId)).thenReturn(true);
         when(appointmentService.isAvailable(appointmentId)).thenReturn(false);
-        when(doctorService.doctorExists(doctorId)).thenReturn(true);
         when(patientService.patientExists(patientId)).thenReturn(true);
         when(appointmentBookedService.appointmentExists(resource)).thenReturn(false);
 
@@ -118,65 +107,16 @@ public class AppointmentBookedCreationResourceValidatorTest {
     }
 
     @Test
-    public void shouldValidateWithErrorIfDoctorIdIsNull() {
-        // given
-        Long appointmentId = 1L;
-        Long doctorId = null;
-        Long patientId = 3L;
-
-        AppointmentBookedCreationResource resource = createResource(
-                appointmentId, doctorId, patientId, "I am sick");
-
-        when(appointmentService.appointmentExists(appointmentId)).thenReturn(true);
-        when(appointmentService.isAvailable(appointmentId)).thenReturn(true);
-        when(patientService.patientExists(patientId)).thenReturn(true);
-        when(appointmentBookedService.appointmentExists(resource)).thenReturn(false);
-
-        // when
-        ErrorsResource errorsResource = validator.validate(resource);
-
-        // then
-        assertEquals(1, errorsResource.getValidationErrors().size());
-        assertTrue(errorsResource.getValidationErrors().contains("Doctor id not specified"));
-    }
-
-    @Test
-    public void shouldValidateWithErrorIfDoctorDoesNotExist() {
-        // given
-        Long appointmentId = 1L;
-        Long doctorId = 2L;
-        Long patientId = 3L;
-
-        AppointmentBookedCreationResource resource = createResource(
-                appointmentId, doctorId, patientId, "I am sick");
-
-        when(appointmentService.appointmentExists(appointmentId)).thenReturn(true);
-        when(appointmentService.isAvailable(appointmentId)).thenReturn(true);
-        when(doctorService.doctorExists(doctorId)).thenReturn(false);
-        when(patientService.patientExists(patientId)).thenReturn(true);
-        when(appointmentBookedService.appointmentExists(resource)).thenReturn(false);
-
-        // when
-        ErrorsResource errorsResource = validator.validate(resource);
-
-        // then
-        assertEquals(1, errorsResource.getValidationErrors().size());
-        assertTrue(errorsResource.getValidationErrors().contains("Incorrect doctor id"));
-    }
-
-    @Test
     public void shouldValidateWithErrorIfPatientIdIsNull() {
         // given
         Long appointmentId = 1L;
-        Long doctorId = 2L;
         Long patientId = null;
 
         AppointmentBookedCreationResource resource = createResource(
-                appointmentId, doctorId, patientId, "I am sick");
+                appointmentId, patientId, "I am sick");
 
         when(appointmentService.appointmentExists(appointmentId)).thenReturn(true);
         when(appointmentService.isAvailable(appointmentId)).thenReturn(true);
-        when(doctorService.doctorExists(doctorId)).thenReturn(true);
         when(appointmentBookedService.appointmentExists(resource)).thenReturn(false);
 
         // when
@@ -191,15 +131,13 @@ public class AppointmentBookedCreationResourceValidatorTest {
     public void shouldValidateWithErrorIfPatientDoesNotExist() {
         // given
         Long appointmentId = 1L;
-        Long doctorId = 2L;
         Long patientId = 3L;
 
         AppointmentBookedCreationResource resource = createResource(
-                appointmentId, doctorId, patientId, "I am sick");
+                appointmentId, patientId, "I am sick");
 
         when(appointmentService.appointmentExists(appointmentId)).thenReturn(true);
         when(appointmentService.isAvailable(appointmentId)).thenReturn(true);
-        when(doctorService.doctorExists(doctorId)).thenReturn(true);
         when(patientService.patientExists(patientId)).thenReturn(false);
         when(appointmentBookedService.appointmentExists(resource)).thenReturn(false);
 
@@ -215,15 +153,13 @@ public class AppointmentBookedCreationResourceValidatorTest {
     public void shouldValidateWithErrorIfAppointmentBookedExists() {
         // given
         Long appointmentId = 1L;
-        Long doctorId = 2L;
         Long patientId = 3L;
 
         AppointmentBookedCreationResource resource = createResource(
-                appointmentId, doctorId, patientId, "I am sick");
+                appointmentId, patientId, "I am sick");
 
         when(appointmentService.appointmentExists(appointmentId)).thenReturn(true);
         when(appointmentService.isAvailable(appointmentId)).thenReturn(true);
-        when(doctorService.doctorExists(doctorId)).thenReturn(true);
         when(patientService.patientExists(patientId)).thenReturn(true);
         when(appointmentBookedService.appointmentExists(resource)).thenReturn(true);
 
@@ -239,7 +175,6 @@ public class AppointmentBookedCreationResourceValidatorTest {
     public void shouldValidateWithErrorIfReasonHasTooManyCharacters() {
         // given
         Long appointmentId = 1L;
-        Long doctorId = 2L;
         Long patientId = 3L;
         String reason = "I am sick I am sick I am sick I am sick I am sick I am sick I am sick" +
                 " I am sick I am sick I am sick I am sick I am sick I am sick I am sick I am s" +
@@ -247,11 +182,10 @@ public class AppointmentBookedCreationResourceValidatorTest {
                 "m sick I am sick I am sick I am sick I";
 
         AppointmentBookedCreationResource resource = createResource(
-                appointmentId, doctorId, patientId, reason);
+                appointmentId, patientId, reason);
 
         when(appointmentService.appointmentExists(appointmentId)).thenReturn(true);
         when(appointmentService.isAvailable(appointmentId)).thenReturn(true);
-        when(doctorService.doctorExists(doctorId)).thenReturn(true);
         when(patientService.patientExists(patientId)).thenReturn(true);
         when(appointmentBookedService.appointmentExists(resource)).thenReturn(false);
 
@@ -268,7 +202,6 @@ public class AppointmentBookedCreationResourceValidatorTest {
     public void shouldValidateWithErrors() {
         // given
         Long appointmentId = 1L;
-        Long doctorId = null;
         Long patientId = 3L;
         String reason = "I am sick I am sick I am sick I am sick I am sick I am sick I am sick" +
                 " I am sick I am sick I am sick I am sick I am sick I am sick I am sick I am s" +
@@ -276,7 +209,7 @@ public class AppointmentBookedCreationResourceValidatorTest {
                 "m sick I am sick I am sick I am sick I";
 
         AppointmentBookedCreationResource resource = createResource(
-                appointmentId, doctorId, patientId, reason);
+                appointmentId, patientId, reason);
 
         when(appointmentService.appointmentExists(appointmentId)).thenReturn(true);
         when(appointmentService.isAvailable(appointmentId)).thenReturn(false);
@@ -287,9 +220,8 @@ public class AppointmentBookedCreationResourceValidatorTest {
         ErrorsResource errorsResource = validator.validate(resource);
 
         // then
-        assertEquals(5, errorsResource.getValidationErrors().size());
+        assertEquals(4, errorsResource.getValidationErrors().size());
         assertTrue(errorsResource.getValidationErrors().contains("Appointment not available"));
-        assertTrue(errorsResource.getValidationErrors().contains("Doctor id not specified"));
         assertTrue(errorsResource.getValidationErrors().contains("Incorrect patient id"));
         assertTrue(errorsResource.getValidationErrors().contains("Appointment already booked"));
         assertTrue(errorsResource.getValidationErrors()

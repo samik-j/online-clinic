@@ -1,5 +1,6 @@
 package com.joanna.onlineclinic.domain.appointment.booked;
 
+import com.joanna.onlineclinic.domain.appointment.Appointment;
 import com.joanna.onlineclinic.domain.appointment.AppointmentRepository;
 import com.joanna.onlineclinic.web.appointment.booked.AppointmentBookedCreationResource;
 import org.springframework.stereotype.Service;
@@ -17,8 +18,10 @@ public class AppointmentBookedService {
     }
 
     public boolean appointmentExists(AppointmentBookedCreationResource resource) {
+        Appointment appointment = appointmentRepository.findOne(resource.getAppointmentId());
+
         return appointmentBookedRepository.existsByAppointmentDateTimeAndDoctorIdAndPatientId(
-                appointmentRepository.findOne(resource.getAppointmentId())
-                        .getAppointmentDateTime(), resource.getDoctorId(), resource.getPatientId());
+                appointment.getAppointmentDateTime(), appointment.getDoctor().getId(),
+                resource.getPatientId());
     }
 }
