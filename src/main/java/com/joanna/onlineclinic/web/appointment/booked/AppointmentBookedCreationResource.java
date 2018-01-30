@@ -14,7 +14,7 @@ public class AppointmentBookedCreationResource {
         return appointmentId;
     }
 
-    public void setAppointmentId(long appointmentId) {
+    public void setAppointmentId(Long appointmentId) {
         this.appointmentId = appointmentId;
     }
 
@@ -22,7 +22,7 @@ public class AppointmentBookedCreationResource {
         return doctorId;
     }
 
-    public void setDoctorId(long doctorId) {
+    public void setDoctorId(Long doctorId) {
         this.doctorId = doctorId;
     }
 
@@ -30,7 +30,7 @@ public class AppointmentBookedCreationResource {
         return patientId;
     }
 
-    public void setPatientId(long patientId) {
+    public void setPatientId(Long patientId) {
         this.patientId = patientId;
     }
 
