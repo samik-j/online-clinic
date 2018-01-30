@@ -53,6 +53,9 @@ public class AppointmentBookedCreationResourceValidator {
         if (appointmentBookedExists(resource)) {
             validationErrors.add("Appointment already booked");
         }
+        if (resource.getReason().length() > 250) {
+            validationErrors.add("Exceeded maximum number of characters for reason");
+        }
 
         return new ErrorsResource(validationErrors);
     }
@@ -60,7 +63,7 @@ public class AppointmentBookedCreationResourceValidator {
     private boolean appointmentExists(long appointmentId) {
         return appointmentService.appointmentExists(appointmentId);
     }
-    
+
     private boolean isAppointmentAvailable(long appointmentId) {
         return appointmentService.isAvailable(appointmentId);
     }
