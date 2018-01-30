@@ -13,10 +13,8 @@ import static org.mockito.Mockito.when;
 
 public class AppointmentCreationValidatorTest {
 
-    private AppointmentService service =
-            mock(AppointmentService.class);
-    private AppointmentCreationValidator validator =
-            new AppointmentCreationValidator(service);
+    private AppointmentService service = mock(AppointmentService.class);
+    private AppointmentCreationValidator validator = new AppointmentCreationValidator(service);
 
     private long doctorId = 1;
 

@@ -7,7 +7,8 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"doctor_id", "appointmentDateTime", "patient_id"}))
+@Table(uniqueConstraints = @UniqueConstraint(
+        columnNames = {"doctor_id", "appointmentDateTime", "patient_id"}))
 public class AppointmentBooked {
 
     @Id
@@ -27,7 +28,8 @@ public class AppointmentBooked {
     AppointmentBooked() {
     }
 
-    public AppointmentBooked(Doctor doctor, LocalDateTime appointmentDateTime, Patient patient, String reason) {
+    public AppointmentBooked(
+            Doctor doctor, LocalDateTime appointmentDateTime, Patient patient, String reason) {
         this.doctor = doctor;
         this.appointmentDateTime = appointmentDateTime;
         this.patient = patient;

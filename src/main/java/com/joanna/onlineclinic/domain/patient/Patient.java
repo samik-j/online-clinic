@@ -27,7 +27,8 @@ public class Patient {
     Patient() {
     }
 
-    public Patient(String firstName, String lastName, String nhsNumber, String phoneNumber, String email) {
+    public Patient(
+            String firstName, String lastName, String nhsNumber, String phoneNumber, String email) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.nhsNumber = nhsNumber;

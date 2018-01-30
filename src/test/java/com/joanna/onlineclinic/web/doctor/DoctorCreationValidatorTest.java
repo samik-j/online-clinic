@@ -1,19 +1,18 @@
 package com.joanna.onlineclinic.web.doctor;
 
-import com.joanna.onlineclinic.domain.doctor.DoctorService;
 import com.joanna.onlineclinic.domain.doctor.Specialty;
 import com.joanna.onlineclinic.web.ErrorsResource;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.mock;
 
 public class DoctorCreationValidatorTest {
 
     private DoctorCreationValidator validator = new DoctorCreationValidator();
 
-    private DoctorResource createDoctorResource(String firstName, String lastName, Specialty specialty) {
+    private DoctorResource createDoctorResource(
+            String firstName, String lastName, Specialty specialty) {
         DoctorResource resource = new DoctorResource();
 
         resource.setFirstName(firstName);
@@ -26,7 +25,8 @@ public class DoctorCreationValidatorTest {
     @Test
     public void shouldNotHaveErrors() {
         // given
-        DoctorResource resource = createDoctorResource("Frist", "Last", Specialty.GENERAL_PHYSICIAN);
+        DoctorResource resource = createDoctorResource(
+                "Frist", "Last", Specialty.GENERAL_PHYSICIAN);
 
         // when
         ErrorsResource errorsResource = validator.validate(resource);
@@ -38,7 +38,8 @@ public class DoctorCreationValidatorTest {
     @Test
     public void shouldHaveErrorIfFirstNameIsNull() {
         // given
-        DoctorResource resource = createDoctorResource(null, "Last", Specialty.GENERAL_PHYSICIAN);
+        DoctorResource resource = createDoctorResource(
+                null, "Last", Specialty.GENERAL_PHYSICIAN);
 
         // when
         ErrorsResource errorsResource = validator.validate(resource);
@@ -51,7 +52,8 @@ public class DoctorCreationValidatorTest {
     @Test
     public void shouldHaveErrorIfLastNameIsNull() {
         // given
-        DoctorResource resource = createDoctorResource("First", null, Specialty.GENERAL_PHYSICIAN);
+        DoctorResource resource = createDoctorResource(
+                "First", null, Specialty.GENERAL_PHYSICIAN);
 
         // when
         ErrorsResource errorsResource = validator.validate(resource);
@@ -64,7 +66,8 @@ public class DoctorCreationValidatorTest {
     @Test
     public void shouldHaveErrorIfSpecialtyIsNull() {
         // given
-        DoctorResource resource = createDoctorResource("First", "Last", null);
+        DoctorResource resource = createDoctorResource(
+                "First", "Last", null);
 
         // when
         ErrorsResource errorsResource = validator.validate(resource);

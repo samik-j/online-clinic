@@ -19,7 +19,6 @@ public class AppointmentBookedService {
     public boolean appointmentExists(AppointmentBookedCreationResource resource) {
         return appointmentBookedRepository.existsByAppointmentDateTimeAndDoctorIdAndPatientId(
                 appointmentRepository.findOne(resource.getAppointmentId())
-                        .getAppointmentDateTime(),
-                resource.getDoctorId(), resource.getPatientId());
+                        .getAppointmentDateTime(), resource.getDoctorId(), resource.getPatientId());
     }
 }
