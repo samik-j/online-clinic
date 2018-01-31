@@ -27,7 +27,7 @@ public class PatientController {
 
     @PostMapping
     public ResponseEntity<Object> addPatient(@RequestBody PatientResource resource) {
-        LOGGER.info("Patient added: first name: {}, last name: {}, NHS: {}, phone: {}, email: {}",
+        LOGGER.info("Adding patient: first name: {}, last name: {}, NHS: {}, phone: {}, email: {}",
                 resource.getFirstName(), resource.getLastName(), resource.getNhsNumber(),
                 resource.getPhoneNumber(), resource.getEmail());
 
@@ -38,6 +38,7 @@ public class PatientController {
 
             return new ResponseEntity<Object>(getPatientResource(patient), HttpStatus.OK);
         } else {
+            LOGGER.error("Failed: " + errorsResource.getValidationErrors().toString());
             return new ResponseEntity<Object>(errorsResource, HttpStatus.BAD_REQUEST);
         }
     }

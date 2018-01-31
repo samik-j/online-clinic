@@ -35,7 +35,7 @@ public class AppointmentController {
     @PostMapping
     public ResponseEntity<Object> addAppointment(
             @PathVariable long doctorId, @RequestBody AppointmentResource resource) {
-        LOGGER.info("Appointment available added, doctor id: {}, date: {}, time: {}",
+        LOGGER.info("Adding appointment available: doctor id: {}, date: {}, time: {}",
                 doctorId, resource.getDate(), resource.getTime());
 
         validateDoctorExistence(doctorId);
@@ -49,6 +49,7 @@ public class AppointmentController {
             return new ResponseEntity<Object>(
                     getAppointmentResource(appointment), HttpStatus.OK);
         } else {
+            LOGGER.error("Failed: " + errorsResource.getValidationErrors().toString());
             return new ResponseEntity<Object>(errorsResource, HttpStatus.BAD_REQUEST);
         }
     }

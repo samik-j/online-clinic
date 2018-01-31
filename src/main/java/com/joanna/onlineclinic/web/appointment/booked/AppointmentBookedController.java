@@ -29,7 +29,7 @@ public class AppointmentBookedController {
     @PostMapping
     public ResponseEntity<Object> bookAppointment(
             @RequestBody AppointmentBookedCreationResource resource) {
-        LOGGER.info("Appointment booked: appointment id: {}, patient id: {}, reason: {}",
+        LOGGER.info("Booking appointment: appointment id: {}, patient id: {}, reason: {}",
                 resource.getAppointmentId(), resource.getPatientId(), resource.getReason());
 
         ErrorsResource errorsResource = validator.validate(resource);
@@ -38,6 +38,7 @@ public class AppointmentBookedController {
             return new ResponseEntity<Object>(
                     getAppointmentBookedResource(service.addAppointment(resource)), HttpStatus.OK);
         } else {
+            LOGGER.error("Failed: " + errorsResource.getValidationErrors().toString());
             return new ResponseEntity<Object>(
                     errorsResource.getValidationErrors(), HttpStatus.BAD_REQUEST);
         }

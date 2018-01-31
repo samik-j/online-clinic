@@ -29,7 +29,7 @@ public class DoctorController {
 
     @PostMapping
     public ResponseEntity<Object> addDoctor(@RequestBody DoctorResource resource) {
-        LOGGER.info("Doctor added : first name: {}, last name: {}, specialty: {}",
+        LOGGER.info("Adding doctor: first name: {}, last name: {}, specialty: {}",
                 resource.getFirstName(), resource.getLastName(), resource.getSpecialty());
 
         ErrorsResource errorsResource = creationValidator.validate(resource);
@@ -39,6 +39,7 @@ public class DoctorController {
 
             return new ResponseEntity<Object>(getDoctorResource(doctor), HttpStatus.OK);
         } else {
+            LOGGER.error("Failed: " + errorsResource.getValidationErrors().toString());
             return new ResponseEntity<Object>(errorsResource, HttpStatus.BAD_REQUEST);
         }
     }
