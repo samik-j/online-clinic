@@ -1,12 +1,10 @@
 package com.joanna.onlineclinic.domain.appointment;
 
-import com.joanna.onlineclinic.domain.appointment.Appointment;
 import com.joanna.onlineclinic.domain.doctor.Doctor;
 import com.joanna.onlineclinic.domain.doctor.Specialty;
 import org.junit.Test;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 import static org.junit.Assert.assertEquals;

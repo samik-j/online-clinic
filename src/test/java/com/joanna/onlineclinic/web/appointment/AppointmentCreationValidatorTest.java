@@ -2,11 +2,9 @@ package com.joanna.onlineclinic.web.appointment;
 
 import com.joanna.onlineclinic.domain.appointment.AppointmentService;
 import com.joanna.onlineclinic.web.ErrorsResource;
-import org.apache.tomcat.jni.Local;
 import org.junit.Test;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 import static org.junit.Assert.assertEquals;
