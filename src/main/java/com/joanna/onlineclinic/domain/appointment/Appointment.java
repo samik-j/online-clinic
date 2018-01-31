@@ -53,7 +53,11 @@ public class Appointment {
     }
 
     public void book() {
-        available = false;
+        if (available) {
+            available = false;
+        } else {
+            throw new IncorrectAppointmentAvailabilityException("Appointment not available");
+        }
     }
 
     @Override
