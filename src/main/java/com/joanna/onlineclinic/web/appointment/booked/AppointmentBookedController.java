@@ -7,10 +7,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/appointmentsBooked")
@@ -44,7 +44,18 @@ public class AppointmentBookedController {
         }
     }
 
+    @GetMapping(params = {"doctorId"})
+    public List<AppointmentBookedResource> getAppointments(@RequestParam long doctorId) {
+        return getAppointmentBookedResources(service.findAll(doctorId));
+    }
+
     private AppointmentBookedResource getAppointmentBookedResource(AppointmentBooked appointment) {
         return new AppointmentBookedResource(appointment);
+    }
+
+    private List<AppointmentBookedResource> getAppointmentBookedResources(
+            List<AppointmentBooked> appointments) {
+        return appointments.stream()
+                .map(AppointmentBookedResource::new).collect(Collectors.toList());
     }
 }

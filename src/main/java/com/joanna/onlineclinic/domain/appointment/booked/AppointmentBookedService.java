@@ -10,6 +10,8 @@ import com.joanna.onlineclinic.web.appointment.booked.AppointmentBookedCreationR
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 public class AppointmentBookedService {
 
@@ -51,5 +53,9 @@ public class AppointmentBookedService {
 
         //jak jest transactional to nie musze wolac save na patient, doctor, appointment
         return appointmentBookedRepository.save(appointmentBooked);
+    }
+
+    public List<AppointmentBooked> findAll(long doctorId) {
+        return appointmentBookedRepository.findByDoctorId(doctorId);
     }
 }
