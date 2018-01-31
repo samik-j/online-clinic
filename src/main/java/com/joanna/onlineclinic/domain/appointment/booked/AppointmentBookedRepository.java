@@ -16,4 +16,6 @@ public interface AppointmentBookedRepository extends JpaRepository<AppointmentBo
             @Param("patientId") long patientId);
 
     List<AppointmentBooked> findByDoctorId(@Param("doctorId") long doctorId);
+
+    List<AppointmentBooked> findByPatientId(@Param("patientId")long patientId);
 }

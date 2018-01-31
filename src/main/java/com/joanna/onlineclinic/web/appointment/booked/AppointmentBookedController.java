@@ -45,8 +45,13 @@ public class AppointmentBookedController {
     }
 
     @GetMapping(params = {"doctorId"})
-    public List<AppointmentBookedResource> getAppointments(@RequestParam long doctorId) {
-        return getAppointmentBookedResources(service.findAll(doctorId));
+    public List<AppointmentBookedResource> getAppointmentsByDoctorId(@RequestParam long doctorId) {
+        return getAppointmentBookedResources(service.findByDoctorId(doctorId));
+    }
+
+    @GetMapping(params = {"patientId"})
+    public List<AppointmentBookedResource> getAppointmentsByPatientId(@RequestParam long patientId) {
+        return getAppointmentBookedResources(service.findByPatientId(patientId));
     }
 
     private AppointmentBookedResource getAppointmentBookedResource(AppointmentBooked appointment) {

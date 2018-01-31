@@ -55,7 +55,11 @@ public class AppointmentBookedService {
         return appointmentBookedRepository.save(appointmentBooked);
     }
 
-    public List<AppointmentBooked> findAll(long doctorId) {
+    public List<AppointmentBooked> findByDoctorId(long doctorId) {
         return appointmentBookedRepository.findByDoctorId(doctorId);
+    }
+
+    public List<AppointmentBooked> findByPatientId(long patientId) {
+        return appointmentBookedRepository.findByPatientId(patientId);
     }
 }
