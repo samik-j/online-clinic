@@ -6,7 +6,9 @@ import com.joanna.onlineclinic.web.appointment.AppointmentResource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 @Service
@@ -25,7 +27,7 @@ public class AppointmentService {
     public Appointment addAppointment(long doctorId, AppointmentResource resource) {
         Doctor doctor = doctorRepository.findOne(doctorId);
         Appointment appointment =
-                new Appointment(doctor, resource.getAppointmentDateTime());
+                new Appointment(doctor, resource.getDate(), resource.getTime());
 
         doctor.addAppointment(appointment);
         Appointment savedAppointment = appointmentRepository.save(appointment);
@@ -35,8 +37,8 @@ public class AppointmentService {
     }
 
     public boolean appointmentExists(long doctorId, AppointmentResource resource) {
-        return appointmentRepository.existsByDoctorIdAndAndAppointmentDateTime(
-                doctorId, resource.getAppointmentDateTime());
+        return appointmentRepository.existsByDoctorIdAndAndDateAndTime(
+                doctorId, resource.getDate(), resource.getTime());
     }
 
     public boolean appointmentExists(long appointmentId) {
@@ -48,7 +50,7 @@ public class AppointmentService {
     }
 
     public List<Appointment> findAvailableAppointments(long doctorId) {
-        return appointmentRepository.findAvailable(doctorId, LocalDateTime.now());
+        return appointmentRepository.findAvailable(doctorId, LocalDate.now(), LocalTime.now());
     }
 
     public boolean isAvailable(long appointmentId) {

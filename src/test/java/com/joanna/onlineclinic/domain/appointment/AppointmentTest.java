@@ -5,7 +5,9 @@ import com.joanna.onlineclinic.domain.doctor.Doctor;
 import com.joanna.onlineclinic.domain.doctor.Specialty;
 import org.junit.Test;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 import static org.junit.Assert.assertEquals;
 
@@ -15,14 +17,16 @@ public class AppointmentTest {
     public void shouldCreateAppointment() {
         // given
         Doctor doctor = new Doctor("First", "Last", Specialty.PEDIATRICIAN);
-        LocalDateTime appointmentDateTime = LocalDateTime.of(2017, 9, 12, 18, 00);
+        LocalDate date = LocalDate.of(2017, 9, 12);
+        LocalTime time = LocalTime.of(18, 00);
 
         // when
-        Appointment appointment = new Appointment(doctor, appointmentDateTime);
+        Appointment appointment = new Appointment(doctor, date, time);
 
         // then
         assertEquals(doctor, appointment.getDoctor());
-        assertEquals(appointmentDateTime, appointment.getAppointmentDateTime());
+        assertEquals(date, appointment.getDate());
+        assertEquals(time, appointment.getTime());
     }
 
 }

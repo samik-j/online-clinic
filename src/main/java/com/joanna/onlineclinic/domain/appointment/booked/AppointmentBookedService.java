@@ -31,8 +31,8 @@ public class AppointmentBookedService {
     public boolean appointmentExists(AppointmentBookedCreationResource resource) {
         Appointment appointment = appointmentRepository.findOne(resource.getAppointmentId());
 
-        return appointmentBookedRepository.existsByAppointmentDateTimeAndDoctorIdAndPatientId(
-                appointment.getAppointmentDateTime(), appointment.getDoctor().getId(),
+        return appointmentBookedRepository.existsByDateAndTimeAndDoctorIdAndPatientId(
+                appointment.getDate(), appointment.getTime(), appointment.getDoctor().getId(),
                 resource.getPatientId());
     }
 
@@ -42,7 +42,7 @@ public class AppointmentBookedService {
         Patient patient = patientRepository.findOne(resource.getPatientId());
         Doctor doctor = appointment.getDoctor();
         AppointmentBooked appointmentBooked = new AppointmentBooked(
-                appointment.getDoctor(), appointment.getAppointmentDateTime(),
+                appointment.getDoctor(), appointment.getDate(), appointment.getTime(),
                 patient, resource.getReason());
 
         appointment.book();

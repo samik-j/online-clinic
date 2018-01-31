@@ -4,22 +4,17 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 public interface AppointmentRepository extends JpaRepository<Appointment, Long> {
 
-    @Query("SELECT appointment FROM Appointment appointment WHERE " +
-            "appointment.doctor.id = :doctorId AND " +
-            "appointment.appointmentDateTime = :appointmentDateTime")
-    Appointment findAppointment(
+    boolean existsByDoctorIdAndAndDateAndTime(
             @Param("doctorId") long doctorId,
-            @Param("appointmentDateTime") LocalDateTime appointmentDateTime);
-    // mogloby byc z optional i sprawdzac w service isPresent
-
-    boolean existsByDoctorIdAndAndAppointmentDateTime(
-            @Param("doctorId") long doctorId,
-            @Param("appointmentDateTime") LocalDateTime appointmentDateTime);
+            @Param("date") LocalDate date,
+            @Param("time") LocalTime time);
 
     @Query("SELECT appointment FROM Appointment appointment WHERE " +
             "appointment.doctor.id = :doctorId")
@@ -28,8 +23,10 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
     @Query("SELECT appointment FROM Appointment appointment WHERE " +
             "appointment.doctor.id = :doctorId AND " +
             "appointment.available = true AND " +
-            "appointment.appointmentDateTime > :date")
+            "appointment.date > :date AND " +
+            "appointment.time > :time")
     List<Appointment> findAvailable(
             @Param("doctorId") long doctorId,
-            @Param("date") LocalDateTime date);
+            @Param("date") LocalDate date,
+            @Param("time") LocalTime time);
 }

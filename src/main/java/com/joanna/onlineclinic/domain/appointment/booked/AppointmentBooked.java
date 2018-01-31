@@ -4,11 +4,12 @@ import com.joanna.onlineclinic.domain.doctor.Doctor;
 import com.joanna.onlineclinic.domain.patient.Patient;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 @Entity
 @Table(uniqueConstraints = @UniqueConstraint(
-        columnNames = {"doctor_id", "appointmentDateTime", "patient_id"}))
+        columnNames = {"doctor_id", "date", "time", "patient_id"}))
 public class AppointmentBooked {
 
     @Id
@@ -18,7 +19,9 @@ public class AppointmentBooked {
     @JoinColumn(name = "doctor_id")
     private Doctor doctor;
     @Column(nullable = false)
-    private LocalDateTime appointmentDateTime;
+    private LocalDate date;
+    @Column(nullable = false)
+    private LocalTime time;
     @ManyToOne
     @JoinColumn(name = "patient_id")
     private Patient patient;
@@ -30,9 +33,10 @@ public class AppointmentBooked {
     }
 
     public AppointmentBooked(
-            Doctor doctor, LocalDateTime appointmentDateTime, Patient patient, String reason) {
+            Doctor doctor, LocalDate date, LocalTime time, Patient patient, String reason) {
         this.doctor = doctor;
-        this.appointmentDateTime = appointmentDateTime;
+        this.date = date;
+        this.time = time;
         this.patient = patient;
         this.reason = reason;
         this.status = AppointmentBookedStatus.NOT_CONFIRMED;
@@ -46,8 +50,12 @@ public class AppointmentBooked {
         return doctor;
     }
 
-    public LocalDateTime getAppointmentDateTime() {
-        return appointmentDateTime;
+    public LocalDate getDate() {
+        return date;
+    }
+
+    public LocalTime getTime() {
+        return time;
     }
 
     public Patient getPatient() {

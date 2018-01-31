@@ -4,7 +4,8 @@ import com.joanna.onlineclinic.domain.appointment.AppointmentService;
 import com.joanna.onlineclinic.web.ErrorsResource;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,14 +21,20 @@ public class AppointmentCreationValidator {
     ErrorsResource validate(long doctorId, AppointmentResource resource) {
         List<String> validationErrors = new ArrayList<>();
 
-        if (resource.getAppointmentDateTime() == null) {
+        if (resource.getDate() == null) {
             validationErrors.add("Appointment date not specified");
-        } else {
-            if (resource.getAppointmentDateTime().isBefore(LocalDateTime.now())) {
-                validationErrors.add("Incorrect appointment date");
-            } else if (!isAppointmentUnique(doctorId, resource)) {
-                validationErrors.add("Appointment already exists");
-            }
+        } else if (resource.getDate().isBefore(LocalDate.now())) {
+            validationErrors.add("Incorrect appointment date");
+        }
+        if (resource.getTime() == null) {
+            validationErrors.add("Appointment time not specified");
+        } else if (resource.getDate() != null && resource.getDate().equals(LocalDate.now())
+                && resource.getTime().isBefore(LocalTime.now())) {
+            validationErrors.add("Incorrect appointment time");
+        }
+        if (resource.getDate() != null && resource.getTime() != null
+                && !isAppointmentUnique(doctorId, resource)) {
+            validationErrors.add("Appointment already exists");
         }
 
         return new ErrorsResource(validationErrors);

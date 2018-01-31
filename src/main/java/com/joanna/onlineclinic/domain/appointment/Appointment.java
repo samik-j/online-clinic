@@ -3,10 +3,11 @@ package com.joanna.onlineclinic.domain.appointment;
 import com.joanna.onlineclinic.domain.doctor.Doctor;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 @Entity
-@Table(uniqueConstraints=@UniqueConstraint(columnNames={"doctor_id", "appointmentDateTime"}))
+@Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"doctor_id", "date", "time"})})
 public class Appointment {
 
     @Id
@@ -16,15 +17,18 @@ public class Appointment {
     @JoinColumn(name = "doctor_id")
     private Doctor doctor;
     @Column(nullable = false)
-    private LocalDateTime appointmentDateTime;
+    private LocalDate date;
+    @Column(nullable = false)
+    private LocalTime time;
     private boolean available;
 
     Appointment() {
     }
 
-    public Appointment(Doctor doctor, LocalDateTime appointmentDateTime) {
+    public Appointment(Doctor doctor, LocalDate date, LocalTime time) {
         this.doctor = doctor;
-        this.appointmentDateTime = appointmentDateTime;
+        this.date = date;
+        this.time = time;
         this.available = true;
     }
 
@@ -36,8 +40,12 @@ public class Appointment {
         return doctor;
     }
 
-    public LocalDateTime getAppointmentDateTime() {
-        return appointmentDateTime;
+    public LocalDate getDate() {
+        return date;
+    }
+
+    public LocalTime getTime() {
+        return time;
     }
 
     public boolean isAvailable() {

@@ -3,14 +3,17 @@ package com.joanna.onlineclinic.web.appointment.booked;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.joanna.onlineclinic.domain.appointment.booked.AppointmentBooked;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 public class AppointmentBookedResource {
 
     private long id;
     private long doctorId;
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
-    private LocalDateTime appointmentDateTime;
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private LocalDate date;
+    @JsonFormat(pattern = "HH:mm")
+    private LocalTime time;
     private Long patientId;
     private String reason;
 
@@ -20,7 +23,8 @@ public class AppointmentBookedResource {
     AppointmentBookedResource(AppointmentBooked appointmentBooked) {
         this.id = appointmentBooked.getId();
         this.doctorId = appointmentBooked.getDoctor().getId();
-        this.appointmentDateTime = appointmentBooked.getAppointmentDateTime();
+        this.date = appointmentBooked.getDate();
+        this.time = appointmentBooked.getTime();
         this.patientId = appointmentBooked.getPatient().getId();
         this.reason = appointmentBooked.getReason();
     }
@@ -41,12 +45,20 @@ public class AppointmentBookedResource {
         this.doctorId = doctorId;
     }
 
-    public LocalDateTime getAppointmentDateTime() {
-        return appointmentDateTime;
+    public LocalDate getDate() {
+        return date;
     }
 
-    public void setAppointmentDateTime(LocalDateTime appointmentDateTime) {
-        this.appointmentDateTime = appointmentDateTime;
+    public void setDate(LocalDate date) {
+        this.date = date;
+    }
+
+    public LocalTime getTime() {
+        return time;
+    }
+
+    public void setTime(LocalTime time) {
+        this.time = time;
     }
 
     public Long getPatientId() {
