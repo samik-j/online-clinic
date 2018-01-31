@@ -42,18 +42,14 @@ public class AppointmentBookedService {
         Patient patient = patientRepository.findOne(resource.getPatientId());
         Doctor doctor = appointment.getDoctor();
         AppointmentBooked appointmentBooked = new AppointmentBooked(
-                appointment.getDoctor(), appointment.getAppointmentDateTime(), 
+                appointment.getDoctor(), appointment.getAppointmentDateTime(),
                 patient, resource.getReason());
 
         appointment.book();
         doctor.addAppointmentBooked(appointmentBooked);
         patient.addAppointmentBooked(appointmentBooked);
 
-        AppointmentBooked savedAppointment = appointmentBookedRepository.save(appointmentBooked);
-        appointmentRepository.save(appointment);
-        doctorRepository.save(doctor);
-        patientRepository.save(patient);
-
-        return savedAppointment;
+        //jak jest transactional to nie musze wolac save na patient, doctor, appointment
+        return appointmentBookedRepository.save(appointmentBooked);
     }
 }
