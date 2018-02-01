@@ -59,6 +59,7 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
+			<version>1.5.3.RELEASE</version>
 		</dependency>
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>
@@ -71,6 +72,12 @@
 			<artifactId>mockito-core</artifactId>
 			<version>1.10.19</version>
 			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+			<scope>test</scope>
+			<version>1.4.194</version>
 		</dependency>
 	</dependencies>
 
