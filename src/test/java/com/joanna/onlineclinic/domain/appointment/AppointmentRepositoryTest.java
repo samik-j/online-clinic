@@ -23,6 +23,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @DataJpaTest
 public class AppointmentRepositoryTest {
 
+    private long doctor1Id;
+    private long doctor2Id;
+
     @Autowired
     private AppointmentRepository appointmentRepository;
 
@@ -33,27 +36,22 @@ public class AppointmentRepositoryTest {
     public void createDoctors() {
         Doctor doctor1 = new Doctor("First", "Last", Specialty.PEDIATRICIAN);
         Doctor doctor2 = new Doctor("First2", "Last2", Specialty.DERMATOLOGIST);
-        doctorRepository.save(doctor1);
-        doctorRepository.save(doctor2);
-    }
 
-    @After
-    public void deleteDoctors() {
-        doctorRepository.deleteAll();
+        doctor1Id = doctorRepository.save(doctor1).getId();
+        doctor2Id = doctorRepository.save(doctor2).getId();
     }
-
 
     @Test
     public void shouldReturnTrueIfAppointmentExists() {
         // given
         LocalDate date = LocalDate.of(2017, 9, 12);
         LocalTime time = LocalTime.of(18, 00);
-        Appointment appointment = new Appointment(doctorRepository.findOne(1L), date, time);
+        Appointment appointment = new Appointment(doctorRepository.findOne(doctor1Id), date, time);
 
         appointmentRepository.save(appointment);
 
         // when
-        boolean result = appointmentRepository.existsByDoctorIdAndAndDateAndTime(1L, date, time);
+        boolean result = appointmentRepository.existsByDoctorIdAndAndDateAndTime(doctor1Id, date, time);
         // then
         assertTrue(result);
     }
@@ -65,7 +63,7 @@ public class AppointmentRepositoryTest {
         LocalTime time = LocalTime.of(18, 00);
 
         // when
-        boolean result = appointmentRepository.existsByDoctorIdAndAndDateAndTime(1L, date, time);
+        boolean result = appointmentRepository.existsByDoctorIdAndAndDateAndTime(doctor1Id, date, time);
 
         // then
         assertFalse(result);
@@ -74,17 +72,16 @@ public class AppointmentRepositoryTest {
     @Test
     public void shouldFindAllByDoctorId() {
         // given
-
         LocalDate date = LocalDate.of(2017, 9, 12);
         LocalTime time = LocalTime.of(18, 00);
-        Appointment appointment1 = new Appointment(doctorRepository.findOne(1L), date, time);
-        Appointment appointment2 = new Appointment(doctorRepository.findOne(2L), date, time);
+        Appointment appointment1 = new Appointment(doctorRepository.findOne(doctor1Id), date, time);
+        Appointment appointment2 = new Appointment(doctorRepository.findOne(doctor2Id), date, time);
 
         appointmentRepository.save(appointment1);
         appointmentRepository.save(appointment2);
 
         // when
-        List<Appointment> found = appointmentRepository.findAll(1L);
+        List<Appointment> found = appointmentRepository.findAll(doctor1Id);
 
         // then
         assertEquals(1, found.size());
