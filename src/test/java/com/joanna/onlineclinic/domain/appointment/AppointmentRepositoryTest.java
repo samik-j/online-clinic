@@ -88,4 +88,58 @@ public class AppointmentRepositoryTest {
         assertTrue(found.contains(appointment1));
     }
 
+    @Test
+    public void shouldReturnEmptyListIfNoneFoundByDoctorId() {
+        // given
+        LocalDate date = LocalDate.of(2017, 9, 12);
+        LocalTime time = LocalTime.of(18, 00);
+        Appointment appointment1 = new Appointment(doctorRepository.findOne(doctor1Id), date, time);
+
+        appointmentRepository.save(appointment1);
+
+        // when
+        List<Appointment> found = appointmentRepository.findAll(doctor2Id);
+
+        // then
+        assertTrue(found.isEmpty());
+    }
+
+    @Test
+    public void shouldFindAvailable() {
+        // given
+        LocalDate date = LocalDate.now().plusDays(4);
+        LocalTime time = LocalTime.now().plusHours(1);
+        Appointment appointment1 = new Appointment(doctorRepository.findOne(doctor1Id), date, time);
+        Appointment appointment2 = new Appointment(doctorRepository.findOne(doctor2Id), date, time);
+
+        appointmentRepository.save(appointment1);
+        appointmentRepository.save(appointment2);
+
+        // when
+        List<Appointment> found = appointmentRepository.findAvailable(doctor1Id, LocalDate.now(), LocalTime.now());
+
+        // then
+        assertEquals(1, found.size());
+        assertTrue(found.contains(appointment1));
+    }
+
+    @Test
+    public void shouldFindAvailableIfDateIsAfterNowButTimeIsBeforeNow() {
+        // given
+        LocalDate date = LocalDate.now().plusDays(4);
+        LocalTime time = LocalTime.now().minusHours(2);
+        Appointment appointment1 = new Appointment(doctorRepository.findOne(doctor1Id), date, time);
+        Appointment appointment2 = new Appointment(doctorRepository.findOne(doctor2Id), date, time);
+
+        appointmentRepository.save(appointment1);
+        appointmentRepository.save(appointment2);
+
+        // when
+        List<Appointment> found = appointmentRepository.findAvailable(doctor1Id, LocalDate.now(), LocalTime.now());
+
+        // then
+        assertEquals(1, found.size());
+        assertTrue(found.contains(appointment1));
+    }
+
 }
