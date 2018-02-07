@@ -5,5 +5,5 @@ import org.springframework.data.repository.query.Param;
 
 public interface PatientRepository extends JpaRepository<Patient, Long> {
 
-    boolean existsByNhsNumber(@Param("NHSNumber")String nhsNumber);
+    boolean existsByNhsNumber(String nhsNumber);
 }
