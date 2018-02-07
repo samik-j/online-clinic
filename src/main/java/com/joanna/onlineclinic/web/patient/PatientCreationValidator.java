@@ -2,6 +2,7 @@ package com.joanna.onlineclinic.web.patient;
 
 import com.joanna.onlineclinic.domain.patient.PatientService;
 import com.joanna.onlineclinic.web.ErrorsResource;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.validator.routines.EmailValidator;
 import org.springframework.stereotype.Component;
 
@@ -20,23 +21,25 @@ public class PatientCreationValidator {
     ErrorsResource validate(PatientResource resource) {
         List<String> validationErrors = new ArrayList<>();
 
-        if (resource.getFirstName() == null || resource.getFirstName().isEmpty()) {
+        if (StringUtils.isBlank(resource.getFirstName())) {
             validationErrors.add("First name not specified");
         }
-        if (resource.getLastName() == null || resource.getLastName().isEmpty()) {
+        if (StringUtils.isBlank(resource.getLastName())) {
             validationErrors.add("Last name not specified");
         }
-        if (resource.getNhsNumber() != null && !resource.getNhsNumber().isEmpty()) {
+        if (StringUtils.isNotBlank(resource.getNhsNumber())) {
             if (resource.getNhsNumber().replaceAll("\\s", "").length() != 10) {
                 validationErrors.add("Incorrect NHS number");
             } else if (!isNhsNumberUnique(resource.getNhsNumber())) {
                 validationErrors.add("Patient with given NHS number exists");
             }
         }
-        if (resource.getPhoneNumber() == null || resource.getPhoneNumber().isEmpty()) {
+        if (StringUtils.isBlank(resource.getPhoneNumber())) {
             validationErrors.add("Phone number not specified");
+        } else if (!StringUtils.isNumeric(resource.getPhoneNumber())){
+            validationErrors.add("Incorrect phone number");
         }
-        if (resource.getEmail() == null || resource.getEmail().isEmpty()) {
+        if (StringUtils.isBlank(resource.getEmail())) {
             validationErrors.add("Email address not specified");
         } else if (!isEmailValid(resource.getEmail())) {
             validationErrors.add("Incorrect email address");
