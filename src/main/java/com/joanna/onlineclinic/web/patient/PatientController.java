@@ -38,7 +38,7 @@ public class PatientController {
 
             return new ResponseEntity<Object>(getPatientResource(patient), HttpStatus.OK);
         } else {
-            LOGGER.error("Failed: " + errorsResource.getValidationErrors().toString());
+            LOGGER.info("Failed: {}", errorsResource.getValidationErrors().toString());
             return new ResponseEntity<Object>(errorsResource, HttpStatus.BAD_REQUEST);
         }
     }

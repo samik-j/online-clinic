@@ -38,7 +38,7 @@ public class AppointmentBookedController {
             return new ResponseEntity<Object>(
                     getAppointmentBookedResource(service.addAppointment(resource)), HttpStatus.OK);
         } else {
-            LOGGER.error("Failed: " + errorsResource.getValidationErrors().toString());
+            LOGGER.info("Failed: {}", errorsResource.getValidationErrors().toString());
             return new ResponseEntity<Object>(
                     errorsResource.getValidationErrors(), HttpStatus.BAD_REQUEST);
         }

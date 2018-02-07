@@ -39,7 +39,7 @@ public class DoctorController {
 
             return new ResponseEntity<Object>(getDoctorResource(doctor), HttpStatus.OK);
         } else {
-            LOGGER.error("Failed: " + errorsResource.getValidationErrors().toString());
+            LOGGER.info("Failed: {}", errorsResource.getValidationErrors().toString());
             return new ResponseEntity<Object>(errorsResource, HttpStatus.BAD_REQUEST);
         }
     }
