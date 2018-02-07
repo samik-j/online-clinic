@@ -28,8 +28,7 @@ public class AppointmentCreationValidator {
         }
         if (resource.getTime() == null) {
             validationErrors.add("Appointment time not specified");
-        } else if (resource.getDate() != null && resource.getDate().equals(LocalDate.now())
-                && resource.getTime().isBefore(LocalTime.now())) {
+        } else if (isTimeValid(resource.getDate(), resource.getTime())) {
             validationErrors.add("Incorrect appointment time");
         }
         if (resource.getDate() != null && resource.getTime() != null
@@ -42,5 +41,9 @@ public class AppointmentCreationValidator {
 
     private boolean isAppointmentUnique(long doctorId, AppointmentResource resource) {
         return !appointmentService.appointmentExists(doctorId, resource);
+    }
+
+    private boolean isTimeValid(LocalDate date, LocalTime time) {
+        return date != null && date.equals(LocalDate.now()) && time.isBefore(LocalTime.now());
     }
 }
