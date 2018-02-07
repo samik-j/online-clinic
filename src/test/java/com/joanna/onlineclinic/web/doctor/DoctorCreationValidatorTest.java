@@ -64,6 +64,34 @@ public class DoctorCreationValidatorTest {
     }
 
     @Test
+    public void shouldHaveErrorIfFirstNameConsistsOfSpaces() {
+        // given
+        DoctorResource resource = createDoctorResource(
+                "   ", "Last", Specialty.GENERAL_PHYSICIAN);
+
+        // when
+        ErrorsResource errorsResource = validator.validate(resource);
+
+        // then
+        assertEquals(1, errorsResource.getValidationErrors().size());
+        assertTrue(errorsResource.getValidationErrors().contains("First name not specified"));
+    }
+
+    @Test
+    public void shouldHaveErrorIfLastNameConsistsOfSpaces() {
+        // given
+        DoctorResource resource = createDoctorResource(
+                "First", "   ", Specialty.GENERAL_PHYSICIAN);
+
+        // when
+        ErrorsResource errorsResource = validator.validate(resource);
+
+        // then
+        assertEquals(1, errorsResource.getValidationErrors().size());
+        assertTrue(errorsResource.getValidationErrors().contains("Last name not specified"));
+    }
+
+    @Test
     public void shouldHaveErrorIfSpecialtyIsNull() {
         // given
         DoctorResource resource = createDoctorResource(

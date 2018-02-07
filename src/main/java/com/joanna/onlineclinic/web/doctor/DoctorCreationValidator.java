@@ -1,7 +1,7 @@
 package com.joanna.onlineclinic.web.doctor;
 
-import com.joanna.onlineclinic.domain.doctor.DoctorService;
 import com.joanna.onlineclinic.web.ErrorsResource;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -13,10 +13,10 @@ public class DoctorCreationValidator {
     ErrorsResource validate(DoctorResource resource) {
         List<String> validationErrors = new ArrayList<>();
 
-        if (resource.getFirstName() == null || resource.getFirstName().isEmpty()) {
+        if (StringUtils.isBlank(resource.getFirstName())) {
             validationErrors.add("First name not specified");
         }
-        if (resource.getLastName() == null || resource.getLastName().isEmpty()) {
+        if (StringUtils.isBlank(resource.getLastName())) {
             validationErrors.add("Last name not specified");
         }
         if (resource.getSpecialty() == null) {
