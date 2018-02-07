@@ -55,7 +55,7 @@ public class AppointmentTest {
         Appointment appointment = new Appointment(doctor, date, time);
         appointment.book();
 
-        // then
+        // expect
         assertThrows(IncorrectAppointmentAvailabilityException.class, () -> appointment.book());
     }
 }
