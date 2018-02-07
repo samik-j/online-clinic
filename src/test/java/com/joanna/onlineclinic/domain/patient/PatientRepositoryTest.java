@@ -18,7 +18,13 @@ public class PatientRepositoryTest {
     @Test
     public void shouldReturnTrueIfExistsByNhsNumber() {
         // given
-        Patient patient = new Patient("First", "Last", "1234567890", "07522222222", "fake@gmail.com");
+        Patient patient = new Patient.PatientBuilder()
+                .firstName("First")
+                .lastName("Last")
+                .nhsNumber("1234567890")
+                .phoneNumber("07522222222")
+                .email("fake@gmail.com")
+                .build();
         patientRepository.save(patient);
 
         // when

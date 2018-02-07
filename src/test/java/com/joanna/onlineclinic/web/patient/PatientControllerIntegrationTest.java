@@ -45,8 +45,13 @@ public class PatientControllerIntegrationTest {
 
     @Before
     public void setupDatabase() {
-        Patient patient = new Patient("FirstP", "LastP", "1234567890",
-                "7522222222", "some@domain.com");
+        Patient patient = new Patient.PatientBuilder()
+                .firstName("FirstP")
+                .lastName("LastP")
+                .nhsNumber("1234567890")
+                .phoneNumber("7522222222")
+                .email("some@domain.com")
+                .build();
 
         patientRepository.save(patient);
     }

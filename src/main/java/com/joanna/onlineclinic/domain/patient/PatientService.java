@@ -19,8 +19,13 @@ public class PatientService {
     }
 
     public Patient registerPatient(PatientResource resource) {
-        Patient patient = new Patient(resource.getFirstName(), resource.getLastName(),
-                resource.getNhsNumber(), resource.getPhoneNumber(), resource.getEmail());
+        Patient patient = new Patient.PatientBuilder()
+                .firstName(resource.getFirstName())
+                .lastName(resource.getLastName())
+                .nhsNumber(resource.getNhsNumber())
+                .phoneNumber(resource.getPhoneNumber())
+                .email(resource.getEmail())
+                .build();
 
         return repository.save(patient);
     }

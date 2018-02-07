@@ -40,8 +40,13 @@ public class AppointmentBookedRepositoryTest {
     @Before
     public void setupDatabase() {
         Doctor doctor = new Doctor("First", "Last", Specialty.PEDIATRICIAN);
-        Patient patient = new Patient("First", "Last", "1234567890",
-                "5322443322", "someone@domain.com");
+        Patient patient = new Patient.PatientBuilder()
+                .firstName("First")
+                .lastName("Last")
+                .nhsNumber("1234567890")
+                .phoneNumber("5322443322")
+                .email("someone@domain.com")
+                .build();
 
         doctorId = doctorRepository.save(doctor).getId();
         patientId = patientRepository.save(patient).getId();

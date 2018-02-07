@@ -18,7 +18,13 @@ public class AppointmentBookedTest {
         Doctor doctor = new Doctor("First", "Last", Specialty.PEDIATRICIAN);
         LocalDate date = LocalDate.of(2017, 9, 12);
         LocalTime time = LocalTime.of(18, 00);
-        Patient patient = new Patient("First", "Last", "1234567890", "07522222222", "fake@gmail.com");
+        Patient patient = new Patient.PatientBuilder()
+                .firstName("First")
+                .lastName("Last")
+                .nhsNumber("1234567890")
+                .phoneNumber("07522222222")
+                .email("fake@gmail.com")
+                .build();
 
         // when
         AppointmentBooked appointment = new AppointmentBooked(doctor, date, time, patient, "Sick");
