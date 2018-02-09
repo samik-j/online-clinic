@@ -83,19 +83,7 @@ public class AppointmentBookedControllerIntegrationTest {
         appointment2Id =  saveAppointment(
                 doctor, LocalDate.now().plusDays(5), LocalTime.of(12, 0)).getId();
 
-        Appointment appointment = appointmentRepository.findOne(appointment2Id);
-        AppointmentBooked appointmentBooked = new AppointmentBooked(
-                doctor, appointment.getDate(), appointment.getTime(),
-                patient, "Sick");
-
-        appointment.book();
-        doctor.addAppointmentBooked(appointmentBooked);
-        patient.addAppointmentBooked(appointmentBooked);
-
-        appointmentBookedRepository.save(appointmentBooked);
-        doctorRepository.save(doctor);
-        patientRepository.save(patient);
-        appointmentRepository.save(appointment);
+        saveAppointmentBooked(appointment2Id, patient, "Sick");
     }
 
     @After
@@ -132,7 +120,7 @@ public class AppointmentBookedControllerIntegrationTest {
                 patient, reason);
 
         appointment.book();
-        doctor.addAppointmentBooked(appointmentBooked);
+        doctor.addAppointmentBooked(appointmentBooked); // w tej linii wywala failed to lazily initialize a collection of role : com.joanna.onlineclinic.domain.doctor.Doctor.appointmentsBooked, could not initialize proxy - no Session
         patient.addAppointmentBooked(appointmentBooked);
 
         AppointmentBooked appointmentSaved = appointmentBookedRepository.save(appointmentBooked);
