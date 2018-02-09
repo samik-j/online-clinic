@@ -152,6 +152,7 @@ public class AppointmentControllerIntegrationTest {
 
         // then
         result.andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(jsonPath("$.doctorId", is((int) doctor1Id)))
                 .andExpect(jsonPath("$.date", is(LocalDate.now().plusDays(1).toString())))
                 .andExpect(jsonPath("$.time", is(LocalTime.of(12, 0).toString())));
@@ -171,6 +172,7 @@ public class AppointmentControllerIntegrationTest {
 
         // then
         result.andExpect(status().isBadRequest())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(jsonPath("$.validationErrors",
                         is(Arrays.asList("Incorrect appointment date"))));
     }
