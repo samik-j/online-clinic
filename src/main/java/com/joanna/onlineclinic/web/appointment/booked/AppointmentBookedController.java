@@ -35,12 +35,13 @@ public class AppointmentBookedController {
         ErrorsResource errorsResource = validator.validate(resource);
 
         if (errorsResource.getValidationErrors().isEmpty()) {
+            AppointmentBooked appointmentBooked = service.addAppointment(resource);
+
             return new ResponseEntity<Object>(
-                    getAppointmentBookedResource(service.addAppointment(resource)), HttpStatus.OK);
+                    getAppointmentBookedResource(appointmentBooked), HttpStatus.OK);
         } else {
             LOGGER.info("Failed: {}", errorsResource.getValidationErrors().toString());
-            return new ResponseEntity<Object>(
-                    errorsResource.getValidationErrors(), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<Object>(errorsResource, HttpStatus.BAD_REQUEST);
         }
     }
 
