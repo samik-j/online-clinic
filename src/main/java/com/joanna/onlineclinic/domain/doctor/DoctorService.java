@@ -10,7 +10,7 @@ public class DoctorService {
 
     private DoctorRepository repository;
 
-    public DoctorService(DoctorRepository repository) {
+    public DoctorService(DoctorRepository doctorRepository) {
         this.repository = repository;
     }
 
