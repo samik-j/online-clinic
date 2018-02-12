@@ -1,5 +1,6 @@
 package com.joanna.onlineclinic.domain.appointment.booked;
 
+import com.joanna.onlineclinic.domain.BaseEntity;
 import com.joanna.onlineclinic.domain.doctor.Doctor;
 import com.joanna.onlineclinic.domain.patient.Patient;
 
@@ -10,7 +11,7 @@ import java.time.LocalTime;
 @Entity
 @Table(uniqueConstraints = @UniqueConstraint(
         columnNames = {"doctor_id", "date", "time", "patient_id"}))
-public class AppointmentBooked {
+public class AppointmentBooked implements BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
