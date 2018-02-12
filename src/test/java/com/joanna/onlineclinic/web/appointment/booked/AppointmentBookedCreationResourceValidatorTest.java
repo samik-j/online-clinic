@@ -53,7 +53,7 @@ public class AppointmentBookedCreationResourceValidatorTest {
 
         when(appointmentService.appointmentExists(appointmentId)).thenReturn(true);
         when(appointmentService.isAvailable(appointmentId)).thenReturn(true);
-        when(patientService.patientExists(patientId)).thenReturn(true);
+        when(patientService.existsById(patientId)).thenReturn(true);
         when(appointmentBookedService.appointmentExists(resource)).thenReturn(false);
 
         // when
@@ -73,7 +73,7 @@ public class AppointmentBookedCreationResourceValidatorTest {
                 appointmentId, patientId, "I am sick");
 
         when(appointmentService.appointmentExists(appointmentId)).thenReturn(false);
-        when(patientService.patientExists(patientId)).thenReturn(true);
+        when(patientService.existsById(patientId)).thenReturn(true);
         when(appointmentBookedService.appointmentExists(resource)).thenReturn(false);
 
         // when
@@ -95,7 +95,7 @@ public class AppointmentBookedCreationResourceValidatorTest {
 
         when(appointmentService.appointmentExists(appointmentId)).thenReturn(true);
         when(appointmentService.isAvailable(appointmentId)).thenReturn(false);
-        when(patientService.patientExists(patientId)).thenReturn(true);
+        when(patientService.existsById(patientId)).thenReturn(true);
         when(appointmentBookedService.appointmentExists(resource)).thenReturn(false);
 
         // when
@@ -138,7 +138,7 @@ public class AppointmentBookedCreationResourceValidatorTest {
 
         when(appointmentService.appointmentExists(appointmentId)).thenReturn(true);
         when(appointmentService.isAvailable(appointmentId)).thenReturn(true);
-        when(patientService.patientExists(patientId)).thenReturn(false);
+        when(patientService.existsById(patientId)).thenReturn(false);
         when(appointmentBookedService.appointmentExists(resource)).thenReturn(false);
 
         // when
@@ -160,7 +160,7 @@ public class AppointmentBookedCreationResourceValidatorTest {
 
         when(appointmentService.appointmentExists(appointmentId)).thenReturn(true);
         when(appointmentService.isAvailable(appointmentId)).thenReturn(true);
-        when(patientService.patientExists(patientId)).thenReturn(true);
+        when(patientService.existsById(patientId)).thenReturn(true);
         when(appointmentBookedService.appointmentExists(resource)).thenReturn(true);
 
         // when
@@ -186,7 +186,7 @@ public class AppointmentBookedCreationResourceValidatorTest {
 
         when(appointmentService.appointmentExists(appointmentId)).thenReturn(true);
         when(appointmentService.isAvailable(appointmentId)).thenReturn(true);
-        when(patientService.patientExists(patientId)).thenReturn(true);
+        when(patientService.existsById(patientId)).thenReturn(true);
         when(appointmentBookedService.appointmentExists(resource)).thenReturn(false);
 
         // when
@@ -213,7 +213,7 @@ public class AppointmentBookedCreationResourceValidatorTest {
 
         when(appointmentService.appointmentExists(appointmentId)).thenReturn(true);
         when(appointmentService.isAvailable(appointmentId)).thenReturn(false);
-        when(patientService.patientExists(patientId)).thenReturn(false);
+        when(patientService.existsById(patientId)).thenReturn(false);
         when(appointmentBookedService.appointmentExists(resource)).thenReturn(true);
 
         // when

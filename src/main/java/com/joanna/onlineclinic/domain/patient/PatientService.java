@@ -31,7 +31,7 @@ public class PatientService {
         return repository.findAll();
     }
 
-    public boolean patientExists(long patientId) {
+    public boolean existsById(long patientId) {
         return repository.exists(patientId);
     }
 

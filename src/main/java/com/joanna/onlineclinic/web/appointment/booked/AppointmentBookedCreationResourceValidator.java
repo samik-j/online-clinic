@@ -60,7 +60,7 @@ public class AppointmentBookedCreationResourceValidator {
     }
 
     private boolean patientExists(long patientId) {
-        return patientService.patientExists(patientId);
+        return patientService.existsById(patientId);
     }
 
     private boolean appointmentBookedExists(AppointmentBookedCreationResource resource) {
