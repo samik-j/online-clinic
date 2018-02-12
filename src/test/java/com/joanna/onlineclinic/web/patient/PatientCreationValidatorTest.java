@@ -1,5 +1,7 @@
 package com.joanna.onlineclinic.web.patient;
 
+import com.joanna.onlineclinic.domain.patient.Patient;
+import com.joanna.onlineclinic.domain.patient.PatientRepositoryStub;
 import com.joanna.onlineclinic.domain.patient.PatientService;
 import com.joanna.onlineclinic.web.ErrorsResource;
 import org.junit.Test;
@@ -11,7 +13,7 @@ import static org.mockito.Mockito.when;
 
 public class PatientCreationValidatorTest {
 
-    private PatientService service = mock(PatientService.class);
+    private PatientService service = new PatientService(new PatientRepositoryStub());
     private PatientCreationValidator validator = new PatientCreationValidator(service);
 
     @Test
@@ -19,7 +21,6 @@ public class PatientCreationValidatorTest {
         // given
         PatientResource resource = createPatientResource("First", "Last",
                 "1234567890", "7522222222", "some@domain.com");
-        when(service.nhsNumberExists(resource.getNhsNumber())).thenReturn(false);
 
         // when
         ErrorsResource errorsResource = validator.validate(resource);
@@ -33,7 +34,6 @@ public class PatientCreationValidatorTest {
         // given
         PatientResource resource = createPatientResource("First", "Last",
                 "", "7522222222", "some@domain.com");
-        when(service.nhsNumberExists(resource.getNhsNumber())).thenReturn(false);
 
         // when
         ErrorsResource errorsResource = validator.validate(resource);
@@ -47,7 +47,6 @@ public class PatientCreationValidatorTest {
         // given
         PatientResource resource = createPatientResource("First", "Last",
                 null, "7522222222", "some@domain.com");
-        when(service.nhsNumberExists(resource.getNhsNumber())).thenReturn(false);
 
         // when
         ErrorsResource errorsResource = validator.validate(resource);
@@ -61,7 +60,6 @@ public class PatientCreationValidatorTest {
         // given
         PatientResource resource = createPatientResource("", "Last",
                 "1234567890", "7522222222", "some@domain.com");
-        when(service.nhsNumberExists(resource.getNhsNumber())).thenReturn(false);
 
         // when
         ErrorsResource errorsResource = validator.validate(resource);
@@ -91,7 +89,6 @@ public class PatientCreationValidatorTest {
         // given
         PatientResource resource = createPatientResource("First", "",
                 "1234567890", "7522222222", "some@domain.com");
-        when(service.nhsNumberExists(resource.getNhsNumber())).thenReturn(false);
 
         // when
         ErrorsResource errorsResource = validator.validate(resource);
@@ -121,7 +118,6 @@ public class PatientCreationValidatorTest {
         // given
         PatientResource resource = createPatientResource("First", "Last",
                 "12345", "7522222222", "some@domain.com");
-        when(service.nhsNumberExists(resource.getNhsNumber())).thenReturn(false);
 
         // when
         ErrorsResource errorsResource = validator.validate(resource);
@@ -134,12 +130,16 @@ public class PatientCreationValidatorTest {
     @Test
     public void shouldValidateWithErrorIfNhsNumberExists() {
         // given
-        PatientResource resource = createPatientResource("First", "Last",
+        PatientResource firstPatientResource = createPatientResource("A", "D",
                 "1234567890", "7522222222", "some@domain.com");
-        when(service.nhsNumberExists(resource.getNhsNumber())).thenReturn(true);
+        service.registerPatient(firstPatientResource);
+
+        PatientResource secondPatientResource = createPatientResource("First", "Last",
+            "1234567890", "7522222222", "some@domain.com");
+
 
         // when
-        ErrorsResource errorsResource = validator.validate(resource);
+        ErrorsResource errorsResource = validator.validate(secondPatientResource);
 
         // then
         assertEquals(1, errorsResource.getValidationErrors().size());
@@ -151,7 +151,6 @@ public class PatientCreationValidatorTest {
         // given
         PatientResource resource = createPatientResource("First", "Last",
                 "1234567890", "", "some@domain.com");
-        when(service.nhsNumberExists(resource.getNhsNumber())).thenReturn(false);
 
         // when
         ErrorsResource errorsResource = validator.validate(resource);
@@ -196,7 +195,6 @@ public class PatientCreationValidatorTest {
         // given
         PatientResource resource = createPatientResource("First", "Last",
                 "1234567890", "7722222222", "");
-        when(service.nhsNumberExists(resource.getNhsNumber())).thenReturn(false);
 
         // when
         ErrorsResource errorsResource = validator.validate(resource);
@@ -226,7 +224,6 @@ public class PatientCreationValidatorTest {
         // given
         PatientResource resource = createPatientResource("First", "Last",
                 "1234567890", "7722222222", "something@domain");
-        when(service.nhsNumberExists(resource.getNhsNumber())).thenReturn(false);
 
         // when
         ErrorsResource errorsResource = validator.validate(resource);
@@ -239,9 +236,12 @@ public class PatientCreationValidatorTest {
     @Test
     public void shouldValidateWithErrors() {
         // given
+        PatientResource firstPatientResource = createPatientResource("A", "D",
+            "1234567890", "7522222222", "some@domain.com");
+        service.registerPatient(firstPatientResource);
+
         PatientResource resource = createPatientResource(null, null,
                 "1234567890", null, "something@domain");
-        when(service.nhsNumberExists(resource.getNhsNumber())).thenReturn(true);
 
         // when
         ErrorsResource errorsResource = validator.validate(resource);

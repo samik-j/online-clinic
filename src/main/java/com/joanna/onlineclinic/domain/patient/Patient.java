@@ -1,5 +1,6 @@
 package com.joanna.onlineclinic.domain.patient;
 
+import com.joanna.onlineclinic.domain.BaseEntity;
 import com.joanna.onlineclinic.domain.appointment.booked.AppointmentBooked;
 import org.apache.commons.lang3.Validate;
 
@@ -8,7 +9,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-public class Patient {
+public class Patient implements BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -47,6 +48,7 @@ public class Patient {
         this.appointments = new HashSet<>();
     }
 
+    @Override
     public long getId() {
         return id;
     }
