@@ -1,5 +1,6 @@
 package com.joanna.onlineclinic.domain.doctor;
 
+import com.joanna.onlineclinic.domain.BaseEntity;
 import com.joanna.onlineclinic.domain.appointment.Appointment;
 import com.joanna.onlineclinic.domain.appointment.booked.AppointmentBooked;
 
@@ -8,7 +9,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-public class Doctor {
+public class Doctor implements BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
