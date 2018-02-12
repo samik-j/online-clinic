@@ -11,8 +11,8 @@ public class PatientService {
 
     private PatientRepository repository;
 
-    public PatientService(@Qualifier("patientRepository") PatientRepository repository) {
-        this.repository = repository;
+    public PatientService(PatientRepository patientRepository) {
+        this.repository = patientRepository;
     }
 
     public Patient registerPatient(PatientResource resource) {
