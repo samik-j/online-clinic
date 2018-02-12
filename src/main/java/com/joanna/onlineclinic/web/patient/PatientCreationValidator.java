@@ -53,6 +53,6 @@ public class PatientCreationValidator {
     }
 
     private boolean isNhsNumberUnique(String nhsNumber) {
-        return !service.nhsNumberExists(nhsNumber);
+        return !service.existsByNhsNumber(nhsNumber);
     }
 }

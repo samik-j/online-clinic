@@ -15,10 +15,6 @@ public class PatientService {
         this.repository = repository;
     }
 
-    public boolean nhsNumberExists(String nhsNumber) {
-        return repository.existsByNhsNumber(nhsNumber);
-    }
-
     public Patient registerPatient(PatientResource resource) {
         Patient patient = new Patient.PatientBuilder()
                 .firstName(resource.getFirstName())
@@ -37,5 +33,9 @@ public class PatientService {
 
     public boolean patientExists(long patientId) {
         return repository.exists(patientId);
+    }
+
+    public boolean existsByNhsNumber(String nhsNumber) {
+        return repository.existsByNhsNumber(nhsNumber);
     }
 }
