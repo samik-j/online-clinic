@@ -1,6 +1,7 @@
 package com.joanna.onlineclinic.domain.patient;
 
 import com.joanna.onlineclinic.web.patient.PatientResource;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -10,7 +11,7 @@ public class PatientService {
 
     private PatientRepository repository;
 
-    public PatientService(PatientRepository repository) {
+    public PatientService(@Qualifier("patientRepository") PatientRepository repository) {
         this.repository = repository;
     }
 
