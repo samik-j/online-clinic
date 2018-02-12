@@ -18,7 +18,7 @@ public class AppointmentCreationValidator {
         this.appointmentService = appointmentService;
     }
 
-    ErrorsResource validate(long doctorId, AppointmentResource resource) {
+    ErrorsResource validate(long doctorId, AppointmentCreationResource resource) {
         List<String> validationErrors = new ArrayList<>();
 
         if (resource.getDate() == null) {
@@ -39,7 +39,7 @@ public class AppointmentCreationValidator {
         return new ErrorsResource(validationErrors);
     }
 
-    private boolean isAppointmentUnique(long doctorId, AppointmentResource resource) {
+    private boolean isAppointmentUnique(long doctorId, AppointmentCreationResource resource) {
         return !appointmentService.appointmentExists(doctorId, resource);
     }
 

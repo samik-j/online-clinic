@@ -19,8 +19,8 @@ public class AppointmentCreationValidatorTest {
 
     private long doctorId = 1;
 
-    private AppointmentResource createAppointmentResource(LocalDate date, LocalTime time) {
-        AppointmentResource resource = new AppointmentResource();
+    private AppointmentCreationResource createAppointmentCreationResource(LocalDate date, LocalTime time) {
+        AppointmentCreationResource resource = new AppointmentCreationResource();
 
         resource.setDate(date);
         resource.setTime(time);
@@ -31,7 +31,7 @@ public class AppointmentCreationValidatorTest {
     @Test
     public void shouldValidateWithNoErrors() {
         // given
-        AppointmentResource resource = createAppointmentResource(
+        AppointmentCreationResource resource = createAppointmentCreationResource(
                 LocalDate.now().plusDays(5), LocalTime.of(15, 30));
 
         when(service.appointmentExists(doctorId, resource)).thenReturn(false);
@@ -46,8 +46,8 @@ public class AppointmentCreationValidatorTest {
     @Test
     public void shouldValidateWithErrorIfDateIsIncorrect() {
         // given
-        AppointmentResource resource =
-                createAppointmentResource(LocalDate.now().minusDays(10), LocalTime.of(15, 00));
+        AppointmentCreationResource resource =
+                createAppointmentCreationResource(LocalDate.now().minusDays(10), LocalTime.of(15, 00));
 
         when(service.appointmentExists(doctorId, resource)).thenReturn(false);
 
@@ -62,8 +62,8 @@ public class AppointmentCreationValidatorTest {
     @Test
     public void shouldValidateWithErrorIfDateIsNotSpecified() {
         // given
-        AppointmentResource resource =
-                createAppointmentResource(null, LocalTime.of(15, 00));
+        AppointmentCreationResource resource =
+                createAppointmentCreationResource(null, LocalTime.of(15, 00));
 
         when(service.appointmentExists(doctorId, resource)).thenReturn(false);
 
@@ -78,8 +78,8 @@ public class AppointmentCreationValidatorTest {
     @Test
     public void shouldValidateWithErrorIfTimeIsIncorrect() {
         // given
-        AppointmentResource resource =
-                createAppointmentResource(LocalDate.now(), LocalTime.now().minusHours(2));
+        AppointmentCreationResource resource =
+                createAppointmentCreationResource(LocalDate.now(), LocalTime.now().minusHours(2));
 
         when(service.appointmentExists(doctorId, resource)).thenReturn(false);
 
@@ -94,8 +94,8 @@ public class AppointmentCreationValidatorTest {
     @Test
     public void shouldValidateWithErrorIfTimeIsNotSpecified() {
         // given
-        AppointmentResource resource =
-                createAppointmentResource(LocalDate.now().plusDays(5), null);
+        AppointmentCreationResource resource =
+                createAppointmentCreationResource(LocalDate.now().plusDays(5), null);
 
         when(service.appointmentExists(doctorId, resource)).thenReturn(false);
 
@@ -110,8 +110,8 @@ public class AppointmentCreationValidatorTest {
     @Test
     public void shouldValidateWithErrorIfAppointmentExists() {
         // given
-        AppointmentResource resource =
-                createAppointmentResource(LocalDate.now().plusDays(5), LocalTime.of(15, 00));
+        AppointmentCreationResource resource =
+                createAppointmentCreationResource(LocalDate.now().plusDays(5), LocalTime.of(15, 00));
 
         when(service.appointmentExists(doctorId, resource)).thenReturn(true);
 

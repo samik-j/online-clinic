@@ -6,7 +6,7 @@ import com.joanna.onlineclinic.domain.appointment.Appointment;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-public class AppointmentResource { // mogloby byc osobne do creation i miec tylko date i drugie to get ktore juz ma wszystko
+public class AppointmentResource {
 
     private long id;
     private long doctorId;

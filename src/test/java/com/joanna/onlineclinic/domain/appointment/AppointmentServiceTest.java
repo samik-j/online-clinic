@@ -4,7 +4,7 @@ import com.joanna.onlineclinic.domain.doctor.Doctor;
 import com.joanna.onlineclinic.domain.doctor.DoctorRepository;
 import com.joanna.onlineclinic.domain.doctor.DoctorRepositoryStub;
 import com.joanna.onlineclinic.domain.doctor.Specialty;
-import com.joanna.onlineclinic.web.appointment.AppointmentResource;
+import com.joanna.onlineclinic.web.appointment.AppointmentCreationResource;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -48,8 +48,8 @@ public class AppointmentServiceTest {
     @Test
     public void shouldAddAppointment() {
         // given
-        AppointmentResource resource = createAppointmentResource(
-                doctorId, LocalDate.now().plusDays(1), LocalTime.of(10, 0));
+        AppointmentCreationResource resource = createAppointmentCreationResource(
+                LocalDate.now().plusDays(1), LocalTime.of(10, 0));
 
         // when
         Appointment addedAppointment = service.addAppointment(doctorId, resource);
@@ -63,8 +63,8 @@ public class AppointmentServiceTest {
     @Test
     public void shouldReturnTrueIfAppointmentExists() {
         // given
-        AppointmentResource resource = createAppointmentResource(
-                doctorId, LocalDate.now().plusDays(2), LocalTime.of(12, 0));
+        AppointmentCreationResource resource = createAppointmentCreationResource(
+                LocalDate.now().plusDays(2), LocalTime.of(12, 0));
 
         // when
         boolean result = service.appointmentExists(doctorId, resource);
@@ -76,8 +76,8 @@ public class AppointmentServiceTest {
     @Test
     public void shouldReturnFalseIfAppointmentDoesNotExist() {
         // given
-        AppointmentResource resource = createAppointmentResource(
-                doctorId, LocalDate.now().plusDays(2), LocalTime.of(10, 0));
+        AppointmentCreationResource resource = createAppointmentCreationResource(
+                LocalDate.now().plusDays(2), LocalTime.of(10, 0));
 
         // when
         boolean result = service.appointmentExists(doctorId, resource);
@@ -141,11 +141,10 @@ public class AppointmentServiceTest {
         assertTrue(result);
     }
 
-    private AppointmentResource createAppointmentResource(
-            long doctorId, LocalDate date, LocalTime time) {
-        AppointmentResource resource = new AppointmentResource();
+    private AppointmentCreationResource createAppointmentCreationResource(
+            LocalDate date, LocalTime time) {
+        AppointmentCreationResource resource = new AppointmentCreationResource();
 
-        resource.setDoctorId(doctorId);
         resource.setDate(date);
         resource.setTime(time);
 

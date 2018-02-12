@@ -141,8 +141,8 @@ public class AppointmentControllerIntegrationTest {
     @Test
     public void shouldAddAppointmentSuccess200Ok() throws Exception {
         // given
-        AppointmentResource resource = createAppointmentResource(
-                doctor1Id, LocalDate.now().plusDays(1), LocalTime.of(12, 0));
+        AppointmentCreationResource resource = createAppointmentCreationResource(
+                LocalDate.now().plusDays(1), LocalTime.of(12, 0));
 
         // when
         ResultActions result = mockMvc.perform(
@@ -161,8 +161,8 @@ public class AppointmentControllerIntegrationTest {
     @Test
     public void shouldAddAppointmentFailIfResourceValidationFails400BadRequest() throws Exception {
         // given
-        AppointmentResource resource = createAppointmentResource(
-                doctor1Id, LocalDate.now().minusDays(1), LocalTime.of(12, 0));
+        AppointmentCreationResource resource = createAppointmentCreationResource(
+                LocalDate.now().minusDays(1), LocalTime.of(12, 0));
 
         // when
         ResultActions result = mockMvc.perform(
@@ -180,8 +180,8 @@ public class AppointmentControllerIntegrationTest {
     @Test
     public void shouldAddAppointmentFailIfDoctorNotFound404NotFound() throws Exception {
         // given
-        AppointmentResource resource = createAppointmentResource(
-                doctor1Id, LocalDate.now().minusDays(1), LocalTime.of(12, 0));
+        AppointmentCreationResource resource = createAppointmentCreationResource(
+                LocalDate.now().minusDays(1), LocalTime.of(12, 0));
 
         // when
         ResultActions result = mockMvc.perform(
@@ -202,11 +202,10 @@ public class AppointmentControllerIntegrationTest {
         }
     }
 
-    private AppointmentResource createAppointmentResource(
-            long doctorId, LocalDate date, LocalTime time) {
-        AppointmentResource resource = new AppointmentResource();
+    private AppointmentCreationResource createAppointmentCreationResource(
+            LocalDate date, LocalTime time) {
+        AppointmentCreationResource resource = new AppointmentCreationResource();
 
-        resource.setDoctorId(doctorId);
         resource.setDate(date);
         resource.setTime(time);
 

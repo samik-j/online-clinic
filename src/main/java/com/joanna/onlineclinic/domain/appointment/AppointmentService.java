@@ -2,7 +2,7 @@ package com.joanna.onlineclinic.domain.appointment;
 
 import com.joanna.onlineclinic.domain.doctor.Doctor;
 import com.joanna.onlineclinic.domain.doctor.DoctorRepository;
-import com.joanna.onlineclinic.web.appointment.AppointmentResource;
+import com.joanna.onlineclinic.web.appointment.AppointmentCreationResource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,7 +23,7 @@ public class AppointmentService {
     }
 
     @Transactional
-    public Appointment addAppointment(long doctorId, AppointmentResource resource) {
+    public Appointment addAppointment(long doctorId, AppointmentCreationResource resource) {
         Doctor doctor = doctorRepository.findOne(doctorId);
         Appointment appointment =
                 new Appointment(doctor, resource.getDate(), resource.getTime());
@@ -35,7 +35,7 @@ public class AppointmentService {
         return savedAppointment;
     }
 
-    public boolean appointmentExists(long doctorId, AppointmentResource resource) {
+    public boolean appointmentExists(long doctorId, AppointmentCreationResource resource) {
         return appointmentRepository.existsByDoctorIdAndAndDateAndTime(
                 doctorId, resource.getDate(), resource.getTime());
     }

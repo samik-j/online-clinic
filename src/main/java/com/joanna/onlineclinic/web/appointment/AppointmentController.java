@@ -34,7 +34,7 @@ public class AppointmentController {
 
     @PostMapping
     public ResponseEntity<Object> addAppointment(
-            @PathVariable long doctorId, @RequestBody AppointmentResource resource) {
+            @PathVariable long doctorId, @RequestBody AppointmentCreationResource resource) {
         LOGGER.info("Adding appointment available: doctor id: {}, date: {}, time: {}",
                 doctorId, resource.getDate(), resource.getTime());
 
