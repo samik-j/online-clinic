@@ -13,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 
-public class AppointmentBookedCreationResourceValidatorTest {
+public class AppointmentBookedCreationValidatorTest {
 
     @Mock
     private AppointmentService appointmentService;
@@ -22,12 +22,12 @@ public class AppointmentBookedCreationResourceValidatorTest {
     @Mock
     private PatientService patientService;
 
-    private AppointmentBookedCreationResourceValidator validator;
+    private AppointmentBookedCreationValidator validator;
 
     @Before
     public void init() {
         MockitoAnnotations.initMocks(this);
-        validator = new AppointmentBookedCreationResourceValidator(
+        validator = new AppointmentBookedCreationValidator(
                 appointmentService, appointmentBookedService, patientService);
     }
 

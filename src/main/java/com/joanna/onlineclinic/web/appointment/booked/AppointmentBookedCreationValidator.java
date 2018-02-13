@@ -10,13 +10,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class AppointmentBookedCreationResourceValidator {
+public class AppointmentBookedCreationValidator {
 
     private AppointmentService appointmentService;
     private AppointmentBookedService appointmentBookedService;
     private PatientService patientService;
 
-    public AppointmentBookedCreationResourceValidator(
+    public AppointmentBookedCreationValidator(
             AppointmentService appointmentService,
             AppointmentBookedService appointmentBookedService, PatientService patientService) {
         this.appointmentService = appointmentService;
