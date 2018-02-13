@@ -30,12 +30,13 @@ public class AppointmentBookedService {
         this.doctorRepository = doctorRepository;
     }
 
-    public boolean appointmentExists(AppointmentBookedCreationResource resource) {
+    public boolean appointmentBookedExists(AppointmentBookedCreationResource resource) {
         Appointment appointment = appointmentRepository.findOne(resource.getAppointmentId());
 
-        return appointmentBookedRepository.existsByDateAndTimeAndDoctorIdAndPatientId(
-                appointment.getDate(), appointment.getTime(), appointment.getDoctor().getId(),
-                resource.getPatientId());
+        return appointment != null
+                && appointmentBookedRepository.existsByDateAndTimeAndDoctorIdAndPatientId(
+                appointment.getDate(), appointment.getTime(),
+                appointment.getDoctor().getId(), resource.getPatientId());
     }
 
     @Transactional
