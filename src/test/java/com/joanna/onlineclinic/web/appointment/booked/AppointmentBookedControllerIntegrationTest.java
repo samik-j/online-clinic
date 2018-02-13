@@ -87,19 +87,19 @@ public class AppointmentBookedControllerIntegrationTest {
                 doctor, LocalDate.now().plusDays(5), LocalTime.of(12, 0));
         appointment2Id = appointment2.getId();
 
-        //saveAppointmentBooked(appointment2Id, patient, "Sick");
-        AppointmentBooked appointmentBooked = new AppointmentBooked(
-                doctor, appointment2.getDate(), appointment2.getTime(),
-                patient, "Sick");
-
-        appointment2.book();
-        doctor.addAppointmentBooked(appointmentBooked);
-        patient.addAppointmentBooked(appointmentBooked);
-
-        appointmentBookedRepository.save(appointmentBooked);
-        doctorRepository.save(doctor);
-        patientRepository.save(patient);
-        appointmentRepository.save(appointment2);
+        saveAppointmentBooked(appointment2Id, patient, "Sick");
+//        AppointmentBooked appointmentBooked = new AppointmentBooked(
+//                doctor, appointment2.getDate(), appointment2.getTime(),
+//                patient, "Sick");
+//
+//        appointment2.book();
+//        doctor.addAppointmentBooked(appointmentBooked);// tu jest ten add co wywala wyjatek
+//        patient.addAppointmentBooked(appointmentBooked);
+//
+//        appointmentBookedRepository.save(appointmentBooked);
+//        doctorRepository.save(doctor);
+//        patientRepository.save(patient);
+//        appointmentRepository.save(appointment2);
     }
 
     @After
@@ -212,8 +212,9 @@ public class AppointmentBookedControllerIntegrationTest {
                 patient, reason);
 
         appointment.book();
-        doctor.addAppointmentBooked(appointmentBooked);
-        patient.addAppointmentBooked(appointmentBooked);
+        //doctor.addAppointmentBooked(appointmentBooked);
+        // to nie dziala bo nie ma sesji, jak nie ma sesji to nie wczyta nic lazy, inne .add dzialaja bo przekazuje obiekty a nie wczytuje ich z bazy danych
+        //patient.addAppointmentBooked(appointmentBooked);
 
         AppointmentBooked appointmentSaved = appointmentBookedRepository.save(appointmentBooked);
         doctorRepository.save(doctor);
@@ -227,7 +228,7 @@ public class AppointmentBookedControllerIntegrationTest {
         Appointment appointment = new Appointment(
                 doctor, date, time);
 
-        doctor.addAppointment(appointment);
+        //doctor.addAppointment(appointment);
         Appointment appointmentSaved = appointmentRepository.save(appointment);
         doctorRepository.save(doctor);
 
