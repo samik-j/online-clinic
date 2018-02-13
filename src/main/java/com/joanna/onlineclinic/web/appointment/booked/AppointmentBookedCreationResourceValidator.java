@@ -64,6 +64,6 @@ public class AppointmentBookedCreationResourceValidator {
     }
 
     private boolean appointmentBookedExists(AppointmentBookedCreationResource resource) {
-        return appointmentBookedService.appointmentExists(resource);
+        return appointmentBookedService.appointmentBookedExists(resource);
     }
 }
