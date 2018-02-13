@@ -42,7 +42,7 @@ public class DoctorControllerIntegrationTest {
     private MockMvc mockMvc;
 
     @Autowired
-    private DoctorRepository repository;
+    private DoctorRepository doctorRepository;
 
     private long doctor1Id;
 
@@ -51,13 +51,13 @@ public class DoctorControllerIntegrationTest {
         Doctor doctor1 = new Doctor("First1", "Last1", Specialty.PEDIATRICIAN);
         Doctor doctor2 = new Doctor("First2", "Last2", Specialty.GYNAECOLOGIST);
 
-        doctor1Id = repository.save(doctor1).getId();
-        repository.save(doctor2);
+        doctor1Id = doctorRepository.save(doctor1).getId();
+        doctorRepository.save(doctor2);
     }
 
     @After
     public void cleanDatabase() {
-        repository.deleteAll();
+        doctorRepository.deleteAll();
     }
 
     @Test
