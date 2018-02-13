@@ -88,18 +88,6 @@ public class AppointmentBookedControllerIntegrationTest {
         appointment2Id = appointment2.getId();
 
         saveAppointmentBooked(appointment2Id, patient, "Sick");
-//        AppointmentBooked appointmentBooked = new AppointmentBooked(
-//                doctor, appointment2.getDate(), appointment2.getTime(),
-//                patient, "Sick");
-//
-//        appointment2.book();
-//        doctor.addAppointmentBooked(appointmentBooked);// tu jest ten add co wywala wyjatek
-//        patient.addAppointmentBooked(appointmentBooked);
-//
-//        appointmentBookedRepository.save(appointmentBooked);
-//        doctorRepository.save(doctor);
-//        patientRepository.save(patient);
-//        appointmentRepository.save(appointment2);
     }
 
     @After
