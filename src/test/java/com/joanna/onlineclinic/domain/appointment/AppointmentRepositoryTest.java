@@ -3,7 +3,6 @@ package com.joanna.onlineclinic.domain.appointment;
 import com.joanna.onlineclinic.domain.doctor.Doctor;
 import com.joanna.onlineclinic.domain.doctor.DoctorRepository;
 import com.joanna.onlineclinic.domain.doctor.Specialty;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -85,7 +84,9 @@ public class AppointmentRepositoryTest {
 
         // then
         assertEquals(1, found.size());
-        assertTrue(found.contains(appointment1));
+        assertEquals(doctor1Id, found.get(0).getDoctor().getId());
+        assertEquals(date, found.get(0).getDate());
+        assertEquals(time, found.get(0).getTime());
     }
 
     @Test
@@ -120,7 +121,9 @@ public class AppointmentRepositoryTest {
 
         // then
         assertEquals(1, found.size());
-        assertTrue(found.contains(appointment1));
+        assertEquals(doctor1Id, found.get(0).getDoctor().getId());
+        assertEquals(date, found.get(0).getDate());
+        assertEquals(time, found.get(0).getTime());
     }
 
     @Test
@@ -139,7 +142,9 @@ public class AppointmentRepositoryTest {
 
         // then
         assertEquals(1, found.size());
-        assertTrue(found.contains(appointment1));
+        assertEquals(doctor1Id, found.get(0).getDoctor().getId());
+        assertEquals(date, found.get(0).getDate());
+        assertEquals(time, found.get(0).getTime());
     }
 
 }
