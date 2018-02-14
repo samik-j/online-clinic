@@ -1,6 +1,7 @@
 package com.joanna.onlineclinic.domain.appointment;
 
 import com.joanna.onlineclinic.domain.AbstractRepositoryStub;
+import com.joanna.onlineclinic.domain.doctor.Doctor;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -34,5 +35,15 @@ public class AppointmentRepositoryStub
                         || appointment.getDate().isEqual(LocalDate.now())
                         && appointment.getTime().isAfter(LocalTime.now())))
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public Appointment findByDoctorAndDateAndTime(Doctor doctor, LocalDate date, LocalTime time) {
+        return store.values().stream()
+                .filter(appointment -> appointment.getDoctor().equals(doctor)
+                        && appointment.getDate().equals(date)
+                        && appointment.getTime().equals(time))
+                .findFirst()
+                .orElse(null);
     }
 }

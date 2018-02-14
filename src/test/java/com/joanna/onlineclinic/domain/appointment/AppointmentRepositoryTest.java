@@ -147,4 +147,23 @@ public class AppointmentRepositoryTest {
         assertEquals(time, found.get(0).getTime());
     }
 
+    @Test
+    public void shouldFindByDoctorAndDateAndTime() {
+        // given
+        LocalDate date = LocalDate.of(2017, 9, 12);
+        LocalTime time = LocalTime.of(18, 00);
+        Doctor doctor = doctorRepository.findOne(doctor1Id);
+        Appointment appointment = new Appointment(doctor, date, time);
+
+        long appointmentId = appointmentRepository.save(appointment).getId();
+
+        // when
+        Appointment found = appointmentRepository.findByDoctorAndDateAndTime(doctor, date, time);
+
+        // then
+        assertEquals(doctor, found.getDoctor());
+        assertEquals(date, found.getDate());
+        assertEquals(time, found.getTime());
+        assertEquals(appointmentId, found.getId());
+    }
 }

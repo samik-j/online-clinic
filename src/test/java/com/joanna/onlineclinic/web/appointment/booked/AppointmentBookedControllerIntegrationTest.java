@@ -7,6 +7,7 @@ import com.joanna.onlineclinic.domain.appointment.Appointment;
 import com.joanna.onlineclinic.domain.appointment.AppointmentRepository;
 import com.joanna.onlineclinic.domain.appointment.booked.AppointmentBooked;
 import com.joanna.onlineclinic.domain.appointment.booked.AppointmentBookedRepository;
+import com.joanna.onlineclinic.domain.appointment.booked.AppointmentBookedStatus;
 import com.joanna.onlineclinic.domain.doctor.Doctor;
 import com.joanna.onlineclinic.domain.doctor.DoctorRepository;
 import com.joanna.onlineclinic.domain.doctor.Specialty;
@@ -24,6 +25,7 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -33,6 +35,7 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -65,6 +68,7 @@ public class AppointmentBookedControllerIntegrationTest {
     private long doctorId;
     private long appointment1Id;
     private long appointment2Id;
+    private long appointmentBookedId;
 
     @Before
     public void setupDatabase() {
@@ -82,12 +86,10 @@ public class AppointmentBookedControllerIntegrationTest {
 
         appointment1Id = saveAppointment(
                 doctor, LocalDate.now().plusDays(5), LocalTime.of(15, 0)).getId();
+        appointment2Id = saveAppointment(
+                doctor, LocalDate.now().plusDays(5), LocalTime.of(12, 0)).getId();
 
-        Appointment appointment2 = saveAppointment(
-                doctor, LocalDate.now().plusDays(5), LocalTime.of(12, 0));
-        appointment2Id = appointment2.getId();
-
-        saveAppointmentBooked(appointment2Id, patient, "Sick");
+        appointmentBookedId = saveAppointmentBooked(appointment2Id, patient, "Sick").getId();
     }
 
     @After
@@ -112,7 +114,9 @@ public class AppointmentBookedControllerIntegrationTest {
                 .andExpect(jsonPath("$[0].date", is(LocalDate.now().plusDays(5).toString())))
                 .andExpect(jsonPath("$[0].time", is(LocalTime.of(12, 0).toString())))
                 .andExpect(jsonPath("$[0].patientId", is((int) patientId)))
-                .andExpect(jsonPath("$[0].reason", is("Sick")));
+                .andExpect(jsonPath("$[0].reason", is("Sick")))
+                .andExpect(jsonPath("$[0].status",
+                        is(AppointmentBookedStatus.NOT_CONFIRMED.toString())));
     }
 
     @Test
@@ -129,7 +133,9 @@ public class AppointmentBookedControllerIntegrationTest {
                 .andExpect(jsonPath("$[0].date", is(LocalDate.now().plusDays(5).toString())))
                 .andExpect(jsonPath("$[0].time", is(LocalTime.of(12, 0).toString())))
                 .andExpect(jsonPath("$[0].patientId", is((int) patientId)))
-                .andExpect(jsonPath("$[0].reason", is("Sick")));
+                .andExpect(jsonPath("$[0].reason", is("Sick")))
+                .andExpect(jsonPath("$[0].status",
+                        is(AppointmentBookedStatus.NOT_CONFIRMED.toString())));
     }
 
     @Test
@@ -150,7 +156,9 @@ public class AppointmentBookedControllerIntegrationTest {
                 .andExpect(jsonPath("$.date", is(LocalDate.now().plusDays(5).toString())))
                 .andExpect(jsonPath("$.time", is(LocalTime.of(15, 0).toString())))
                 .andExpect(jsonPath("$.patientId", is((int) patientId)))
-                .andExpect(jsonPath("$.reason", is("Sick")));
+                .andExpect(jsonPath("$.reason", is("Sick")))
+                .andExpect(jsonPath("$.status",
+                        is(AppointmentBookedStatus.NOT_CONFIRMED.toString())));
     }
 
     @Test
@@ -191,6 +199,67 @@ public class AppointmentBookedControllerIntegrationTest {
                                 "Appointment not available", "Appointment already booked"))));
     }
 
+    @Test
+    public void shouldChangeStatusSuccess200Ok() throws Exception {
+        // given
+        AppointmentBookedStatusChangeResource resource = new AppointmentBookedStatusChangeResource();
+        resource.setStatus(AppointmentBookedStatus.CONFIRMED);
+
+        // when
+        ResultActions result = mockMvc.perform(
+                put("/appointmentsBooked/{appointmentId}?action=changeStatus",
+                        appointmentBookedId)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(asJsonString(resource)));
+
+        // then
+        result.andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+                .andExpect(jsonPath("$.doctorId", is((int) doctorId)))
+                .andExpect(jsonPath("$.date", is(LocalDate.now().plusDays(5).toString())))
+                .andExpect(jsonPath("$.time", is(LocalTime.of(12, 0).toString())))
+                .andExpect(jsonPath("$.patientId", is((int) patientId)))
+                .andExpect(jsonPath("$.reason", is("Sick")))
+                .andExpect(jsonPath("$.status",
+                        is(AppointmentBookedStatus.CONFIRMED.toString())));
+    }
+
+    @Test
+    public void shouldChangeStatusFailIfAppointmentWasNotFound404NotFound() throws Exception {
+        // given
+        AppointmentBookedStatusChangeResource resource = new AppointmentBookedStatusChangeResource();
+        resource.setStatus(AppointmentBookedStatus.CONFIRMED);
+
+        // when
+        ResultActions result = mockMvc.perform(
+                put("/appointmentsBooked/{appointmentId}?action=changeStatus", 0)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(asJsonString(resource)));
+
+        // then
+        result.andExpect(status().isNotFound());
+    }
+
+    @Test
+    public void shouldChangeStatusFailIfResourceValidationFails400BadRequest() throws Exception {
+        // given
+        AppointmentBookedStatusChangeResource resource = new AppointmentBookedStatusChangeResource();
+        resource.setStatus(AppointmentBookedStatus.NOT_CONFIRMED);
+
+        // when
+        ResultActions result = mockMvc.perform(
+                put("/appointmentsBooked/{appointmentId}?action=changeStatus",
+                        appointmentBookedId)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(asJsonString(resource)));
+
+        // then
+        result.andExpect(status().isBadRequest())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+                .andExpect(jsonPath("$.validationErrors",
+                        is(Arrays.asList("Status already changed"))));
+    }
+
     private AppointmentBooked saveAppointmentBooked(
             long appointmentId, Patient patient, String reason) {
         Appointment appointment = appointmentRepository.findOne(appointmentId);
@@ -200,7 +269,7 @@ public class AppointmentBookedControllerIntegrationTest {
                 patient, reason);
 
         appointment.book();
-        //doctor.addAppointmentBooked(appointmentBooked);
+       // doctor.addAppointmentBooked(appointmentBooked);
         // to nie dziala bo nie ma sesji, jak nie ma sesji to nie wczyta nic lazy, inne .add dzialaja bo przekazuje obiekty a nie wczytuje ich z bazy danych
         //patient.addAppointmentBooked(appointmentBooked);
 

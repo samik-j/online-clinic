@@ -19,7 +19,7 @@ public class AppointmentTest {
         // given
         Doctor doctor = new Doctor("First", "Last", Specialty.PEDIATRICIAN);
         LocalDate date = LocalDate.of(2017, 9, 12);
-        LocalTime time = LocalTime.of(18, 00);
+        LocalTime time = LocalTime.of(18, 0);
 
         // when
         Appointment appointment = new Appointment(doctor, date, time);
@@ -36,7 +36,7 @@ public class AppointmentTest {
         // given
         Doctor doctor = new Doctor("First", "Last", Specialty.PEDIATRICIAN);
         LocalDate date = LocalDate.of(2017, 9, 12);
-        LocalTime time = LocalTime.of(18, 00);
+        LocalTime time = LocalTime.of(18, 0);
         Appointment appointment = new Appointment(doctor, date, time);
 
         // when
@@ -51,11 +51,39 @@ public class AppointmentTest {
         // given
         Doctor doctor = new Doctor("First", "Last", Specialty.PEDIATRICIAN);
         LocalDate date = LocalDate.of(2017, 9, 12);
-        LocalTime time = LocalTime.of(18, 00);
+        LocalTime time = LocalTime.of(18, 0);
         Appointment appointment = new Appointment(doctor, date, time);
         appointment.book();
 
         // expect
-        assertThrows(IncorrectAppointmentAvailabilityException.class, () -> appointment.book());
+        assertThrows(IncorrectObjectStateException.class, appointment::book);
+    }
+
+    @Test
+    public void shouldCancel() {
+        // given
+        Doctor doctor = new Doctor("First", "Last", Specialty.PEDIATRICIAN);
+        LocalDate date = LocalDate.of(2017, 9, 12);
+        LocalTime time = LocalTime.of(18, 0);
+        Appointment appointment = new Appointment(doctor, date, time);
+        appointment.book();
+
+        // when
+        appointment.cancel();
+
+        // then
+        assertTrue(appointment.isAvailable());
+    }
+
+    @Test
+    public void cancelShouldThrowExceptionIfIsAvailable() {
+        // given
+        Doctor doctor = new Doctor("First", "Last", Specialty.PEDIATRICIAN);
+        LocalDate date = LocalDate.of(2017, 9, 12);
+        LocalTime time = LocalTime.of(18, 0);
+        Appointment appointment = new Appointment(doctor, date, time);
+
+        // expect
+        assertThrows(IncorrectObjectStateException.class, appointment::cancel);
     }
 }

@@ -1,6 +1,7 @@
 package com.joanna.onlineclinic.domain.appointment.booked;
 
 import com.joanna.onlineclinic.domain.BaseEntity;
+import com.joanna.onlineclinic.domain.appointment.IncorrectObjectStateException;
 import com.joanna.onlineclinic.domain.doctor.Doctor;
 import com.joanna.onlineclinic.domain.patient.Patient;
 
@@ -69,6 +70,14 @@ public class AppointmentBooked implements BaseEntity {
 
     public AppointmentBookedStatus getStatus() {
         return status;
+    }
+
+    void changeStatus(AppointmentBookedStatus status) {
+        if (!this.status.equals(status)) {
+            this.status = status;
+        } else {
+            throw new IncorrectObjectStateException("Status is the same");
+        }
     }
 
     @Override

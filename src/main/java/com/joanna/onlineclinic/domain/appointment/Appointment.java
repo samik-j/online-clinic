@@ -57,7 +57,15 @@ public class Appointment implements BaseEntity {
         if (available) {
             available = false;
         } else {
-            throw new IncorrectAppointmentAvailabilityException("Appointment not available");
+            throw new IncorrectObjectStateException("Appointment is not available");
+        }
+    }
+
+    public void cancel() {
+        if (!available) {
+            available = true;
+        } else {
+            throw new IncorrectObjectStateException("Appointment is available");
         }
     }
 

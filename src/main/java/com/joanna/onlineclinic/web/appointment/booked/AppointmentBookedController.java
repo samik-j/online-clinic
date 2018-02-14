@@ -3,6 +3,7 @@ package com.joanna.onlineclinic.web.appointment.booked;
 import com.joanna.onlineclinic.domain.appointment.booked.AppointmentBooked;
 import com.joanna.onlineclinic.domain.appointment.booked.AppointmentBookedService;
 import com.joanna.onlineclinic.web.ErrorsResource;
+import com.joanna.onlineclinic.web.ResourceNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -17,13 +18,16 @@ import java.util.stream.Collectors;
 public class AppointmentBookedController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AppointmentBookedController.class);
-    private AppointmentBookedCreationResourceValidator validator;
-    private AppointmentBookedService service;
+    private AppointmentBookedCreationValidator creationValidator;
+    private AppointmentBookedStatusChangeValidator statusChangeValidator;
+    private AppointmentBookedService appointmentBookedService;
 
-    public AppointmentBookedController(AppointmentBookedCreationResourceValidator validator,
-                                       AppointmentBookedService service) {
-        this.validator = validator;
-        this.service = service;
+    public AppointmentBookedController(AppointmentBookedCreationValidator creationValidator,
+                                       AppointmentBookedStatusChangeValidator statusChangeValidator,
+                                       AppointmentBookedService appointmentBookedService) {
+        this.creationValidator = creationValidator;
+        this.statusChangeValidator = statusChangeValidator;
+        this.appointmentBookedService = appointmentBookedService;
     }
 
     @PostMapping
@@ -32,27 +36,57 @@ public class AppointmentBookedController {
         LOGGER.info("Booking appointment: appointment id: {}, patient id: {}, reason: {}",
                 resource.getAppointmentId(), resource.getPatientId(), resource.getReason());
 
-        ErrorsResource errorsResource = validator.validate(resource);
+        ErrorsResource errorsResource = creationValidator.validate(resource);
 
         if (errorsResource.getValidationErrors().isEmpty()) {
-            AppointmentBooked appointmentBooked = service.addAppointment(resource);
+            AppointmentBooked appointmentBooked = appointmentBookedService.addAppointment(resource);
 
             return new ResponseEntity<Object>(
                     getAppointmentBookedResource(appointmentBooked), HttpStatus.OK);
         } else {
             LOGGER.info("Failed: {}", errorsResource.getValidationErrors().toString());
+
+            return new ResponseEntity<Object>(errorsResource, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PutMapping(value = "/{appointmentId}", params = {"action=changeStatus"})
+    public ResponseEntity<Object> changeAppointmentStatus
+            (@PathVariable long appointmentId,
+             @RequestBody AppointmentBookedStatusChangeResource resource) {
+        LOGGER.info("Changing appointment status: appointment booked id: {}, new status: {}",
+                appointmentId, resource);
+
+        validateAppointmentExistence(appointmentId);
+        ErrorsResource errorsResource = statusChangeValidator.validate(appointmentId, resource);
+
+        if (errorsResource.getValidationErrors().isEmpty()) {
+            AppointmentBooked appointmentChanged =
+                    appointmentBookedService.changeStatus(appointmentId, resource);
+
+            return new ResponseEntity<Object>(
+                    getAppointmentBookedResource(appointmentChanged), HttpStatus.OK);
+        } else {
+            LOGGER.info("Failed: {}", errorsResource.getValidationErrors().toString());
+
             return new ResponseEntity<Object>(errorsResource, HttpStatus.BAD_REQUEST);
         }
     }
 
     @GetMapping(params = {"doctorId"})
     public List<AppointmentBookedResource> getAppointmentsByDoctorId(@RequestParam long doctorId) {
-        return getAppointmentBookedResources(service.findByDoctorId(doctorId));
+        return getAppointmentBookedResources(appointmentBookedService.findByDoctorId(doctorId));
     }
 
     @GetMapping(params = {"patientId"})
     public List<AppointmentBookedResource> getAppointmentsByPatientId(@RequestParam long patientId) {
-        return getAppointmentBookedResources(service.findByPatientId(patientId));
+        return getAppointmentBookedResources(appointmentBookedService.findByPatientId(patientId));
+    }
+
+    private void validateAppointmentExistence(long appointmentId) {
+        if (!appointmentBookedService.appointmentBookedExists(appointmentId)) {
+            throw new ResourceNotFoundException();
+        }
     }
 
     private AppointmentBookedResource getAppointmentBookedResource(AppointmentBooked appointment) {

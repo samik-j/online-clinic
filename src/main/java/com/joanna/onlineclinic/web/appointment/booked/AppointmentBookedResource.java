@@ -2,6 +2,7 @@ package com.joanna.onlineclinic.web.appointment.booked;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.joanna.onlineclinic.domain.appointment.booked.AppointmentBooked;
+import com.joanna.onlineclinic.domain.appointment.booked.AppointmentBookedStatus;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -16,6 +17,7 @@ public class AppointmentBookedResource {
     private LocalTime time;
     private Long patientId;
     private String reason;
+    private AppointmentBookedStatus status;
 
     public AppointmentBookedResource() {
     }
@@ -27,6 +29,7 @@ public class AppointmentBookedResource {
         this.time = appointmentBooked.getTime();
         this.patientId = appointmentBooked.getPatient().getId();
         this.reason = appointmentBooked.getReason();
+        this.status = appointmentBooked.getStatus();
     }
 
     public long getId() {
@@ -75,5 +78,13 @@ public class AppointmentBookedResource {
 
     public void setReason(String reason) {
         this.reason = reason;
+    }
+
+    public AppointmentBookedStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(AppointmentBookedStatus status) {
+        this.status = status;
     }
 }

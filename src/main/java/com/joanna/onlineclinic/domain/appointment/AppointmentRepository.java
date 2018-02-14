@@ -1,5 +1,6 @@
 package com.joanna.onlineclinic.domain.appointment;
 
+import com.joanna.onlineclinic.domain.doctor.Doctor;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -28,4 +29,6 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
             @Param("doctorId") long doctorId,
             @Param("date") LocalDate date,
             @Param("time") LocalTime time);
+
+    Appointment findByDoctorAndDateAndTime(Doctor doctor, LocalDate date, LocalTime time);
 }

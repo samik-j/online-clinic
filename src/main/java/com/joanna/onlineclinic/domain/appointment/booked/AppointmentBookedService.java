@@ -1,5 +1,6 @@
 package com.joanna.onlineclinic.domain.appointment.booked;
 
+import com.joanna.onlineclinic.domain.ObjectNotFoundException;
 import com.joanna.onlineclinic.domain.appointment.Appointment;
 import com.joanna.onlineclinic.domain.appointment.AppointmentRepository;
 import com.joanna.onlineclinic.domain.doctor.Doctor;
@@ -7,6 +8,7 @@ import com.joanna.onlineclinic.domain.doctor.DoctorRepository;
 import com.joanna.onlineclinic.domain.patient.Patient;
 import com.joanna.onlineclinic.domain.patient.PatientRepository;
 import com.joanna.onlineclinic.web.appointment.booked.AppointmentBookedCreationResource;
+import com.joanna.onlineclinic.web.appointment.booked.AppointmentBookedStatusChangeResource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -39,6 +41,10 @@ public class AppointmentBookedService {
                 appointment.getDoctor().getId(), resource.getPatientId());
     }
 
+    public boolean appointmentBookedExists(long appointmentId) {
+        return appointmentBookedRepository.exists(appointmentId);
+    }
+
     @Transactional
     public AppointmentBooked addAppointment(AppointmentBookedCreationResource resource) {
         Appointment appointment = appointmentRepository.findOne(resource.getAppointmentId());
@@ -62,5 +68,35 @@ public class AppointmentBookedService {
 
     public List<AppointmentBooked> findByPatientId(long patientId) {
         return appointmentBookedRepository.findByPatientId(patientId);
+    }
+
+    public AppointmentBooked findById(long appointmentId) {
+        return appointmentBookedRepository.findOne(appointmentId);
+    }
+
+    @Transactional
+    public AppointmentBooked changeStatus(long appointmentId, AppointmentBookedStatusChangeResource resource) {
+        AppointmentBooked appointmentBooked = appointmentBookedRepository.findOne(appointmentId);
+
+        appointmentBooked.changeStatus(resource.getStatus());
+
+        if (resource.getStatus().equals(AppointmentBookedStatus.CANCELLED)) {
+            cancelAppointment(appointmentBooked);
+        }
+
+        return appointmentBookedRepository.save(appointmentBooked);
+    }
+
+    private void cancelAppointment(AppointmentBooked appointmentBooked) {
+        Appointment appointment = appointmentRepository.findByDoctorAndDateAndTime(
+                appointmentBooked.getDoctor(), appointmentBooked.getDate(),
+                appointmentBooked.getTime());
+
+        if (appointment != null) {
+            appointment.cancel();
+            appointmentRepository.save(appointment);
+        } else {
+            throw new ObjectNotFoundException();
+        }
     }
 }
