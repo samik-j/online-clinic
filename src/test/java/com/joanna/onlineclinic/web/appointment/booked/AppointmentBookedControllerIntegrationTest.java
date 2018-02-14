@@ -47,6 +47,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @TestPropertySource(
         locations = "classpath:application-integrationtest.properties")
+@Transactional
 public class AppointmentBookedControllerIntegrationTest {
 
     @Autowired
@@ -90,14 +91,6 @@ public class AppointmentBookedControllerIntegrationTest {
                 doctor, LocalDate.now().plusDays(5), LocalTime.of(12, 0)).getId();
 
         appointmentBookedId = saveAppointmentBooked(appointment2Id, patient, "Sick").getId();
-    }
-
-    @After
-    public void cleanDatabase() {
-        appointmentRepository.deleteAll();
-        appointmentBookedRepository.deleteAll();
-        doctorRepository.deleteAll();
-        patientRepository.deleteAll();
     }
 
     @Test
@@ -269,9 +262,8 @@ public class AppointmentBookedControllerIntegrationTest {
                 patient, reason);
 
         appointment.book();
-       // doctor.addAppointmentBooked(appointmentBooked);
-        // to nie dziala bo nie ma sesji, jak nie ma sesji to nie wczyta nic lazy, inne .add dzialaja bo przekazuje obiekty a nie wczytuje ich z bazy danych
-        //patient.addAppointmentBooked(appointmentBooked);
+        doctor.addAppointmentBooked(appointmentBooked);
+        patient.addAppointmentBooked(appointmentBooked);
 
         AppointmentBooked appointmentSaved = appointmentBookedRepository.save(appointmentBooked);
         doctorRepository.save(doctor);
@@ -285,7 +277,7 @@ public class AppointmentBookedControllerIntegrationTest {
         Appointment appointment = new Appointment(
                 doctor, date, time);
 
-        //doctor.addAppointment(appointment);
+        doctor.addAppointment(appointment);
         Appointment appointmentSaved = appointmentRepository.save(appointment);
         doctorRepository.save(doctor);
 
