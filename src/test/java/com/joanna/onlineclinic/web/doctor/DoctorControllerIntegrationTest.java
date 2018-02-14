@@ -105,6 +105,15 @@ public class DoctorControllerIntegrationTest {
     }
 
     @Test
+    public void shouldGetDoctorFailIfIdDoesNotExist404NotFound() throws Exception {
+        // when
+        ResultActions result = mockMvc.perform(get("/doctors/{doctorId}", 0));
+
+        // then
+        result.andExpect(status().isNotFound());
+    }
+
+    @Test
     public void shouldAddDoctorSuccess() throws Exception {
         // given
         DoctorResource resource = createDoctorResource(
