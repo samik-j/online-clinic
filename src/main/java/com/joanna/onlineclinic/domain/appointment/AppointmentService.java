@@ -52,6 +52,13 @@ public class AppointmentService {
         return appointmentRepository.findAvailable(doctorId, LocalDate.now(), LocalTime.now());
     }
 
+    public List<Appointment> findAvailableAppointments(long doctorId, LocalDate date) {
+        if (date.equals(LocalDate.now())) {
+            return appointmentRepository.findAvailableOnDay(doctorId, date, LocalTime.now());
+        }
+        return appointmentRepository.findAvailableOnDay(doctorId, date);
+    }
+
     public boolean isAvailable(long appointmentId) {
         return appointmentRepository.findOne(appointmentId).isAvailable();
     }

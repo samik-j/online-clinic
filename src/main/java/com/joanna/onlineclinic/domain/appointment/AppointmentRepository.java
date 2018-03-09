@@ -32,5 +32,25 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
             @Param("date") LocalDate date,
             @Param("time") LocalTime time);
 
+    @Query("SELECT appointment FROM Appointment appointment WHERE " +
+            "appointment.doctor.id = :doctorId AND " +
+            "appointment.available = true AND " +
+            "appointment.date = :date " +
+            "ORDER BY appointment.date, appointment.time")
+    List<Appointment> findAvailableOnDay(
+            @Param("doctorId") long doctorId,
+            @Param("date") LocalDate date);
+
+    @Query("SELECT appointment FROM Appointment appointment WHERE " +
+            "appointment.doctor.id = :doctorId AND " +
+            "appointment.available = true AND " +
+            "(appointment.date = :date AND " +
+            "appointment.time > :time)" +
+            "ORDER BY appointment.date, appointment.time")
+    List<Appointment> findAvailableOnDay(
+            @Param("doctorId") long doctorId,
+            @Param("date") LocalDate date,
+            @Param("time") LocalTime time);
+
     Appointment findByDoctorAndDateAndTime(Doctor doctor, LocalDate date, LocalTime time);
 }

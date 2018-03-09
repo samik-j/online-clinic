@@ -7,10 +7,12 @@ import com.joanna.onlineclinic.web.ErrorsResource;
 import com.joanna.onlineclinic.web.ResourceNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -66,6 +68,15 @@ public class AppointmentController {
         validateDoctorExistence(doctorId);
 
         return getAppointmentResources(appointmentService.findAvailableAppointments(doctorId));
+    }
+
+    @GetMapping(params = {"available=true", "date"})
+    public List<AppointmentResource> getAvailableAppointments(
+            @PathVariable long doctorId,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
+        validateDoctorExistence(doctorId);
+
+        return getAppointmentResources(appointmentService.findAvailableAppointments(doctorId, date));
     }
 
     private void validateDoctorExistence(@PathVariable long doctorId) {

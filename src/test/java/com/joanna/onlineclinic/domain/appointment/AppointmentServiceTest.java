@@ -133,6 +133,45 @@ public class AppointmentServiceTest {
     }
 
     @Test
+    public void shouldFindAvailableAppointmentsGivenDate() {
+        // when
+        LocalDate date = LocalDate.now().plusDays(2);
+        List<Appointment> result = service.findAvailableAppointments(doctorId, date);
+
+        // then
+        assertEquals(1, result.size());
+        assertEquals(doctorId, result.get(0).getDoctor().getId());
+        assertEquals(LocalDate.now().plusDays(2), result.get(0).getDate());
+        assertEquals(LocalTime.of(12, 0), result.get(0).getTime());
+    }
+
+    @Test
+    public void shouldFindAvailableAppointmentsGivenDateIfNow() {
+        // when
+        Doctor doctor = doctorRepository.findOne(doctorId);
+        LocalTime timeNow = LocalTime.now();
+        Appointment appointment1 = new Appointment(
+                doctor, LocalDate.now(), timeNow.minusHours(1));
+        Appointment appointment2 = new Appointment(
+                doctor, LocalDate.now(), timeNow.plusHours(1));
+
+        doctor.addAppointment(appointment1);
+        doctor.addAppointment(appointment2);
+
+        appointmentRepository.save(appointment1);
+        appointmentRepository.save(appointment2);
+
+        doctorRepository.save(doctor);
+        List<Appointment> result = service.findAvailableAppointments(doctorId, LocalDate.now());
+
+        // then
+        assertEquals(1, result.size());
+        assertEquals(doctorId, result.get(0).getDoctor().getId());
+        assertEquals(LocalDate.now(), result.get(0).getDate());
+        assertEquals(timeNow.plusHours(1), result.get(0).getTime());
+    }
+
+    @Test
     public void shouldReturnTrueIfAppointmentIsAvailable() {
         // when
         boolean result = service.isAvailable(appointment1Id);
