@@ -17,14 +17,16 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
             @Param("time") LocalTime time);
 
     @Query("SELECT appointment FROM Appointment appointment WHERE " +
-            "appointment.doctor.id = :doctorId")
+            "appointment.doctor.id = :doctorId " +
+            "ORDER BY appointment.date, appointment.time")
     List<Appointment> findAll(@Param("doctorId") long doctorId);
 
     @Query("SELECT appointment FROM Appointment appointment WHERE " +
             "appointment.doctor.id = :doctorId AND " +
             "appointment.available = true AND " +
             "appointment.date > :date OR " +
-            "(appointment.date = :date AND appointment.time > :time)")
+            "(appointment.date = :date AND appointment.time > :time) " +
+            "ORDER BY appointment.date, appointment.time")
     List<Appointment> findAvailable(
             @Param("doctorId") long doctorId,
             @Param("date") LocalDate date,
