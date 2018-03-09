@@ -36,7 +36,7 @@ public class AppointmentService {
     }
 
     public boolean appointmentExists(long doctorId, AppointmentCreationResource resource) {
-        return appointmentRepository.existsByDoctorIdAndAndDateAndTime(
+        return appointmentRepository.existsByDoctorIdAndDateAndTime(
                 doctorId, resource.getDate(), resource.getTime());
     }
 

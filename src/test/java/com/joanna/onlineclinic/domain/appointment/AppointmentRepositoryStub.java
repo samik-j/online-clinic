@@ -13,7 +13,7 @@ public class AppointmentRepositoryStub
 
 
     @Override
-    public boolean existsByDoctorIdAndAndDateAndTime(long doctorId, LocalDate date, LocalTime time) {
+    public boolean existsByDoctorIdAndDateAndTime(long doctorId, LocalDate date, LocalTime time) {
         return store.values().stream()
                 .anyMatch(appointment -> appointment.getDoctor().getId() == doctorId
                         && appointment.getDate().equals(date)

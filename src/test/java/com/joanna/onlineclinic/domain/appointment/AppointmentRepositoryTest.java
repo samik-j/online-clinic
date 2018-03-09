@@ -50,7 +50,7 @@ public class AppointmentRepositoryTest {
         appointmentRepository.save(appointment);
 
         // when
-        boolean result = appointmentRepository.existsByDoctorIdAndAndDateAndTime(doctor1Id, date, time);
+        boolean result = appointmentRepository.existsByDoctorIdAndDateAndTime(doctor1Id, date, time);
         // then
         assertTrue(result);
     }
@@ -62,7 +62,7 @@ public class AppointmentRepositoryTest {
         LocalTime time = LocalTime.of(18, 00);
 
         // when
-        boolean result = appointmentRepository.existsByDoctorIdAndAndDateAndTime(doctor1Id, date, time);
+        boolean result = appointmentRepository.existsByDoctorIdAndDateAndTime(doctor1Id, date, time);
 
         // then
         assertFalse(result);
