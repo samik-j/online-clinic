@@ -3,6 +3,7 @@ package com.joanna.onlineclinic.web.patient;
 import com.joanna.onlineclinic.domain.patient.Patient;
 import com.joanna.onlineclinic.domain.patient.PatientService;
 import com.joanna.onlineclinic.web.ErrorsResource;
+import com.joanna.onlineclinic.web.ResourceNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -46,6 +47,17 @@ public class PatientController {
     @GetMapping
     public List<PatientResource> getPatients() {
         return getPatientResourceList(service.findAll());
+    }
+
+    @GetMapping("/{patientId}")
+    public PatientResource getPatient(@PathVariable long patientId) {
+        Patient patient = service.findById(patientId);
+
+        if(patient != null) {
+            return getPatientResource(patient);
+        } else {
+            throw new ResourceNotFoundException();
+        }
     }
 
     private PatientResource getPatientResource(Patient patient) {
