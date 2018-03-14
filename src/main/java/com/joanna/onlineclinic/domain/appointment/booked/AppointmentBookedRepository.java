@@ -1,6 +1,7 @@
 package com.joanna.onlineclinic.domain.appointment.booked;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDate;
@@ -17,5 +18,8 @@ public interface AppointmentBookedRepository extends JpaRepository<AppointmentBo
 
     List<AppointmentBooked> findByDoctorId(long doctorId);
 
-    List<AppointmentBooked> findByPatientId(long patientId);
+    @Query("SELECT appointment FROM AppointmentBooked appointment WHERE " +
+            "appointment.patient.id = :patientId " +
+            "ORDER BY appointment.date DESC, appointment.time DESC")
+    List<AppointmentBooked> findByPatientId(@Param("patientId")long patientId);
 }
