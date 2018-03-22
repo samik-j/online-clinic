@@ -33,4 +33,15 @@ public class AppointmentBookedRepositoryStub
                 .filter(appointment -> appointment.getPatient().getId() == patientId)
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public List<AppointmentBooked> findCurrentByPatientId(long patientId, LocalDate date) {
+        return null;
+    }
+
+    @Override
+    public List<AppointmentBooked> findPastByPatientId(long patientId, LocalDate date) {
+        return null;
+    }
+
 }

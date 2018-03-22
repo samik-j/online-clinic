@@ -83,6 +83,13 @@ public class AppointmentBookedController {
         return getAppointmentBookedResources(appointmentBookedService.findByPatientId(patientId));
     }
 
+    @GetMapping(params= {"patientId", "current"})
+    public List<AppointmentBookedResource> geAppointmentsByPatientId(
+            @RequestParam long patientId,
+            @RequestParam boolean current) {
+        return getAppointmentBookedResources(appointmentBookedService.findByPatientId(patientId, current));
+    }
+
     private void validateAppointmentExistence(long appointmentId) {
         if (!appointmentBookedService.appointmentBookedExists(appointmentId)) {
             throw new ResourceNotFoundException();

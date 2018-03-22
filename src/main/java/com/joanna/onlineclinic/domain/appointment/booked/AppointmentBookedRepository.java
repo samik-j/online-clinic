@@ -22,4 +22,17 @@ public interface AppointmentBookedRepository extends JpaRepository<AppointmentBo
             "appointment.patient.id = :patientId " +
             "ORDER BY appointment.date DESC, appointment.time DESC")
     List<AppointmentBooked> findByPatientId(@Param("patientId")long patientId);
+
+    @Query("SELECT appointment FROM AppointmentBooked appointment WHERE " +
+            "appointment.date >= :date AND " +
+            "appointment.patient.id = :patientId " +
+            "ORDER BY appointment.date DESC, appointment.time DESC")
+    List<AppointmentBooked> findCurrentByPatientId(@Param("patientId") long patientId, @Param("date") LocalDate date);
+
+    @Query("SELECT appointment FROM AppointmentBooked appointment WHERE " +
+            "appointment.date < :date AND " +
+            "appointment.patient.id = :patientId " +
+            "ORDER BY appointment.date DESC, appointment.time DESC")
+    List<AppointmentBooked> findPastByPatientId(@Param("patientId") long patientId, @Param("date") LocalDate date);
+
 }

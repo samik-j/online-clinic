@@ -12,6 +12,7 @@ import com.joanna.onlineclinic.web.appointment.booked.AppointmentBookedStatusCha
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -97,6 +98,14 @@ public class AppointmentBookedService {
             appointmentRepository.save(appointment);
         } else {
             throw new ObjectNotFoundException();
+        }
+    }
+
+    public List<AppointmentBooked> findByPatientId(long patientId, boolean current) {
+        if (current) {
+            return appointmentBookedRepository.findCurrentByPatientId(patientId, LocalDate.now());
+        } else {
+            return appointmentBookedRepository.findPastByPatientId(patientId, LocalDate.now());
         }
     }
 }
