@@ -11,6 +11,7 @@ public class AppointmentBookedResource {
 
     private long id;
     private long doctorId;
+    private String doctorName;
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate date;
     @JsonFormat(pattern = "HH:mm")
@@ -25,6 +26,7 @@ public class AppointmentBookedResource {
     AppointmentBookedResource(AppointmentBooked appointmentBooked) {
         this.id = appointmentBooked.getId();
         this.doctorId = appointmentBooked.getDoctor().getId();
+        this.doctorName = appointmentBooked.getDoctor().getFirstName() + " " + appointmentBooked.getDoctor().getLastName();
         this.date = appointmentBooked.getDate();
         this.time = appointmentBooked.getTime();
         this.patientId = appointmentBooked.getPatient().getId();
@@ -46,6 +48,14 @@ public class AppointmentBookedResource {
 
     public void setDoctorId(long doctorId) {
         this.doctorId = doctorId;
+    }
+
+    public String getDoctorName() {
+        return doctorName;
+    }
+
+    public void setDoctorName(String doctorName) {
+        this.doctorName = doctorName;
     }
 
     public LocalDate getDate() {
