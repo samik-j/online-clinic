@@ -28,7 +28,8 @@ public class AppointmentServiceTest {
 
     @Before
     public void saveEntities() {
-        Doctor doctor = new Doctor("First", "Last", Specialty.PEDIATRICIAN);
+        Doctor doctor = new Doctor(
+                "First", "Last", "doctor@domain.com", Specialty.PEDIATRICIAN);
         doctorId = doctorRepository.save(doctor).getId();
 
         Appointment appointment1 = new Appointment(

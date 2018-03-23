@@ -48,8 +48,10 @@ public class DoctorControllerIntegrationTest {
 
     @Before
     public void createDoctors() {
-        Doctor doctor1 = new Doctor("First1", "Last1", Specialty.PEDIATRICIAN);
-        Doctor doctor2 = new Doctor("First2", "Last2", Specialty.GYNAECOLOGIST);
+        Doctor doctor1 = new Doctor(
+                "First1", "Last1", "doctor1@domain.com", Specialty.PEDIATRICIAN);
+        Doctor doctor2 = new Doctor(
+                "First2", "Last2", "doctor2@domain.com", Specialty.GYNAECOLOGIST);
 
         doctor1Id = doctorRepository.save(doctor1).getId();
         doctorRepository.save(doctor2);
@@ -117,7 +119,7 @@ public class DoctorControllerIntegrationTest {
     public void shouldAddDoctorSuccess() throws Exception {
         // given
         DoctorResource resource = createDoctorResource(
-                "First", "Last", Specialty.DERMATOLOGIST);
+                "First", "Last","doctor@domain.com", Specialty.DERMATOLOGIST);
 
         // when
         ResultActions result = mockMvc.perform(post("/doctors")
@@ -136,7 +138,7 @@ public class DoctorControllerIntegrationTest {
     public void shouldAddDoctorFailIfResourceValidationFails400BadRequest() throws Exception {
         // given
         DoctorResource resource = createDoctorResource(
-                "", "Last", Specialty.DERMATOLOGIST);
+                "", "Last", "doctor@domain.com", Specialty.DERMATOLOGIST);
 
         // when
         ResultActions result = mockMvc.perform(post("/doctors")
@@ -159,11 +161,12 @@ public class DoctorControllerIntegrationTest {
     }
 
     private DoctorResource createDoctorResource(
-            String firstName, String lastName, Specialty specialty) {
+            String firstName, String lastName, String email, Specialty specialty) {
         DoctorResource resource = new DoctorResource();
 
         resource.setFirstName(firstName);
         resource.setLastName(lastName);
+        resource.setEmail(email);
         resource.setSpecialty(specialty);
 
         return resource;

@@ -18,6 +18,8 @@ public class Doctor implements BaseEntity {
     private String firstName;
     @Column(nullable = false)
     private String lastName;
+    @Column(nullable = false, unique = true)
+    private String email;
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private Specialty specialty;
@@ -29,9 +31,10 @@ public class Doctor implements BaseEntity {
     Doctor() {
     }
 
-    public Doctor(String firstName, String lastName, Specialty specialty) {
+    public Doctor(String firstName, String lastName, String email, Specialty specialty) {
         this.firstName = firstName;
         this.lastName = lastName;
+        this.email = email;
         this.specialty = specialty;
         this.appointments = new HashSet<>();
         this.appointmentsBooked = new HashSet<>();
@@ -47,6 +50,10 @@ public class Doctor implements BaseEntity {
 
     public String getLastName() {
         return lastName;
+    }
+
+    public String getEmail() {
+        return email;
     }
 
     public Specialty getSpecialty() {

@@ -53,8 +53,10 @@ public class AppointmentControllerIntegrationTest {
 
     @Before
     public void setupDatabase() {
-        Doctor doctor1 = new Doctor("First", "Last", Specialty.PEDIATRICIAN);
-        Doctor doctor2 = new Doctor("First", "Last", Specialty.PEDIATRICIAN);
+        Doctor doctor1 = new Doctor(
+                "First", "Last", "doctor1@domain.com", Specialty.PEDIATRICIAN);
+        Doctor doctor2 = new Doctor(
+                "First", "Last", "doctor2@domain.com", Specialty.PEDIATRICIAN);
 
         doctor1Id = doctorRepository.save(doctor1).getId();
         doctor2Id = doctorRepository.save(doctor2).getId();

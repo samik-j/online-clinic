@@ -14,4 +14,10 @@ public class DoctorRepositoryStub
                 .filter(doctor -> doctor.getSpecialty().equals(specialty))
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public boolean existsByEmail(String email) {
+        return store.values().stream()
+                .anyMatch(doctor -> doctor.getEmail().equals(email));
+    }
 }

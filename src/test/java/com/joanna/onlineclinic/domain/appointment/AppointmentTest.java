@@ -17,7 +17,8 @@ public class AppointmentTest {
     @Test
     public void shouldCreateAppointment() {
         // given
-        Doctor doctor = new Doctor("First", "Last", Specialty.PEDIATRICIAN);
+        Doctor doctor = new Doctor(
+                "First", "Last","doctor@domain.com", Specialty.PEDIATRICIAN);
         LocalDate date = LocalDate.of(2017, 9, 12);
         LocalTime time = LocalTime.of(18, 0);
 
@@ -34,7 +35,8 @@ public class AppointmentTest {
     @Test
     public void shouldBook() {
         // given
-        Doctor doctor = new Doctor("First", "Last", Specialty.PEDIATRICIAN);
+        Doctor doctor = new Doctor(
+                "First", "Last", "doctor@domain.com", Specialty.PEDIATRICIAN);
         LocalDate date = LocalDate.of(2017, 9, 12);
         LocalTime time = LocalTime.of(18, 0);
         Appointment appointment = new Appointment(doctor, date, time);
@@ -49,7 +51,8 @@ public class AppointmentTest {
     @Test
     public void bookShouldThrowExceptionIfIsNotAvailable() {
         // given
-        Doctor doctor = new Doctor("First", "Last", Specialty.PEDIATRICIAN);
+        Doctor doctor = new Doctor(
+                "First", "Last", "doctor@domain.com", Specialty.PEDIATRICIAN);
         LocalDate date = LocalDate.of(2017, 9, 12);
         LocalTime time = LocalTime.of(18, 0);
         Appointment appointment = new Appointment(doctor, date, time);
@@ -62,7 +65,8 @@ public class AppointmentTest {
     @Test
     public void shouldCancel() {
         // given
-        Doctor doctor = new Doctor("First", "Last", Specialty.PEDIATRICIAN);
+        Doctor doctor = new Doctor(
+                "First", "Last", "doctor@domain.com", Specialty.PEDIATRICIAN);
         LocalDate date = LocalDate.of(2017, 9, 12);
         LocalTime time = LocalTime.of(18, 0);
         Appointment appointment = new Appointment(doctor, date, time);
@@ -78,7 +82,8 @@ public class AppointmentTest {
     @Test
     public void cancelShouldThrowExceptionIfIsAvailable() {
         // given
-        Doctor doctor = new Doctor("First", "Last", Specialty.PEDIATRICIAN);
+        Doctor doctor = new Doctor(
+                "First", "Last", "doctor@domain.com", Specialty.PEDIATRICIAN);
         LocalDate date = LocalDate.of(2017, 9, 12);
         LocalTime time = LocalTime.of(18, 0);
         Appointment appointment = new Appointment(doctor, date, time);

@@ -8,6 +8,7 @@ public class DoctorResource {
     private long id;
     private String firstName;
     private String lastName;
+    private String email;
     private Specialty specialty;
 
     public DoctorResource() {
@@ -17,6 +18,7 @@ public class DoctorResource {
         this.id = doctor.getId();
         this.firstName = doctor.getFirstName();
         this.lastName = doctor.getLastName();
+        this.email = doctor.getEmail();
         this.specialty = doctor.getSpecialty();
     }
 
@@ -42,6 +44,14 @@ public class DoctorResource {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public Specialty getSpecialty() {

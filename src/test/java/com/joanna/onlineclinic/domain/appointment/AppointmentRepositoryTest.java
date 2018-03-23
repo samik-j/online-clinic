@@ -33,8 +33,10 @@ public class AppointmentRepositoryTest {
 
     @Before
     public void createDoctors() {
-        Doctor doctor1 = new Doctor("First", "Last", Specialty.PEDIATRICIAN);
-        Doctor doctor2 = new Doctor("First2", "Last2", Specialty.DERMATOLOGIST);
+        Doctor doctor1 = new Doctor(
+                "First", "Last", "doctor1@domain.com", Specialty.PEDIATRICIAN);
+        Doctor doctor2 = new Doctor(
+                "First2", "Last2", "doctor2@domain.com", Specialty.DERMATOLOGIST);
 
         doctor1Id = doctorRepository.save(doctor1).getId();
         doctor2Id = doctorRepository.save(doctor2).getId();

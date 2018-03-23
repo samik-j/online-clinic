@@ -20,25 +20,27 @@ public class DoctorServiceTest {
     private DoctorService service = new DoctorService(repository);
 
     private DoctorResource createDoctorResource(
-            String firstName, String lastName, Specialty specialty) {
+            String firstName, String lastName, String email, Specialty specialty) {
         DoctorResource resource = new DoctorResource();
 
         resource.setFirstName(firstName);
         resource.setLastName(lastName);
+        resource.setEmail(email);
         resource.setSpecialty(specialty);
 
         return resource;
     }
 
     private Doctor createDoctor(DoctorResource resource) {
-        return new Doctor(resource.getFirstName(), resource.getLastName(), resource.getSpecialty());
+        return new Doctor(
+                resource.getFirstName(), resource.getLastName(), resource.getEmail(), resource.getSpecialty());
     }
 
     @Test
     public void shouldRegisterDoctor() {
         // given
         DoctorResource resource = createDoctorResource(
-                "First", "Last", Specialty.PEDIATRICIAN);
+                "First", "Last", "doctor@domain.com", Specialty.PEDIATRICIAN);
 
         Doctor doctor = createDoctor(resource);
 
@@ -58,8 +60,10 @@ public class DoctorServiceTest {
     @Test
     public void shouldFindDoctors() {
         // given
-        Doctor doctor1 = new Doctor("First1", "Last1", Specialty.PEDIATRICIAN);
-        Doctor doctor2 = new Doctor("First2", "Last2", Specialty.GYNAECOLOGIST);
+        Doctor doctor1 = new Doctor(
+                "First1", "Last1", "doctor1@domain.com", Specialty.PEDIATRICIAN);
+        Doctor doctor2 = new Doctor(
+                "First2", "Last2", "doctor2@domain.com", Specialty.GYNAECOLOGIST);
         List<Doctor> doctors = Arrays.asList(doctor1, doctor2);
 
         when(repository.findAll()).thenReturn(doctors);
@@ -84,7 +88,8 @@ public class DoctorServiceTest {
     @Test
     public void shouldFindDoctorsBySpecialty() {
         // given
-        Doctor doctor1 = new Doctor("First1", "Last1", Specialty.PEDIATRICIAN);
+        Doctor doctor1 = new Doctor(
+                "First1", "Last1", "doctor1@domain.com", Specialty.PEDIATRICIAN);
         List<Doctor> doctors = Arrays.asList(doctor1);
 
         when(repository.findBySpecialty(Specialty.PEDIATRICIAN)).thenReturn(doctors);
@@ -104,7 +109,8 @@ public class DoctorServiceTest {
     @Test
     public void shouldFindDoctorById() {
         // given
-        Doctor doctor1 = new Doctor("First1", "Last1", Specialty.PEDIATRICIAN);
+        Doctor doctor1 = new Doctor(
+                "First1", "Last1", "doctor1@domain.com", Specialty.PEDIATRICIAN);
 
         when(repository.findOne(1L)).thenReturn(doctor1);
 
@@ -138,6 +144,30 @@ public class DoctorServiceTest {
 
         // when
         boolean result = service.doctorExists(1L);
+
+        // then
+        assertFalse(result);
+    }
+
+    @Test
+    public void existsByEmailShouldReturnTrue() {
+        // given
+        when(repository.existsByEmail("doctor@domain.com")).thenReturn(true);
+
+        // when
+        boolean result = service.existsByEmail("doctor@domain.com");
+
+        // then
+        assertTrue(result);
+    }
+
+    @Test
+    public void existsByEmailShouldReturnFalse() {
+        // given
+        when(repository.existsByEmail("doctor@domain.com")).thenReturn(false);
+
+        // when
+        boolean result = service.existsByEmail("doctor@domain.com");
 
         // then
         assertFalse(result);

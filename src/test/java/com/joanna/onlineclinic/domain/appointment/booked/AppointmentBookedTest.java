@@ -17,7 +17,7 @@ public class AppointmentBookedTest {
     @Test
     public void shouldCreateAppointment() {
         // given
-        Doctor doctor = new Doctor("First", "Last", Specialty.PEDIATRICIAN);
+        Doctor doctor = new Doctor("First", "Last", "doctor@domain.com", Specialty.PEDIATRICIAN);
         LocalDate date = LocalDate.of(2017, 9, 12);
         LocalTime time = LocalTime.of(18, 00);
         Patient patient = new Patient.PatientBuilder()
@@ -43,17 +43,7 @@ public class AppointmentBookedTest {
     @Test
     public void shouldChangeStatus() {
         // given
-        Doctor doctor = new Doctor("First", "Last", Specialty.PEDIATRICIAN);
-        LocalDate date = LocalDate.of(2017, 9, 12);
-        LocalTime time = LocalTime.of(18, 00);
-        Patient patient = new Patient.PatientBuilder()
-                .firstName("First")
-                .lastName("Last")
-                .nhsNumber("1234567890")
-                .phoneNumber("07522222222")
-                .email("fake@gmail.com")
-                .build();
-        AppointmentBooked appointment = new AppointmentBooked(doctor, date, time, patient, "Sick");
+        AppointmentBooked appointment = createAppointment();
 
         // when
         appointment.changeStatus(AppointmentBookedStatus.CONFIRMED);
@@ -65,7 +55,15 @@ public class AppointmentBookedTest {
     @Test
     public void changeStatusShouldThrowExceptionIfItIsTheSame() {
         // given
-        Doctor doctor = new Doctor("First", "Last", Specialty.PEDIATRICIAN);
+        AppointmentBooked appointment = createAppointment();
+
+        // expect
+        assertThrows(IncorrectObjectStateException.class,
+                () -> appointment.changeStatus(AppointmentBookedStatus.NOT_CONFIRMED));
+    }
+
+    private AppointmentBooked createAppointment() {
+        Doctor doctor = new Doctor("First", "Last", "doctor@domain.com", Specialty.PEDIATRICIAN);
         LocalDate date = LocalDate.of(2017, 9, 12);
         LocalTime time = LocalTime.of(18, 00);
         Patient patient = new Patient.PatientBuilder()
@@ -75,10 +73,7 @@ public class AppointmentBookedTest {
                 .phoneNumber("07522222222")
                 .email("fake@gmail.com")
                 .build();
-        AppointmentBooked appointment = new AppointmentBooked(doctor, date, time, patient, "Sick");
 
-        // expect
-        assertThrows(IncorrectObjectStateException.class,
-                () -> appointment.changeStatus(AppointmentBookedStatus.NOT_CONFIRMED));
+        return new AppointmentBooked(doctor, date, time, patient, "Sick");
     }
 }

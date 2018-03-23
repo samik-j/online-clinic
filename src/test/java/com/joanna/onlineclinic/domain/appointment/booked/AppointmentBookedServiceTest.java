@@ -44,7 +44,8 @@ public class AppointmentBookedServiceTest {
 
     @Before
     public void saveEntities() {
-        Doctor doctor = new Doctor("First", "Last", Specialty.PEDIATRICIAN);
+        Doctor doctor = new Doctor(
+                "First", "Last", "doctor@domain.com", Specialty.PEDIATRICIAN);
         Patient patient = new Patient.PatientBuilder()
                 .firstName("FirstP")
                 .lastName("LastP")

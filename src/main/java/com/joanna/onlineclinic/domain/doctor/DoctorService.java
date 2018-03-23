@@ -16,7 +16,7 @@ public class DoctorService {
 
     public Doctor registerDoctor(DoctorResource resource) {
         Doctor doctor = new Doctor
-                (resource.getFirstName(), resource.getLastName(), resource.getSpecialty());
+                (resource.getFirstName(), resource.getLastName(), resource.getEmail(), resource.getSpecialty());
 
         return doctorRepository.save(doctor);
     }
@@ -35,5 +35,9 @@ public class DoctorService {
 
     public boolean doctorExists(long doctorId) {
         return doctorRepository.exists(doctorId);
+    }
+
+    public boolean existsByEmail(String email) {
+        return doctorRepository.existsByEmail(email);
     }
 }

@@ -73,7 +73,8 @@ public class AppointmentBookedControllerIntegrationTest {
 
     @Before
     public void setupDatabase() {
-        Doctor doctor = new Doctor("First", "Last", Specialty.PEDIATRICIAN);
+        Doctor doctor = new Doctor(
+                "First", "Last", "doctor@domain.com", Specialty.PEDIATRICIAN);
         Patient patient = new Patient.PatientBuilder()
                 .firstName("FirstP")
                 .lastName("LastP")

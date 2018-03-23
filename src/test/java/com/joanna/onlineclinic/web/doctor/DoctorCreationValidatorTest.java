@@ -1,5 +1,7 @@
 package com.joanna.onlineclinic.web.doctor;
 
+import com.joanna.onlineclinic.domain.doctor.DoctorRepositoryStub;
+import com.joanna.onlineclinic.domain.doctor.DoctorService;
 import com.joanna.onlineclinic.domain.doctor.Specialty;
 import com.joanna.onlineclinic.web.ErrorsResource;
 import org.junit.Test;
@@ -9,14 +11,16 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class DoctorCreationValidatorTest {
 
-    private DoctorCreationValidator validator = new DoctorCreationValidator();
+    private DoctorService service = new DoctorService(new DoctorRepositoryStub());
+    private DoctorCreationValidator validator = new DoctorCreationValidator(service);
 
     private DoctorResource createDoctorResource(
-            String firstName, String lastName, Specialty specialty) {
+            String firstName, String lastName, String email, Specialty specialty) {
         DoctorResource resource = new DoctorResource();
 
         resource.setFirstName(firstName);
         resource.setLastName(lastName);
+        resource.setEmail(email);
         resource.setSpecialty(specialty);
 
         return resource;
@@ -26,7 +30,7 @@ public class DoctorCreationValidatorTest {
     public void shouldNotHaveErrors() {
         // given
         DoctorResource resource = createDoctorResource(
-                "Frist", "Last", Specialty.GENERAL_PHYSICIAN);
+                "Frist", "Last", "doctor@domain.com", Specialty.GENERAL_PHYSICIAN);
 
         // when
         ErrorsResource errorsResource = validator.validate(resource);
@@ -39,7 +43,7 @@ public class DoctorCreationValidatorTest {
     public void shouldHaveErrorIfFirstNameIsNull() {
         // given
         DoctorResource resource = createDoctorResource(
-                null, "Last", Specialty.GENERAL_PHYSICIAN);
+                null, "Last", "doctor@domain.com", Specialty.GENERAL_PHYSICIAN);
 
         // when
         ErrorsResource errorsResource = validator.validate(resource);
@@ -53,7 +57,7 @@ public class DoctorCreationValidatorTest {
     public void shouldHaveErrorIfLastNameIsNull() {
         // given
         DoctorResource resource = createDoctorResource(
-                "First", null, Specialty.GENERAL_PHYSICIAN);
+                "First", null, "doctor@domain.com", Specialty.GENERAL_PHYSICIAN);
 
         // when
         ErrorsResource errorsResource = validator.validate(resource);
@@ -67,7 +71,7 @@ public class DoctorCreationValidatorTest {
     public void shouldHaveErrorIfFirstNameConsistsOfSpaces() {
         // given
         DoctorResource resource = createDoctorResource(
-                "   ", "Last", Specialty.GENERAL_PHYSICIAN);
+                "   ", "Last", "doctor@domain.com", Specialty.GENERAL_PHYSICIAN);
 
         // when
         ErrorsResource errorsResource = validator.validate(resource);
@@ -81,7 +85,7 @@ public class DoctorCreationValidatorTest {
     public void shouldHaveErrorIfLastNameConsistsOfSpaces() {
         // given
         DoctorResource resource = createDoctorResource(
-                "First", "   ", Specialty.GENERAL_PHYSICIAN);
+                "First", "   ", "doctor@domain.com", Specialty.GENERAL_PHYSICIAN);
 
         // when
         ErrorsResource errorsResource = validator.validate(resource);
@@ -92,10 +96,70 @@ public class DoctorCreationValidatorTest {
     }
 
     @Test
+    public void shouldValidateWithErrorIfEmailIsEmpty() {
+        // given
+        DoctorResource resource = createDoctorResource(
+                "First", "Last", "", Specialty.GENERAL_PHYSICIAN);
+
+        // when
+        ErrorsResource errorsResource = validator.validate(resource);
+
+        // then
+        assertEquals(1, errorsResource.getValidationErrors().size());
+        assertTrue(errorsResource.getValidationErrors().contains("Email address not specified"));
+    }
+
+    @Test
+    public void shouldValidateWithErrorIfEmailIsBlank() {
+        // given
+        DoctorResource resource = createDoctorResource(
+                "First", "Last", "  ", Specialty.GENERAL_PHYSICIAN);
+
+        // when
+        ErrorsResource errorsResource = validator.validate(resource);
+
+        // then
+        assertEquals(1, errorsResource.getValidationErrors().size());
+        assertTrue(errorsResource.getValidationErrors().contains("Email address not specified"));
+    }
+
+    @Test
+    public void shouldValidateWithErrorIfEmailIsIncorrect() {
+        // given
+        DoctorResource resource = createDoctorResource(
+                "First", "Last", "something@domain", Specialty.GENERAL_PHYSICIAN);
+
+        // when
+        ErrorsResource errorsResource = validator.validate(resource);
+
+        // then
+        assertEquals(1, errorsResource.getValidationErrors().size());
+        assertTrue(errorsResource.getValidationErrors().contains("Incorrect email address"));
+    }
+
+    @Test
+    public void shouldValidateWithErrorIfEmailIsNotUnique() {
+        // given
+        DoctorResource resource = createDoctorResource(
+                "First", "Last", "something@domain.com", Specialty.GENERAL_PHYSICIAN);
+        DoctorResource resource2 = createDoctorResource(
+                "FirstP", "LastP", "something@domain.com", Specialty.GENERAL_PHYSICIAN);
+
+        service.registerDoctor(resource2);
+
+        // when
+        ErrorsResource errorsResource = validator.validate(resource);
+
+        // then
+        assertEquals(1, errorsResource.getValidationErrors().size());
+        assertTrue(errorsResource.getValidationErrors().contains("Email already registered"));
+    }
+
+    @Test
     public void shouldHaveErrorIfSpecialtyIsNull() {
         // given
         DoctorResource resource = createDoctorResource(
-                "First", "Last", null);
+                "First", "Last", "doctor@domain.com", null);
 
         // when
         ErrorsResource errorsResource = validator.validate(resource);
@@ -108,7 +172,8 @@ public class DoctorCreationValidatorTest {
     @Test
     public void shouldHaveMultipleErrors() {
         // given
-        DoctorResource resource = createDoctorResource("", "", null);
+        DoctorResource resource = createDoctorResource(
+                "", "", "doctor@domain.com", null);
 
         // when
         ErrorsResource errorsResource = validator.validate(resource);

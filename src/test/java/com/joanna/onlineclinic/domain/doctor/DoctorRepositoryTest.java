@@ -9,6 +9,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @RunWith(SpringRunner.class)
@@ -21,7 +22,8 @@ public class DoctorRepositoryTest {
     @Test
     public void shouldFindBySpecialty() {
         // given
-        Doctor doctor = new Doctor("First", "Last", Specialty.GYNAECOLOGIST);
+        Doctor doctor = new Doctor(
+                "First", "Last", "doctor@domain.com", Specialty.GYNAECOLOGIST);
         doctorRepository.save(doctor);
 
         // when
@@ -34,7 +36,8 @@ public class DoctorRepositoryTest {
     @Test
     public void shouldReturnEmptyListIfNotFoundBySpecialty() {
         // given
-        Doctor doctor = new Doctor("First", "Last", Specialty.GYNAECOLOGIST);
+        Doctor doctor = new Doctor(
+                "First", "Last", "doctor@domain.com", Specialty.GYNAECOLOGIST);
         doctorRepository.save(doctor);
 
         // when
@@ -44,4 +47,26 @@ public class DoctorRepositoryTest {
         assertTrue(found.isEmpty());
     }
 
+    @Test
+    public void shouldReturnTrueIfExistsByEmail() {
+        // given
+        Doctor doctor = new Doctor(
+                "First", "Last", "doctor@domain.com", Specialty.GYNAECOLOGIST);
+        doctorRepository.save(doctor);
+
+        // when
+        boolean result = doctorRepository.existsByEmail("doctor@domain.com");
+
+        // then
+        assertTrue(result);
+    }
+
+    @Test
+    public void shouldReturnFalseIfDoesNotExistByEmail() {
+        // when
+        boolean result = doctorRepository.existsByEmail("doctor@domain.com");
+
+        // then
+        assertFalse(result);
+    }
 }
