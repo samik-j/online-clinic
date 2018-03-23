@@ -145,7 +145,7 @@ public class PatientCreationValidatorTest {
     }
 
     @Test
-    public void shouldValidateWithErrorIfPhoneNumberIsEmpty() {
+    public void shouldValidateWithNoErrorIfPhoneNumberIsEmpty() {
         // given
         PatientResource resource = createPatientResource("First", "Last",
                 "1234567890", "", "some@domain.com");
@@ -154,12 +154,11 @@ public class PatientCreationValidatorTest {
         ErrorsResource errorsResource = validator.validate(resource);
 
         // then
-        assertEquals(1, errorsResource.getValidationErrors().size());
-        assertTrue(errorsResource.getValidationErrors().contains("Phone number not specified"));
+        assertTrue(errorsResource.getValidationErrors().isEmpty());
     }
 
     @Test
-    public void shouldValidateWithErrorIfPhoneNumberIsBlank() {
+    public void shouldValidateWithNoErrorIfPhoneNumberIsBlank() {
         // given
         PatientResource resource = createPatientResource("First", "Last",
                 "1234567890", "   ", "some@domain.com");
@@ -168,8 +167,7 @@ public class PatientCreationValidatorTest {
         ErrorsResource errorsResource = validator.validate(resource);
 
         // then
-        assertEquals(1, errorsResource.getValidationErrors().size());
-        assertTrue(errorsResource.getValidationErrors().contains("Phone number not specified"));
+        assertTrue(errorsResource.getValidationErrors().isEmpty());
     }
 
     @Test
@@ -226,6 +224,24 @@ public class PatientCreationValidatorTest {
         // then
         assertEquals(1, errorsResource.getValidationErrors().size());
         assertTrue(errorsResource.getValidationErrors().contains("Incorrect email address"));
+    }
+
+    @Test
+    public void shouldValidateWithErrorIfEmailIsNotUnique() {
+        // given
+        PatientResource resource = createPatientResource("First", "Last",
+                "1234567890", "7722222222", "something@domain.com");
+        PatientResource resource2 = createPatientResource("FirstP", "LastP",
+                "", "7722222222", "something@domain.com");
+
+        service.registerPatient(resource2);
+
+        // when
+        ErrorsResource errorsResource = validator.validate(resource);
+
+        // then
+        assertEquals(1, errorsResource.getValidationErrors().size());
+        assertTrue(errorsResource.getValidationErrors().contains("Email already registered"));
     }
 
     @Test

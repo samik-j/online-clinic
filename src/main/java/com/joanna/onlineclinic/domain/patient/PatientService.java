@@ -42,4 +42,8 @@ public class PatientService {
     public boolean existsByNhsNumber(String nhsNumber) {
         return repository.existsByNhsNumber(nhsNumber);
     }
+
+    public boolean existsByEmail(String email) {
+        return repository.existsByEmail(email);
+    }
 }

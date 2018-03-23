@@ -19,9 +19,8 @@ public class Patient implements BaseEntity {
     @Column(nullable = false)
     private String lastName;
     private String nhsNumber;
-    @Column(nullable = false)
     private String phoneNumber;
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String email;
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "patient")
     private Set<AppointmentBooked> appointments;

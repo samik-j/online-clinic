@@ -11,4 +11,10 @@ public class PatientRepositoryStub extends AbstractRepositoryStub<Patient> imple
             .anyMatch(patient -> patient.getNhsNumber().equals(nhsNumber));
     }
 
+    @Override
+    public boolean existsByEmail(String email) {
+        return store.values().stream()
+                .anyMatch(patient -> patient.getEmail().equals(email));
+    }
+
 }

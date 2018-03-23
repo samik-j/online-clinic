@@ -34,15 +34,16 @@ public class PatientCreationValidator {
                 validationErrors.add("Patient with given NHS number exists");
             }
         }
-        if (StringUtils.isBlank(resource.getPhoneNumber())) {
-            validationErrors.add("Phone number not specified");
-        } else if (!StringUtils.isNumeric(resource.getPhoneNumber())){
+        if (!StringUtils.isBlank(resource.getPhoneNumber())
+                && !StringUtils.isNumeric(resource.getPhoneNumber())) {
             validationErrors.add("Incorrect phone number");
         }
         if (StringUtils.isBlank(resource.getEmail())) {
             validationErrors.add("Email address not specified");
         } else if (!isEmailValid(resource.getEmail())) {
             validationErrors.add("Incorrect email address");
+        } else if (!isEmailUnique(resource.getEmail())) {
+            validationErrors.add("Email already registered");
         }
 
         return new ErrorsResource(validationErrors);
@@ -50,6 +51,10 @@ public class PatientCreationValidator {
 
     private boolean isEmailValid(String email) {
         return EmailValidator.getInstance().isValid(email);
+    }
+
+    private boolean isEmailUnique(String email) {
+        return !service.existsByEmail(email);
     }
 
     private boolean isNhsNumberUnique(String nhsNumber) {
