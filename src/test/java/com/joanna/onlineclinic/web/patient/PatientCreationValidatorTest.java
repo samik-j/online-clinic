@@ -129,11 +129,11 @@ public class PatientCreationValidatorTest {
     public void shouldValidateWithErrorIfNhsNumberExists() {
         // given
         PatientResource firstPatientResource = createPatientResource("A", "D",
-                "1234567890", "7522222222", "some@domain.com");
+                "1234567890", "7522222222", "some1@domain.com");
         service.registerPatient(firstPatientResource);
 
         PatientResource secondPatientResource = createPatientResource("First", "Last",
-            "1234567890", "7522222222", "some@domain.com");
+            "1234567890", "7522222222", "some2@domain.com");
 
 
         // when
@@ -258,11 +258,10 @@ public class PatientCreationValidatorTest {
         ErrorsResource errorsResource = validator.validate(resource);
 
         // then
-        assertEquals(5, errorsResource.getValidationErrors().size());
+        assertEquals(4, errorsResource.getValidationErrors().size());
         assertTrue(errorsResource.getValidationErrors().contains("First name not specified"));
         assertTrue(errorsResource.getValidationErrors().contains("Last name not specified"));
         assertTrue(errorsResource.getValidationErrors().contains("Patient with given NHS number exists"));
-        assertTrue(errorsResource.getValidationErrors().contains("Phone number not specified"));
         assertTrue(errorsResource.getValidationErrors().contains("Incorrect email address"));
     }
 
