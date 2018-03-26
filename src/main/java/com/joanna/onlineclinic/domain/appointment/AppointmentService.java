@@ -48,6 +48,10 @@ public class AppointmentService {
         return appointmentRepository.findAll(doctorId);
     }
 
+    public List<Appointment> findAppointments(long doctorId, LocalDate date) {
+        return appointmentRepository.findAll(doctorId, date);
+    }
+
     public List<Appointment> findAvailableAppointments(long doctorId) {
         return appointmentRepository.findAvailable(doctorId, LocalDate.now(), LocalTime.now());
     }

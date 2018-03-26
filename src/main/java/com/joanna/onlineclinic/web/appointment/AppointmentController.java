@@ -63,6 +63,15 @@ public class AppointmentController {
         return getAppointmentResources(appointmentService.findAppointments(doctorId));
     }
 
+    @GetMapping(params = {"date"})
+    public List<AppointmentResource> getAppointments(
+            @PathVariable long doctorId,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
+        validateDoctorExistence(doctorId);
+
+        return getAppointmentResources(appointmentService.findAppointments(doctorId, date));
+    }
+
     @GetMapping(params = {"available=true"})
     public List<AppointmentResource> getAvailableAppointments(@PathVariable long doctorId) {
         validateDoctorExistence(doctorId);

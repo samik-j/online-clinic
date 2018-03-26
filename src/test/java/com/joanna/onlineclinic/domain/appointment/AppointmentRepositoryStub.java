@@ -28,6 +28,14 @@ public class AppointmentRepositoryStub
     }
 
     @Override
+    public List<Appointment> findAll(long doctorId, LocalDate date) {
+        return store.values().stream()
+                .filter(appointment -> appointment.getDoctor().getId() == doctorId
+                        && appointment.getDate().isEqual(date))
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public List<Appointment> findAvailable(long doctorId, LocalDate date, LocalTime time) {
         return store.values().stream()
                 .filter(appointment -> appointment.getDoctor().getId() == doctorId
