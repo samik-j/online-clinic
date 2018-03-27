@@ -14,6 +14,7 @@ public class AppointmentResource {
     private LocalDate date;
     @JsonFormat(pattern = "HH:mm")
     private LocalTime time;
+    private boolean available;
 
     public AppointmentResource() {
     }
@@ -23,6 +24,7 @@ public class AppointmentResource {
         this.doctorId = appointment.getDoctor().getId();
         this.date = appointment.getDate();
         this.time = appointment.getTime();
+        this.available = appointment.isAvailable();
     }
 
     public long getId() {
@@ -55,5 +57,13 @@ public class AppointmentResource {
 
     public void setTime(LocalTime time) {
         this.time = time;
+    }
+
+    public boolean isAvailable() {
+        return available;
+    }
+
+    public void setAvailable(boolean available) {
+        this.available = available;
     }
 }
