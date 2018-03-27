@@ -108,4 +108,12 @@ public class AppointmentBookedService {
             return appointmentBookedRepository.findPastByPatientId(patientId, LocalDate.now());
         }
     }
+
+    public List<AppointmentBooked> findByDoctorId(long doctorId, boolean current) {
+        if (current) {
+            return appointmentBookedRepository.findCurrentByDoctorId(doctorId, LocalDate.now());
+        } else {
+            return appointmentBookedRepository.findPastByDoctorId(doctorId, LocalDate.now());
+        }
+    }
 }

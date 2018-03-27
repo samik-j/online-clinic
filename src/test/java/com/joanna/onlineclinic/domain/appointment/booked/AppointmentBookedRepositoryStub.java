@@ -44,4 +44,20 @@ public class AppointmentBookedRepositoryStub
         return null;
     }
 
+    @Override
+    public List<AppointmentBooked> findCurrentByDoctorId(long doctorId, LocalDate date) {
+        return store.values().stream()
+                .filter(appointment -> appointment.getDoctor().getId() == doctorId
+                        && appointment.getDate().isAfter(LocalDate.now()))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<AppointmentBooked> findPastByDoctorId(long doctorId, LocalDate date) {
+        return store.values().stream()
+                .filter(appointment -> appointment.getDoctor().getId() == doctorId
+                        && appointment.getDate().isBefore(LocalDate.now()))
+                .collect(Collectors.toList());
+    }
+
 }
