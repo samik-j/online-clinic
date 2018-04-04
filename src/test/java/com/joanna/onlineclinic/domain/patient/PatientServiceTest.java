@@ -107,6 +107,38 @@ public class PatientServiceTest {
         assertFalse(result);
     }
 
+    @Test
+    public void shouldFindPatientById() {
+        // when
+        Patient result = service.findById(patientId);
+
+        // then
+        assertEquals(patientId, result.getId());
+        assertEquals("First", result.getFirstName());
+        assertEquals("Last", result.getLastName());
+        assertEquals("someone@domain.com", result.getEmail());
+        assertEquals("7522443322", result.getPhoneNumber());
+        assertEquals("0123456789", result.getNhsNumber());
+    }
+
+    @Test
+    public void shouldReturnTrueIfExistsByEmail() {
+        // when
+        boolean result = service.existsByEmail("someone@domain.com");
+
+        // then
+        assertTrue(result);
+    }
+
+    @Test
+    public void shouldReturnFalseIfDoesNotExistByEmail() {
+        // when
+        boolean result = service.existsByEmail("someone22@domain.com");
+
+        // then
+        assertFalse(result);
+    }
+
     private PatientResource createPatientResource(
             String firstName, String lastName, String nhsNumber, String phone, String email) {
         PatientResource resource = new PatientResource();
