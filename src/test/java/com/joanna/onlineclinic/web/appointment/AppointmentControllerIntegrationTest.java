@@ -226,6 +226,38 @@ public class AppointmentControllerIntegrationTest {
         result.andExpect(status().isNotFound());
     }
 
+    @Test
+    public void shouldGetAppointmentsGivenDateSuccess200Ok() throws Exception {
+        // given
+        String date = LocalDate.now().plusDays(5).toString();
+
+        // when
+        ResultActions result = mockMvc.perform(
+                get("/doctors/{doctorId}/appointments?date=" + date, doctor2Id));
+
+        // then
+        result.andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+                .andExpect(jsonPath("$", hasSize(1)))
+                .andExpect(jsonPath("$[0].doctorId", is((int) doctor2Id)))
+                .andExpect(jsonPath("$[0].date", is(LocalDate.now().plusDays(5).toString())))
+                .andExpect(jsonPath("$[0].time", is(LocalTime.of(15, 0).toString())))
+                .andExpect(jsonPath("$[0].available", is(true)));
+    }
+
+    @Test
+    public void shouldGetAppointmentsGivenDateFailIfDoctorNotFound404NotFound() throws Exception {
+        // given
+        String date = LocalDate.now().plusDays(5).toString();
+
+        // when
+        ResultActions result = mockMvc.perform(
+                get("/doctors/{doctorId}/appointments?date=" + date, 0));
+
+        // then
+        result.andExpect(status().isNotFound());
+    }
+
     private String asJsonString(Object object) {
         try {
             return new ObjectMapper()

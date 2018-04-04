@@ -210,4 +210,29 @@ public class AppointmentRepositoryTest {
         assertEquals(time, found.getTime());
         assertEquals(appointmentId, found.getId());
     }
+
+    @Test
+    public void shouldFindByDoctorIdAndDate() {
+        // given
+        LocalDate date = LocalDate.of(2017, 9, 12);
+        Doctor doctor = doctorRepository.findOne(doctor1Id);
+        Appointment appointment1 = new Appointment(doctor, date, LocalTime.of(18, 0));
+        Appointment appointment2 = new Appointment(doctor, date, LocalTime.of(17, 0));
+        long appointment1Id = appointmentRepository.save(appointment1).getId();
+        long appointment2Id = appointmentRepository.save(appointment2).getId();
+
+        // when
+        List<Appointment> result = appointmentRepository.findAll(doctor1Id, date);
+
+        // then
+        assertEquals(2, result.size());
+        assertEquals(appointment2Id, result.get(0).getId());
+        assertEquals(doctor, result.get(0).getDoctor());
+        assertEquals(date, result.get(0).getDate());
+        assertEquals(LocalTime.of(17, 0), result.get(0).getTime());
+        assertEquals(appointment1Id, result.get(1).getId());
+        assertEquals(doctor, result.get(1).getDoctor());
+        assertEquals(date, result.get(1).getDate());
+        assertEquals(LocalTime.of(18, 0), result.get(1).getTime());
+    }
 }

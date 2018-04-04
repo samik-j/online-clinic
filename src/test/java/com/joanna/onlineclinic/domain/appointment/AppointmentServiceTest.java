@@ -181,6 +181,18 @@ public class AppointmentServiceTest {
         assertTrue(result);
     }
 
+    @Test
+    public void shouldFindAppointmentsByDoctorIdAndDate() {
+        // when
+        List<Appointment> result = service.findAppointments(doctorId, LocalDate.now().plusDays(2));
+
+        // then
+        assertEquals(appointment1Id, result.get(0).getId());
+        assertEquals(doctorRepository.findOne(doctorId), result.get(0).getDoctor());
+        assertEquals(LocalDate.now().plusDays(2), result.get(0).getDate());
+        assertEquals(LocalTime.of(12, 0), result.get(0).getTime());
+    }
+
     private AppointmentCreationResource createAppointmentCreationResource(
             LocalDate date, LocalTime time) {
         AppointmentCreationResource resource = new AppointmentCreationResource();
