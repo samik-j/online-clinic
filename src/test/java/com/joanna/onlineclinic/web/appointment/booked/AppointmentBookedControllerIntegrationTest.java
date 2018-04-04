@@ -105,9 +105,11 @@ public class AppointmentBookedControllerIntegrationTest {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(jsonPath("$", hasSize(1)))
                 .andExpect(jsonPath("$[0].doctorId", is((int) doctorId)))
+                .andExpect(jsonPath("$[0].doctorName", is("First Last")))
                 .andExpect(jsonPath("$[0].date", is(LocalDate.now().plusDays(5).toString())))
                 .andExpect(jsonPath("$[0].time", is(LocalTime.of(12, 0).toString())))
                 .andExpect(jsonPath("$[0].patientId", is((int) patientId)))
+                .andExpect(jsonPath("$[0].patientName", is("FirstP LastP")))
                 .andExpect(jsonPath("$[0].reason", is("Sick")))
                 .andExpect(jsonPath("$[0].status",
                         is(AppointmentBookedStatus.NOT_CONFIRMED.toString())));
@@ -124,9 +126,11 @@ public class AppointmentBookedControllerIntegrationTest {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(jsonPath("$", hasSize(1)))
                 .andExpect(jsonPath("$[0].doctorId", is((int) doctorId)))
+                .andExpect(jsonPath("$[0].doctorName", is("First Last")))
                 .andExpect(jsonPath("$[0].date", is(LocalDate.now().plusDays(5).toString())))
                 .andExpect(jsonPath("$[0].time", is(LocalTime.of(12, 0).toString())))
                 .andExpect(jsonPath("$[0].patientId", is((int) patientId)))
+                .andExpect(jsonPath("$[0].patientName", is("FirstP LastP")))
                 .andExpect(jsonPath("$[0].reason", is("Sick")))
                 .andExpect(jsonPath("$[0].status",
                         is(AppointmentBookedStatus.NOT_CONFIRMED.toString())));
@@ -147,9 +151,11 @@ public class AppointmentBookedControllerIntegrationTest {
         result.andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(jsonPath("$.doctorId", is((int) doctorId)))
+                .andExpect(jsonPath("$.doctorName", is("First Last")))
                 .andExpect(jsonPath("$.date", is(LocalDate.now().plusDays(5).toString())))
                 .andExpect(jsonPath("$.time", is(LocalTime.of(15, 0).toString())))
                 .andExpect(jsonPath("$.patientId", is((int) patientId)))
+                .andExpect(jsonPath("$.patientName", is("FirstP LastP")))
                 .andExpect(jsonPath("$.reason", is("Sick")))
                 .andExpect(jsonPath("$.status",
                         is(AppointmentBookedStatus.NOT_CONFIRMED.toString())));
@@ -210,9 +216,11 @@ public class AppointmentBookedControllerIntegrationTest {
         result.andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(jsonPath("$.doctorId", is((int) doctorId)))
+                .andExpect(jsonPath("$.doctorName", is("First Last")))
                 .andExpect(jsonPath("$.date", is(LocalDate.now().plusDays(5).toString())))
                 .andExpect(jsonPath("$.time", is(LocalTime.of(12, 0).toString())))
                 .andExpect(jsonPath("$.patientId", is((int) patientId)))
+                .andExpect(jsonPath("$.patientName", is("FirstP LastP")))
                 .andExpect(jsonPath("$.reason", is("Sick")))
                 .andExpect(jsonPath("$.status",
                         is(AppointmentBookedStatus.CONFIRMED.toString())));
