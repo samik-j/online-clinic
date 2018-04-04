@@ -1,11 +1,14 @@
 package com.joanna.onlineclinic.domain.appointment;
 
 import com.joanna.onlineclinic.domain.BaseEntity;
+import com.joanna.onlineclinic.domain.appointment.booked.AppointmentBooked;
 import com.joanna.onlineclinic.domain.doctor.Doctor;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"doctor_id", "date", "time"})})
@@ -22,6 +25,8 @@ public class Appointment implements BaseEntity {
     @Column(nullable = false)
     private LocalTime time;
     private boolean available;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "appointment")
+    private Set<AppointmentBooked> appointmentsBooked;
 
     Appointment() {
     }
@@ -31,6 +36,7 @@ public class Appointment implements BaseEntity {
         this.date = date;
         this.time = time;
         this.available = true;
+        this.appointmentsBooked = new HashSet<>();
     }
 
     public long getId() {
@@ -53,9 +59,14 @@ public class Appointment implements BaseEntity {
         return available;
     }
 
-    public void book() {
+    public Set<AppointmentBooked> getAppointmentsBooked() {
+        return appointmentsBooked;
+    }
+
+    public void book(AppointmentBooked appointmentBooked) {
         if (available) {
             available = false;
+            appointmentsBooked.add(appointmentBooked);
         } else {
             throw new IncorrectObjectStateException("Appointment is not available");
         }

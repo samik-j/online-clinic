@@ -1,7 +1,9 @@
 package com.joanna.onlineclinic.domain.appointment;
 
+import com.joanna.onlineclinic.domain.appointment.booked.AppointmentBooked;
 import com.joanna.onlineclinic.domain.doctor.Doctor;
 import com.joanna.onlineclinic.domain.doctor.Specialty;
+import com.joanna.onlineclinic.domain.patient.Patient;
 import org.junit.Test;
 
 import java.time.LocalDate;
@@ -37,15 +39,25 @@ public class AppointmentTest {
         // given
         Doctor doctor = new Doctor(
                 "First", "Last", "doctor@domain.com", Specialty.PEDIATRICIAN);
+        Patient patient = new Patient.PatientBuilder()
+                .firstName("First")
+                .lastName("Last")
+                .nhsNumber("1234567890")
+                .phoneNumber("07522222222")
+                .email("fake@gmail.com")
+                .build();
         LocalDate date = LocalDate.of(2017, 9, 12);
         LocalTime time = LocalTime.of(18, 0);
         Appointment appointment = new Appointment(doctor, date, time);
+        AppointmentBooked appointmentBooked = new AppointmentBooked(appointment, patient, "Sick");
 
         // when
-        appointment.book();
+        appointment.book(appointmentBooked);
 
         // then
         assertFalse(appointment.isAvailable());
+        assertTrue(appointment.getAppointmentsBooked().size() == 1);
+        assertTrue(appointment.getAppointmentsBooked().contains(appointmentBooked));
     }
 
     @Test
@@ -53,13 +65,22 @@ public class AppointmentTest {
         // given
         Doctor doctor = new Doctor(
                 "First", "Last", "doctor@domain.com", Specialty.PEDIATRICIAN);
+        Patient patient = new Patient.PatientBuilder()
+                .firstName("First")
+                .lastName("Last")
+                .nhsNumber("1234567890")
+                .phoneNumber("07522222222")
+                .email("fake@gmail.com")
+                .build();
         LocalDate date = LocalDate.of(2017, 9, 12);
         LocalTime time = LocalTime.of(18, 0);
         Appointment appointment = new Appointment(doctor, date, time);
-        appointment.book();
+        AppointmentBooked appointmentBooked = new AppointmentBooked(appointment, patient, "Sick");
+
+        appointment.book(appointmentBooked);
 
         // expect
-        assertThrows(IncorrectObjectStateException.class, appointment::book);
+        assertThrows(IncorrectObjectStateException.class, () -> appointment.book(appointmentBooked));
     }
 
     @Test
@@ -67,10 +88,19 @@ public class AppointmentTest {
         // given
         Doctor doctor = new Doctor(
                 "First", "Last", "doctor@domain.com", Specialty.PEDIATRICIAN);
+        Patient patient = new Patient.PatientBuilder()
+                .firstName("First")
+                .lastName("Last")
+                .nhsNumber("1234567890")
+                .phoneNumber("07522222222")
+                .email("fake@gmail.com")
+                .build();
         LocalDate date = LocalDate.of(2017, 9, 12);
         LocalTime time = LocalTime.of(18, 0);
         Appointment appointment = new Appointment(doctor, date, time);
-        appointment.book();
+        AppointmentBooked appointmentBooked = new AppointmentBooked(appointment, patient, "Sick");
+
+        appointment.book(appointmentBooked);
 
         // when
         appointment.cancel();

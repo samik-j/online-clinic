@@ -1,6 +1,8 @@
 package com.joanna.onlineclinic.domain.appointment.booked;
 
 
+import com.joanna.onlineclinic.domain.appointment.Appointment;
+import com.joanna.onlineclinic.domain.appointment.AppointmentRepository;
 import com.joanna.onlineclinic.domain.doctor.Doctor;
 import com.joanna.onlineclinic.domain.doctor.DoctorRepository;
 import com.joanna.onlineclinic.domain.doctor.Specialty;
@@ -27,6 +29,7 @@ public class AppointmentBookedRepositoryTest {
 
     private long doctorId;
     private long patientId;
+    private long appointmentId;
 
     @Autowired
     private AppointmentBookedRepository appointmentBookedRepository;
@@ -36,6 +39,9 @@ public class AppointmentBookedRepositoryTest {
 
     @Autowired
     private DoctorRepository doctorRepository;
+
+    @Autowired
+    private AppointmentRepository appointmentRepository;
 
     @Before
     public void setupDatabase() {
@@ -48,24 +54,27 @@ public class AppointmentBookedRepositoryTest {
                 .email("someone@domain.com")
                 .build();
 
+        Appointment appointment = new Appointment(
+                doctor, LocalDate.of(2018, 7, 12), LocalTime.of(12, 00));
+
+        doctor.addAppointment(appointment);
+
         doctorId = doctorRepository.save(doctor).getId();
         patientId = patientRepository.save(patient).getId();
+        appointmentId = appointmentRepository.save(appointment).getId();
     }
 
     @Test
     public void shouldReturnTrueIfAppointmentExists() {
         // given
-        LocalDate date = LocalDate.of(2018, 7, 12);
-        LocalTime time = LocalTime.of(12, 00);
         AppointmentBooked appointment = new AppointmentBooked(
-                doctorRepository.findOne(doctorId), date,
-                time, patientRepository.findOne(patientId), "Sick");
+                appointmentRepository.findOne(appointmentId), patientRepository.findOne(patientId), "Sick");
 
         appointmentBookedRepository.save(appointment);
 
         // when
-        boolean result = appointmentBookedRepository.existsByDateAndTimeAndDoctorIdAndPatientId(
-                date, time, doctorId, patientId);
+        boolean result = appointmentBookedRepository.existsByAppointmentAndPatientId(
+                appointmentRepository.findOne(appointmentId), patientId);
 
         // then
         assertTrue(result);
@@ -73,13 +82,9 @@ public class AppointmentBookedRepositoryTest {
 
     @Test
     public void shouldReturnFalseIfAppointmentDoesNotExists() {
-        // given
-        LocalDate date = LocalDate.of(2018, 7, 12);
-        LocalTime time = LocalTime.of(12, 00);
-
         // when
-        boolean result = appointmentBookedRepository.existsByDateAndTimeAndDoctorIdAndPatientId(
-                date, time, doctorId, patientId);
+        boolean result = appointmentBookedRepository.existsByAppointmentAndPatientId(
+                appointmentRepository.findOne(appointmentId), patientId);
 
         // then
         assertFalse(result);
@@ -88,11 +93,8 @@ public class AppointmentBookedRepositoryTest {
     @Test
     public void shouldFindByDoctorId() {
         // given
-        LocalDate date = LocalDate.of(2018, 7, 12);
-        LocalTime time = LocalTime.of(12, 00);
         AppointmentBooked appointment = new AppointmentBooked(
-                doctorRepository.findOne(doctorId), date,
-                time, patientRepository.findOne(patientId), "Sick");
+                appointmentRepository.findOne(appointmentId), patientRepository.findOne(patientId), "Sick");
 
         appointmentBookedRepository.save(appointment);
 
@@ -107,11 +109,8 @@ public class AppointmentBookedRepositoryTest {
     @Test
     public void shouldReturnEmptyListIfNoneMatchInFindByDoctorId() {
         // given
-        LocalDate date = LocalDate.of(2018, 7, 12);
-        LocalTime time = LocalTime.of(12, 00);
         AppointmentBooked appointment = new AppointmentBooked(
-                doctorRepository.findOne(doctorId), date,
-                time, patientRepository.findOne(patientId), "Sick");
+                appointmentRepository.findOne(appointmentId), patientRepository.findOne(patientId), "Sick");
 
         appointmentBookedRepository.save(appointment);
 
@@ -125,11 +124,8 @@ public class AppointmentBookedRepositoryTest {
     @Test
     public void shouldFindByPatientId() {
         // given
-        LocalDate date = LocalDate.of(2018, 7, 12);
-        LocalTime time = LocalTime.of(12, 00);
         AppointmentBooked appointment = new AppointmentBooked(
-                doctorRepository.findOne(doctorId), date,
-                time, patientRepository.findOne(patientId), "Sick");
+                appointmentRepository.findOne(appointmentId), patientRepository.findOne(patientId), "Sick");
 
         appointmentBookedRepository.save(appointment);
 
@@ -144,11 +140,8 @@ public class AppointmentBookedRepositoryTest {
     @Test
     public void shouldReturnEmptyListIfNoneMatchInFindByPatientId() {
         // given
-        LocalDate date = LocalDate.of(2018, 7, 12);
-        LocalTime time = LocalTime.of(12, 00);
         AppointmentBooked appointment = new AppointmentBooked(
-                doctorRepository.findOne(doctorId), date,
-                time, patientRepository.findOne(patientId), "Sick");
+                appointmentRepository.findOne(appointmentId), patientRepository.findOne(patientId), "Sick");
 
         appointmentBookedRepository.save(appointment);
 

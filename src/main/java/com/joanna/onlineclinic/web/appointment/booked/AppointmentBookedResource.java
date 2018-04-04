@@ -30,8 +30,8 @@ public class AppointmentBookedResource {
         this.doctorName = appointmentBooked.getDoctor().getFirstName()
                 + " "
                 + appointmentBooked.getDoctor().getLastName();
-        this.date = appointmentBooked.getDate();
-        this.time = appointmentBooked.getTime();
+        this.date = appointmentBooked.getAppointment().getDate();
+        this.time = appointmentBooked.getAppointment().getTime();
         this.patientId = appointmentBooked.getPatient().getId();
         this.patientName = appointmentBooked.getPatient().getFirstName()
                 + " "

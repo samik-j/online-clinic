@@ -21,25 +21,21 @@ public class AppointmentBookedService {
     private AppointmentBookedRepository appointmentBookedRepository;
     private AppointmentRepository appointmentRepository;
     private PatientRepository patientRepository;
-    private DoctorRepository doctorRepository;
 
     public AppointmentBookedService(AppointmentBookedRepository appointmentBookedRepository,
                                     AppointmentRepository appointmentRepository,
-                                    PatientRepository patientRepository,
-                                    DoctorRepository doctorRepository) {
+                                    PatientRepository patientRepository) {
         this.appointmentBookedRepository = appointmentBookedRepository;
         this.appointmentRepository = appointmentRepository;
         this.patientRepository = patientRepository;
-        this.doctorRepository = doctorRepository;
     }
 
     public boolean appointmentBookedExists(AppointmentBookedCreationResource resource) {
         Appointment appointment = appointmentRepository.findOne(resource.getAppointmentId());
 
         return appointment != null
-                && appointmentBookedRepository.existsByDateAndTimeAndDoctorIdAndPatientId(
-                appointment.getDate(), appointment.getTime(),
-                appointment.getDoctor().getId(), resource.getPatientId());
+                && appointmentBookedRepository.existsByAppointmentAndPatientId(
+                appointment, resource.getPatientId());
     }
 
     public boolean appointmentBookedExists(long appointmentId) {
@@ -51,11 +47,9 @@ public class AppointmentBookedService {
         Appointment appointment = appointmentRepository.findOne(resource.getAppointmentId());
         Patient patient = patientRepository.findOne(resource.getPatientId());
         Doctor doctor = appointment.getDoctor();
-        AppointmentBooked appointmentBooked = new AppointmentBooked(
-                appointment.getDoctor(), appointment.getDate(), appointment.getTime(),
-                patient, resource.getReason());
+        AppointmentBooked appointmentBooked = new AppointmentBooked(appointment, patient, resource.getReason());
 
-        appointment.book();
+        appointment.book(appointmentBooked);
         doctor.addAppointmentBooked(appointmentBooked);
         patient.addAppointmentBooked(appointmentBooked);
 
@@ -89,9 +83,7 @@ public class AppointmentBookedService {
     }
 
     private void cancelAppointment(AppointmentBooked appointmentBooked) {
-        Appointment appointment = appointmentRepository.findByDoctorAndDateAndTime(
-                appointmentBooked.getDoctor(), appointmentBooked.getDate(),
-                appointmentBooked.getTime());
+        Appointment appointment = appointmentBooked.getAppointment();
 
         if (appointment != null) {
             appointment.cancel();

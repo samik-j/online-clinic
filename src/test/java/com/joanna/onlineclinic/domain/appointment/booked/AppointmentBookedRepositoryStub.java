@@ -1,6 +1,7 @@
 package com.joanna.onlineclinic.domain.appointment.booked;
 
 import com.joanna.onlineclinic.domain.AbstractRepositoryStub;
+import com.joanna.onlineclinic.domain.appointment.Appointment;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -9,16 +10,6 @@ import java.util.stream.Collectors;
 
 public class AppointmentBookedRepositoryStub
         extends AbstractRepositoryStub<AppointmentBooked> implements AppointmentBookedRepository {
-
-    @Override
-    public boolean existsByDateAndTimeAndDoctorIdAndPatientId(
-            LocalDate date, LocalTime time, long doctorId, long patientId) {
-        return store.values().stream()
-                .anyMatch(appointment -> appointment.getDate().equals(date)
-                        && appointment.getTime().equals(time)
-                        && appointment.getDoctor().getId() == doctorId
-                        && appointment.getPatient().getId() == patientId);
-    }
 
     @Override
     public List<AppointmentBooked> findByDoctorId(long doctorId) {
@@ -48,7 +39,7 @@ public class AppointmentBookedRepositoryStub
     public List<AppointmentBooked> findCurrentByDoctorId(long doctorId, LocalDate date) {
         return store.values().stream()
                 .filter(appointment -> appointment.getDoctor().getId() == doctorId
-                        && appointment.getDate().isAfter(LocalDate.now()))
+                        && appointment.getAppointment().getDate().isAfter(LocalDate.now()))
                 .collect(Collectors.toList());
     }
 
@@ -56,8 +47,16 @@ public class AppointmentBookedRepositoryStub
     public List<AppointmentBooked> findPastByDoctorId(long doctorId, LocalDate date) {
         return store.values().stream()
                 .filter(appointment -> appointment.getDoctor().getId() == doctorId
-                        && appointment.getDate().isBefore(LocalDate.now()))
+                        && appointment.getAppointment().getDate().isBefore(LocalDate.now()))
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public boolean existsByAppointmentAndPatientId(Appointment appointment, Long patientId) {
+        return store.values().stream()
+                .anyMatch(appointmentBooked ->
+                        appointmentBooked.getAppointment().equals(appointment)
+                                && appointmentBooked.getPatient().getId() == patientId);
     }
 
 }

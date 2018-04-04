@@ -30,7 +30,7 @@ public class AppointmentBookedStatusChangeValidatorTest {
     private PatientRepository patientRepository = new PatientRepositoryStub();
     private DoctorRepository doctorRepository = new DoctorRepositoryStub();
     private AppointmentBookedService service = new AppointmentBookedService(
-            appointmentBookedRepository, appointmentRepository, patientRepository, doctorRepository);
+            appointmentBookedRepository, appointmentRepository, patientRepository);
 
     private AppointmentBookedStatusChangeValidator validator =
             new AppointmentBookedStatusChangeValidator(service);
@@ -102,10 +102,9 @@ public class AppointmentBookedStatusChangeValidatorTest {
         Appointment appointment = appointmentRepository.findOne(appointmentId);
         Doctor doctor = appointment.getDoctor();
         AppointmentBooked appointmentBooked = new AppointmentBooked(
-                doctor, appointment.getDate(), appointment.getTime(),
-                patient, reason);
+                appointment, patient, reason);
 
-        appointment.book();
+        appointment.book(appointmentBooked);
         doctor.addAppointmentBooked(appointmentBooked);
         patient.addAppointmentBooked(appointmentBooked);
 

@@ -34,7 +34,7 @@ public class AppointmentBookedServiceTest {
     private DoctorRepository doctorRepository = new DoctorRepositoryStub();
 
     private AppointmentBookedService service = new AppointmentBookedService(
-            appointmentBookedRepository, appointmentRepository, patientRepository, doctorRepository);
+            appointmentBookedRepository, appointmentRepository, patientRepository);
 
     private long doctorId;
     private long patientId;
@@ -75,8 +75,8 @@ public class AppointmentBookedServiceTest {
 
         // then
         assertEquals(doctorId, addedAppointment.getDoctor().getId());
-        assertEquals(LocalDate.now().plusDays(2), addedAppointment.getDate());
-        assertEquals(LocalTime.of(12, 0), addedAppointment.getTime());
+        assertEquals(LocalDate.now().plusDays(2), addedAppointment.getAppointment().getDate());
+        assertEquals(LocalTime.of(12, 0), addedAppointment.getAppointment().getTime());
         assertEquals(patientId, addedAppointment.getPatient().getId());
         assertEquals("Sick", addedAppointment.getReason());
         assertEquals(AppointmentBookedStatus.NOT_CONFIRMED, addedAppointment.getStatus());
@@ -129,8 +129,8 @@ public class AppointmentBookedServiceTest {
         // then
         assertEquals(1, result.size());
         assertEquals(doctorId, result.get(0).getDoctor().getId());
-        assertEquals(LocalDate.now().plusDays(2), result.get(0).getDate());
-        assertEquals(LocalTime.of(14, 0), result.get(0).getTime());
+        assertEquals(LocalDate.now().plusDays(2), result.get(0).getAppointment().getDate());
+        assertEquals(LocalTime.of(14, 0), result.get(0).getAppointment().getTime());
         assertEquals(patientId, result.get(0).getPatient().getId());
         assertEquals("Sick", result.get(0).getReason());
     }
@@ -143,8 +143,8 @@ public class AppointmentBookedServiceTest {
         // then
         assertEquals(1, result.size());
         assertEquals(doctorId, result.get(0).getDoctor().getId());
-        assertEquals(LocalDate.now().plusDays(2), result.get(0).getDate());
-        assertEquals(LocalTime.of(14, 0), result.get(0).getTime());
+        assertEquals(LocalDate.now().plusDays(2), result.get(0).getAppointment().getDate());
+        assertEquals(LocalTime.of(14, 0), result.get(0).getAppointment().getTime());
         assertEquals(patientId, result.get(0).getPatient().getId());
         assertEquals("Sick", result.get(0).getReason());
     }
@@ -164,8 +164,8 @@ public class AppointmentBookedServiceTest {
         assertEquals(AppointmentBookedStatus.CONFIRMED, appointmentChanged.getStatus());
         assertEquals(doctorId, appointmentChanged.getDoctor().getId());
         assertEquals(patientId, appointmentChanged.getPatient().getId());
-        assertEquals(LocalDate.now().plusDays(2), appointmentChanged.getDate());
-        assertEquals(LocalTime.of(14, 0), appointmentChanged.getTime());
+        assertEquals(LocalDate.now().plusDays(2), appointmentChanged.getAppointment().getDate());
+        assertEquals(LocalTime.of(14, 0), appointmentChanged.getAppointment().getTime());
         assertEquals("Sick", appointmentChanged.getReason());
     }
 
@@ -184,22 +184,10 @@ public class AppointmentBookedServiceTest {
         assertEquals(AppointmentBookedStatus.CANCELLED, appointmentChanged.getStatus());
         assertEquals(doctorId, appointmentChanged.getDoctor().getId());
         assertEquals(patientId, appointmentChanged.getPatient().getId());
-        assertEquals(LocalDate.now().plusDays(2), appointmentChanged.getDate());
-        assertEquals(LocalTime.of(14, 0), appointmentChanged.getTime());
+        assertEquals(LocalDate.now().plusDays(2), appointmentChanged.getAppointment().getDate());
+        assertEquals(LocalTime.of(14, 0), appointmentChanged.getAppointment().getTime());
         assertEquals("Sick", appointmentChanged.getReason());
         assertTrue(appointmentRepository.findOne(appointment2Id).isAvailable());
-    }
-
-    @Test
-    public void changeStatusShouldThrowExceptionIfAppointmentWasNotFound() {
-        // given
-        AppointmentBookedStatusChangeResource resource = new AppointmentBookedStatusChangeResource();
-        resource.setStatus(AppointmentBookedStatus.CANCELLED);
-        appointmentRepository.delete(appointment2Id);
-
-        //expect
-        assertThrows(ObjectNotFoundException.class,
-                () -> service.changeStatus(appointmentBookedId, resource));
     }
 
     private Appointment saveAppointment(Doctor doctor, LocalDate date, LocalTime time) {
@@ -218,10 +206,9 @@ public class AppointmentBookedServiceTest {
         Appointment appointment = appointmentRepository.findOne(appointmentId);
         Doctor doctor = appointment.getDoctor();
         AppointmentBooked appointmentBooked = new AppointmentBooked(
-                doctor, appointment.getDate(), appointment.getTime(),
-                patient, reason);
+                appointment, patient, reason);
 
-        appointment.book();
+        appointment.book(appointmentBooked);
         doctor.addAppointmentBooked(appointmentBooked);
         patient.addAppointmentBooked(appointmentBooked);
 

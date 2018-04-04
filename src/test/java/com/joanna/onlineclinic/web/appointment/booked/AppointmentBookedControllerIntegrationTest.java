@@ -259,10 +259,9 @@ public class AppointmentBookedControllerIntegrationTest {
         Appointment appointment = appointmentRepository.findOne(appointmentId);
         Doctor doctor = appointment.getDoctor();
         AppointmentBooked appointmentBooked = new AppointmentBooked(
-                doctor, appointment.getDate(), appointment.getTime(),
-                patient, reason);
+                appointment, patient, reason);
 
-        appointment.book();
+        appointment.book(appointmentBooked);
         doctor.addAppointmentBooked(appointmentBooked);
         patient.addAppointmentBooked(appointmentBooked);
 

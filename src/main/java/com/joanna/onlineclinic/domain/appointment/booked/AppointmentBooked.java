@@ -1,6 +1,7 @@
 package com.joanna.onlineclinic.domain.appointment.booked;
 
 import com.joanna.onlineclinic.domain.BaseEntity;
+import com.joanna.onlineclinic.domain.appointment.Appointment;
 import com.joanna.onlineclinic.domain.appointment.IncorrectObjectStateException;
 import com.joanna.onlineclinic.domain.doctor.Doctor;
 import com.joanna.onlineclinic.domain.patient.Patient;
@@ -11,19 +12,18 @@ import java.time.LocalTime;
 
 @Entity
 @Table(uniqueConstraints = @UniqueConstraint(
-        columnNames = {"doctor_id", "date", "time", "patient_id"}))
+        columnNames = {"appointment_id", "doctor_id", "patient_id"}))
 public class AppointmentBooked implements BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     @ManyToOne
+    @JoinColumn(name = "appointment_id")
+    private Appointment appointment;
+    @ManyToOne
     @JoinColumn(name = "doctor_id")
     private Doctor doctor;
-    @Column(nullable = false)
-    private LocalDate date;
-    @Column(nullable = false)
-    private LocalTime time;
     @ManyToOne
     @JoinColumn(name = "patient_id")
     private Patient patient;
@@ -34,11 +34,9 @@ public class AppointmentBooked implements BaseEntity {
     AppointmentBooked() {
     }
 
-    public AppointmentBooked(
-            Doctor doctor, LocalDate date, LocalTime time, Patient patient, String reason) {
-        this.doctor = doctor;
-        this.date = date;
-        this.time = time;
+    public AppointmentBooked(Appointment appointment, Patient patient, String reason) {
+        this.appointment = appointment;
+        this.doctor = appointment.getDoctor();
         this.patient = patient;
         this.reason = reason;
         this.status = AppointmentBookedStatus.NOT_CONFIRMED;
@@ -48,16 +46,12 @@ public class AppointmentBooked implements BaseEntity {
         return id;
     }
 
+    public Appointment getAppointment() {
+        return appointment;
+    }
+
     public Doctor getDoctor() {
         return doctor;
-    }
-
-    public LocalDate getDate() {
-        return date;
-    }
-
-    public LocalTime getTime() {
-        return time;
     }
 
     public Patient getPatient() {
