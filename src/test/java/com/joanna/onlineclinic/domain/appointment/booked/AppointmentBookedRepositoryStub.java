@@ -27,12 +27,18 @@ public class AppointmentBookedRepositoryStub
 
     @Override
     public List<AppointmentBooked> findCurrentByPatientId(long patientId, LocalDate date) {
-        return null;
+        return store.values().stream()
+                .filter(appointment -> appointment.getPatient().getId() == patientId
+                        && appointment.getAppointment().getDate().isAfter(LocalDate.now()))
+                .collect(Collectors.toList());
     }
 
     @Override
     public List<AppointmentBooked> findPastByPatientId(long patientId, LocalDate date) {
-        return null;
+        return store.values().stream()
+                .filter(appointment -> appointment.getPatient().getId() == patientId
+                        && appointment.getAppointment().getDate().isBefore(LocalDate.now()))
+                .collect(Collectors.toList());
     }
 
     @Override
