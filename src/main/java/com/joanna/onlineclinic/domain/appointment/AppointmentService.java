@@ -44,6 +44,10 @@ public class AppointmentService {
         return appointmentRepository.exists(appointmentId);
     }
 
+    public Appointment findOne(long appointmentId) {
+        return appointmentRepository.findOne(appointmentId);
+    }
+
     public List<Appointment> findAppointments(long doctorId) {
         return appointmentRepository.findAll(doctorId);
     }

@@ -56,6 +56,19 @@ public class AppointmentController {
         }
     }
 
+    @GetMapping("/{appointmentId}")
+    public AppointmentResource getAppointment(@PathVariable long doctorId, @PathVariable long appointmentId) {
+        validateDoctorExistence(doctorId);
+
+        Appointment appointment = appointmentService.findOne(appointmentId);
+
+        if(appointment != null) {
+            return getAppointmentResource(appointment);
+        } else {
+            throw  new ResourceNotFoundException();
+        }
+    }
+
     @GetMapping
     public List<AppointmentResource> getAppointments(@PathVariable long doctorId) {
         validateDoctorExistence(doctorId);
