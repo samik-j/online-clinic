@@ -73,6 +73,17 @@ public class AppointmentBookedController {
         }
     }
 
+    @GetMapping("/{appointmentBookedId}")
+    public AppointmentBookedResource getAppointmentBooked(@PathVariable long appointmentBookedId) {
+        AppointmentBooked appointment = appointmentBookedService.findOne(appointmentBookedId);
+
+        if(appointment != null) {
+            return getAppointmentBookedResource(appointment);
+        } else {
+            throw  new ResourceNotFoundException();
+        }
+    }
+
     @GetMapping(params = {"doctorId"})
     public List<AppointmentBookedResource> getAppointmentsByDoctorId(@RequestParam long doctorId) {
         return getAppointmentBookedResources(appointmentBookedService.findByDoctorId(doctorId));

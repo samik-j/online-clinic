@@ -108,4 +108,8 @@ public class AppointmentBookedService {
             return appointmentBookedRepository.findPastByDoctorId(doctorId, LocalDate.now());
         }
     }
+
+    public AppointmentBooked findOne(long appointmentBookedId) {
+        return appointmentBookedRepository.findOne(appointmentBookedId);
+    }
 }
