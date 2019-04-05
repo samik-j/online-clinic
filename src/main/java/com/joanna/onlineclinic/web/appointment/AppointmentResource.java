@@ -2,6 +2,7 @@ package com.joanna.onlineclinic.web.appointment;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.joanna.onlineclinic.domain.appointment.Appointment;
+import com.joanna.onlineclinic.domain.appointment.booked.AppointmentBookedStatus;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -15,6 +16,7 @@ public class AppointmentResource {
     @JsonFormat(pattern = "HH:mm")
     private LocalTime time;
     private boolean available;
+    private Long appointmentBookedId;
 
     public AppointmentResource() {
     }
@@ -25,6 +27,10 @@ public class AppointmentResource {
         this.date = appointment.getDate();
         this.time = appointment.getTime();
         this.available = appointment.isAvailable();
+        appointment.getAppointmentsBooked().stream()
+                   .filter(appt -> appt.getStatus() != AppointmentBookedStatus.CANCELLED)
+                   .findFirst()
+                   .ifPresent(appointmentBooked1 -> this.appointmentBookedId = appointmentBooked1.getId());
     }
 
     public long getId() {
@@ -65,5 +71,13 @@ public class AppointmentResource {
 
     public void setAvailable(boolean available) {
         this.available = available;
+    }
+
+    public Long getAppointmentBookedId() {
+        return appointmentBookedId;
+    }
+
+    public void setAppointmentBookedId(Long appointmentBookedId) {
+        this.appointmentBookedId = appointmentBookedId;
     }
 }
